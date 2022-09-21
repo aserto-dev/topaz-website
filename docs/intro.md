@@ -2,46 +2,29 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Introduction
 
-Let's discover **Docusaurus in less than 5 minutes**.
+## Why did we build topaz?
 
-## Getting Started
+* Authorization for applications is hard to get right.
+* There are many libraries that help with RBAC and ABAC, but there are no self-hosted, purpose-built authorization services that combine RBAC, ABAC, and ReBAC and support both a policy-as-code workflow as well as help you model your domain and manage the authorization data locally.
+* OPA is a great place to start, but it’s still hard to manage the data used by the authorizer as well as pass data to the authorizer at query time.
 
-Get started by **creating a new site**.
+## Why Topaz?
+Topaz is an opinionated fine-grained access control solution that makes it easier to add authorization to your application.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+Topaz provides an out-of-the-box fine-grained access control solution that combines the best a library has to offer with the benefits of a service. It calls for a clear separation of the authorization logic from the application logic, and by deploying it close to the application, you can still ensure it maintains very low latency and high availability.
 
-### What you'll need
+We wanted to simplify the data flow from and to the authorizer by making it easy to:
+Load user and resource data into the authorizer
+Pass the identity and resource context to the authorizer at query time
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+By making this process easier, Topaz ensures authorization decisions can happen in milliseconds. Deployed as a sidecar or a microservice in your cloud, Topaz will always be available to your applications.
 
-## Generate a new site
+Additionally, we wanted to make it easy for developers to create fine-grained authorization models that follow the RBAC, ABAC, and ReBAC patterns.
 
-Generate a new Docusaurus site using the **classic template**.
+Today, there are two approaches to building a fine-grained authorization model:
+* _Policy-as-code_ - the policy is set as rules expressed in code, which defines the authorization logic. Two popular authorization models that are based on this approach are RBAC (role-based access control) and ABAC (attribute-based access control).  The Open Policy Agent is based on this approach.
+* _Policy-as-data_ - As the name suggests, the authorization policy resides within a data structure - specifically, in a relationship graph. This approach (popularized by the Zanzibar paper) is the basis for the ReBAC (relationship-based access control) authorization model.
 
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+Built on the strong foundations of the Open Policy Agent project, Topaz allows you to marry the “policy-as-code” and “policy-as-data” approaches. With the two approaches working in tandem, you can define fine-grained authorization models that would support practically any domain model.
