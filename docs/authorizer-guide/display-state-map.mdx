@@ -11,7 +11,7 @@ that the logged-in user possesses. For example, if a user only has "viewer" perm
 the front-end typically wants to avoid displaying UI elements that allow users to edit or update resources.
 
 Topaz addresses this problem by defining the **display state map** pattern. An authorization policy
-defines [decisions](/docs/overview/policy#decision) called `visible` and `enabled`, which take on `true` / `false`
+defines [decisions](/docs/policies/index#decision) called `visible` and `enabled`, which take on `true` / `false`
 values when evaluated against the roles and attributes of the logged-in user. We refer to the following
 type of JSON map as a **display state**:
 

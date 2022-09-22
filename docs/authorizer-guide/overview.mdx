@@ -9,12 +9,12 @@ description: How to use the Topaz Authorizer
 
 The Authorizer uses the
 [Open Policy Agent](https://www.openpolicyagent.org) (OPA) to
-compute a [**decision**](/docs/overview/policy#decision) based on a [**policy**](/docs/overview/policy),
-[**user context**](/docs/overview/policy#user-context), and **data**.
+compute a [**decision**](/docs/policies/index#decision) based on a [**policy**](/docs/policies/index),
+[**user context**](/docs/policies/index#user-context), and **data**.
 
 An application can interact with the Authorizer through a set of gRPC or HTTPS REST APIs.
 
-The Topaz authorizer is [deployed as a sidecar (or as a local service)](/docs/edge-authorizers/overview), right next to your application.
+The Topaz authorizer is [deployed as a sidecar (or as a local service)](/docs/deployment/index), right next to your application.
 
 {/* TODO: Authentication? */}
 
@@ -27,7 +27,7 @@ The Topaz authorizer is [deployed as a sidecar (or as a local service)](/docs/ed
 The Authorizer provides the following APIs to calling applications:
 
 - [Authorization](/docs/authorizer-guide/authz) (`authz`)
-- [Directory](/docs/authorizer-guide/dir) (`dir`)
+- [Directory](/docs/directory/index) (`dir`)
 - Information (`info`)
-- [Policy](/docs/authorizer-guide/policy) (`policy`)
+- [Policy](/docs/policies/index) (`policy`)
 - System (`sys`)
