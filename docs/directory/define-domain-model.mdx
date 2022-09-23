@@ -1,13 +1,24 @@
----
-sidebar_position: 2
----
-
 # Defining a domain model
 
 The authorization model needs to mirror the domain model used by the application. To populate the directory we need to define the domain model which is comprised of objects and relations. To define these objects and relations, we first need to declare object types and relation types.
 
+## Object types
+
+Object types define the entities in the system, such as `user`, `department`, `task`, etc. Objects are differentiated from one another by their type and by their definition as either a _subject_ or an _object_. A subject is an entity that can be the subject of an authorization decision. An object is an
+entity that can be the object of an authorization request. For example, a `user` is a subject, but a `task` is an object.
+
+## Relation types
+
+Relation types define the relationships between entities, such as `member`, `owner`, `manager`, etc. Relation types are defined as applicable to specific object types. In the context of authorization, we can think of relation types as roles that can be assigned to subjects. For example, a `user` can be assigned the `owner` role for a `department`. In our policy, we can check whether a relation exists for a `subject` and an `object` using the `ds.check_relation` built-in.
+
+## Permissions
+
+While relations are helpful to model roles, we can associate many permissions to a single role. In the directory, permissions are associated with relation types. For example, we can define the `owner` relation type as associated with the `can_create`, `can_delete`, and `can_view` _permissions_. In our policy, we can check whether a permission exists for a `subject` and an `object` using the `ds.check_permission` built-in.
+
 ## Defining Types
 
-### Object Type
+### Using the Topaz CLI (with a manifest file)
 
-### Relation Type
+### GRPC
+
+### REST

@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # Introduction
 
+Topaz is an open-source, self-hosted fine-grained access control service for Cloud Native applications. It is built on top of [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) and provides a set of APIs to manage identity and resource data easily. Topaz stores identity and resource data close to the authorizer, so decisions based on these data can be made quickly and efficiently.
+
 ## Why did we build topaz?
 
 * Authorization for applications is hard to get right.

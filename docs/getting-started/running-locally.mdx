@@ -4,10 +4,14 @@ sidebar_position: 3
 
 # Running Locally
 
-## Write your first policy
-
-## Push your policy to a policy registry
-
-## Load mock identity data
-
 ## Start Topaz
+
+
+To start Topaz locally, you'll need to have Docker installed and running. Then, run the following command:
+
+{/* TODO: Update to final image */}
+```bash
+docker run -it --rm --name topaz -p 8282:8282 -p 8383:8383 -p 8484:8484 -v "$PWD/config-example.yaml:/aserto/cfg/config.yaml":ro ghcr.io/aserto-dev/topaz:0.0.0-20220923170430.0.gd8fa40e0-dirty run -c /aserto/cfg/config.yaml
+```
+
+## Start the Todo Demo App

@@ -27,6 +27,11 @@ const sidebars = {
       ]
     },
     {
+      'Deployment': [
+        'deployment/index',
+      ]
+    },
+    {
       'Authorizer': [
         'authorizer-guide/overview',
         'authorizer-guide/authz',
@@ -52,7 +57,12 @@ const sidebars = {
         'policies/index',
         'policies/registries'
       ]
-    }
+    },
+    {
+      'SDKs': [
+        'software-development-kits/index',
+      ]
+    },
   ]
 
   // But you can create a sidebar manually
