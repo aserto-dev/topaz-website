@@ -17,10 +17,7 @@ directory_service:
 api:
   gateway:
     allowed_origins:
-    # TODO: Fix origins
-      - https://*.aserto.com
-      - https://*aserto-console.netlify.app
-      - https://*aserto-playground.netlify.app
+      - https://*localhost
   grpc:
     connection_timeout_seconds: 2
   metrics:

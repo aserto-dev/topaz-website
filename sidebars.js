@@ -60,7 +60,36 @@ const sidebars = {
     },
     {
       'SDKs': [
-        'software-development-kits/index',
+        {
+          'JavaScript': [
+            'software-development-kits/javascript/express',
+            'software-development-kits/javascript/react',
+            'software-development-kits/javascript/spa',
+          ]
+        },
+        {
+          'Go': [
+            'software-development-kits/go/install',
+            'software-development-kits/go/authorizer',
+            'software-development-kits/go/middleware-http',
+            'software-development-kits/go/middleware-grpc',
+          ]
+        },
+        {
+          'Python': [
+            'software-development-kits/python/api-client',
+            'software-development-kits/python/authorizers',
+            'software-development-kits/python/flask',
+            'software-development-kits/python/identity-providers',
+          ]
+        },
+        'software-development-kits/dotnet/index',
+        {
+          'Ruby': [
+            'software-development-kits/ruby/middleware',
+            'software-development-kits/ruby/rails',
+          ]
+        }
       ]
     },
   ]
