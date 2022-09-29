@@ -2,3 +2,31 @@
 sidebar_position: 1
 ---
 # Setup
+
+Topaz is packaged as a Docker container which requires a configuration file - an example configuration is available [here](/docs/getting-started/configuration). The example configuration file includes the location to a policy image that is store in a policy registry. The policy registry hosts OCI images which you can create and push with the [Policy CLI](https://github.com/opcr-io/policy).
+
+After creating the configuration file, you can start the container with the following command:
+
+To start Topaz locally, you'll need to have Docker installed and running. Then, run the following command:
+
+{/* TODO: Update to final image */}
+```bash
+docker run -it --rm --name topaz -p 8282:8282 -p 8383:8383 -p 8484:8484\
+ -v "$PWD/config-example.yaml:/aserto/cfg/config.yaml":ro \
+ ghcr.io/aserto-dev/topaz:0.0.0-20220923170430.0.gd8fa40e0-dirty \
+ run -c /aserto/cfg/config.yaml
+```
+
+After starting Topaz locally, you'll be able to run the following queries to test the policy:
+
+## List policies
+
+```bash
+curl --location --request GET 'https://localhost:8383/api/v1/policy/policies'
+```
+
+## Next steps
+1. Create your own policy
+2. Push your policy to a registry
+3. Update your configuration file to point to your policy
+4. Restart Topaz

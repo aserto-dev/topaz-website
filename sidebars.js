@@ -22,8 +22,6 @@ const sidebars = {
       'Getting Started': [
         'getting-started/index',
         'getting-started/configuration',
-        'getting-started/running-locally',
-        'getting-started/testing'
       ]
     },
     {
@@ -92,6 +90,25 @@ const sidebars = {
         }
       ]
     },
+    {
+      'CLIs': {
+        'Policy CLI': [
+          'command-line-interface/policy-cli/download',
+          'command-line-interface/policy-cli/login',
+          'command-line-interface/policy-cli/init',
+          'command-line-interface/policy-cli/build',
+          'command-line-interface/policy-cli/images',
+          'command-line-interface/policy-cli/tag',
+          'command-line-interface/policy-cli/push',
+          'command-line-interface/policy-cli/pull',
+          'command-line-interface/policy-cli/rm',
+          'command-line-interface/policy-cli/export',
+          'command-line-interface/policy-cli/repl',
+          'command-line-interface/policy-cli/sign',
+          'command-line-interface/policy-cli/open-policy-registry',
+        ]
+      }
+    }
   ]
 
   // But you can create a sidebar manually
