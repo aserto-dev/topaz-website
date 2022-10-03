@@ -53,11 +53,12 @@ const sidebars = {
     {
       'Policies': [
         'policies/index',
-        'policies/registries'
+        'policies/lifecycle'
       ]
     },
     {
       'SDKs': [
+        'software-development-kits/overview',
         {
           'JavaScript': [
             'software-development-kits/javascript/express',

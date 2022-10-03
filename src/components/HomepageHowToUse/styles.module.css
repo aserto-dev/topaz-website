@@ -1,18 +1,13 @@
-.features {
+.howto {
   display: flex;
   align-items: center;
   padding: 2rem 0;
   width: 100%;
+  background: #376EBF;
+  flex-direction: column;
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
-}
-
-
-
-.featuresContainer {
+.howtoContainer {
   display: flex;
   align-items: stretch;
   align-content: stretch;
@@ -22,41 +17,42 @@
   margin-top: 70px;
 }
 
-
-.featuresIconContainer {
-  flex: 8;
-  align-self: center
+.howtoListContainer {
+  margin-bottom: 80px;
 }
 
-.featuresIcon {
-  background: url('../../../static/img/icons/features.svg') no-repeat top left;
-  background-size: contain;
-  height: 400px;
-  align-self: center;
-}
-
-.featuresListContainer {
-  flex: 8
-}
-
-.featureListItem {
+.howtoListItem {
   display: flex;
   align-items: stretch;
   align-content: stretch;
   width: 90%;
+
   margin: 0 auto;
+  margin-bottom: 20px;
   font-weight: 500;
-
+  border-radius: 11px;
+  padding: 20px;
 }
 
-.featureListItemIcon {
+.howtoListItemIcon {
   flex: 3;
-  align-self: center;
+  height: 70px;
+  width: 70px;
+  overflow: visible;
+  margin-top: -10px;
 }
 
-.featureListItemText {
+.howtoListItemText {
   flex: 8;
   margin-left: 20px;
   margin-bottom: 10px;
+  align-self: center;
   font-size: 20px;
+}
+
+.howtoTitle {
+  font-size: 2em;
+  margin-top: 70px;
+  margin-bottom: 40px;
+  font-weight: 700;
 }

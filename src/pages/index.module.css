@@ -3,22 +3,95 @@
  * and scoped locally.
  */
 
-.heroBanner {
+.header {
   padding: 4rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
-  background-color: #147ADB
+  /* background-color: #147ADB */
+  background: rgb(0,0,0);
+  height: 800px;
 }
 
 @media screen and (max-width: 996px) {
-  .heroBanner {
+  .header {
     padding: 2rem;
   }
 }
 
-.buttons {
+.buttonContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+  margin-top: 25px;
+}
+
+.primaryButton {
+  color: white;
+  background-color: #2072C0;
+  border-radius: 3px;
+  font-size: 18px;
+}
+
+.topGradient {
+  background: linear-gradient(180deg,rgb(74,146, 255) 0%, rgb(0,0,0,0) 100%);
+  position: absolute;
+  top:0;
+  height: 284px;
+  border: 1px none;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  align-items: stretch;
+  align-content: stretch;
+  height: 300px;
+  padding: 20px;
+  width: 90%;
+
+  margin: 0 auto;
+  font-family: "Roboto"
+}
+
+.title {
+  font-size: 60px;
+  line-height: 70px;
+  font-weight: 400;
+  font-family: "Roboto";
+  color: white;
+
+}
+
+.text {
+  flex: 8
+}
+.mainLogo {
+  background: url('../../static/img/mainLogo.svg') no-repeat top left;
+  background-size: contain;
+  flex: 5;
+  height: 400px;
+  align-self: center;
+
+}
+
+.topTextContainer {
+    display: flex;
+    /* width: 80%; */
+    margin-right: 20px;
+    margin-left:  20px;
+    line-height: 40px;
+    flex-direction: column;
+    float: right;
+    align-content: flex-start;
+    text-align: left;
+
+}
+
+
+.topBody {
+  font-size: 30px;
+  font-weight: 600;
+  font-family: "Roboto";
+  color: white;
 }

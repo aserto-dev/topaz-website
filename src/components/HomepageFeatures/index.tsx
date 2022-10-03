@@ -3,66 +3,96 @@ import clsx from "clsx";
 import styles from "./styles.module.css";
 
 type FeatureItem = {
-  title: string;
   Svg: React.ComponentType<React.ComponentProps<"svg">>;
   description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: "The best of a library and a service",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
+    Svg: require("@site/static/img/icons/features/empty.svg").default,
+    description: <h1>Purpose-built fine-grained access control </h1>,
+  },
+  {
+    Svg: require("@site/static/img/icons/features/fine-grained.svg").default,
     description: (
       <>
-        Brings the best of library and a service - ensure highly performant
-        authorization while keeping your authorization logic separate from your
-        code.
+        Fine-grained acces control is a critical part of every production-ready
+        application. Topaz is a purpose-built fine-grained access control
+        service that's easy to integrate with.
       </>
     ),
   },
   {
-    title: "Lives close to the app",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
+    Svg: require("@site/static/img/icons/features/rbac-to-rebac.svg").default,
     description: (
       <>
-        The Authorize lives close to your application - bring user and resource
-        data to the authorizer for low latency and high availability. Deploy the
-        authorizer either as a sidecar or a microservice.
+        Start with a fine grained authorization model that grows with your
+        application: use RBAC, ABAC and ReBAC interchangeably.
       </>
     ),
   },
   {
-    title: `ReBAC, ABAC and RBAC combined`,
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    Svg: require("@site/static/img/icons/features/combine-pac-and-pad.svg")
+      .default,
     description: (
       <>
-        Combine “Policy-as-Code” and “Policy-as-Data” to build fine-grained
-        authorization models. Start with either ReBAC, ABAC or RBAC and then mix
-        and match them as needed.
+        Combine “Policy-as-Code” and “Policy-as-Data” to enjoy the best of both
+        worlds.
+      </>
+    ),
+  },
+  {
+    Svg: require("@site/static/img/icons/features/separation-of-duties.svg")
+      .default,
+    description: (
+      <>
+        Maintain a clear separation of duties - Keep your policy separate from
+        your code.
+      </>
+    ),
+  },
+  {
+    Svg: require("@site/static/img/icons/features/pac-as-oci.svg").default,
+    description: (
+      <>
+        Define authorization policy-as-code, and build it into an immutable,
+        signed OCI image.
+      </>
+    ),
+  },
+  {
+    Svg: require("@site/static/img/icons/features/brings-data-to-authorizer.svg")
+      .default,
+    description: (
+      <>
+        Topaz makes it easy to bring user and resource data close to your
+        authorizer.
       </>
     ),
   },
 ];
 
-function Feature({ title, Svg, description }: FeatureItem) {
+const Feature = ({ Svg, description }: FeatureItem) => {
   return (
-    <div className={clsx("col col--4")}>
+    <div className={styles.featureListItem}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        {Svg ? <Svg className={styles.featureListItemIcon} role="img" /> : ""}
       </div>
-      <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
+      <div className={styles.featureListItemText}>
         <p>{description}</p>
       </div>
     </div>
   );
-}
+};
 
 export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
-      <div className="container">
-        <div className="row">
+      <div className={styles.featuresContainer}>
+        <div className={styles.featuresIconContainer}>
+          <div className={styles.featuresIcon}></div>
+        </div>
+        <div className={styles.featuresListContainer}>
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}
