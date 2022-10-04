@@ -2,22 +2,9 @@
   display: flex;
   align-items: center;
   padding: 2rem 0;
-  width: 100%;
   background: black;
   flex-direction: column;
 }
-
-.benefitsContainer {
-  display: flex;
-  align-items: stretch;
-  align-content: stretch;
-  width: 80%;
-  margin: 0 auto;
-  font-family: "Roboto";
-  margin-top: 70px;
-}
-
-
 
 .benefitsListContainer {
   margin-bottom: 80px;
@@ -25,10 +12,7 @@
 
 .benefitListItem {
   display: flex;
-  align-items: stretch;
-  align-content: center;
   width: 60%;
-
   margin: 0 auto;
   margin-bottom: 20px;
   font-weight: 500;
@@ -62,6 +46,7 @@
 
 .benefitsTitle {
   font-size: 2em;
+  font-weight: 700;
   margin-top: 70px;
   margin-bottom: 40px;
 }

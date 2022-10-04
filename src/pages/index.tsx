@@ -3,9 +3,9 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import HomepageFeatures from "@site/src/components/HomepageFeatures";
-import HomepageBenefits from "@site/src/components/HomepageBenefits";
-import HomepageHowToUse from "@site/src/components/HomepageHowToUse";
+import HomepageFeatures from "@site/src/components/Homepage/Features";
+import HomepageBenefits from "@site/src/components/Homepage/Benefits";
+import HomepageHowToUse from "@site/src/components/Homepage/HowToUse";
 import styles from "./index.module.css";
 
 function HomepageHeader() {

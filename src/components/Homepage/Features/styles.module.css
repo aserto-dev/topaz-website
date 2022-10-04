@@ -10,8 +10,6 @@
   width: 200px;
 }
 
-
-
 .featuresContainer {
   display: flex;
   align-items: stretch;
@@ -29,10 +27,9 @@
 }
 
 .featuresIcon {
-  background: url('../../../static/img/icons/features.svg') no-repeat top left;
+  background: url('@site/static/img/icons/features.svg') no-repeat top left;
   background-size: contain;
   height: 400px;
-  align-self: center;
 }
 
 .featuresListContainer {
@@ -41,11 +38,11 @@
 
 .featureListItem {
   display: flex;
-  align-items: stretch;
-  align-content: stretch;
+  align-items: center;
   width: 90%;
   margin: 0 auto;
   font-weight: 500;
+  margin-bottom: 10px;
 
 }
 
@@ -56,7 +53,6 @@
 
 .featureListItemText {
   flex: 8;
-  margin-left: 20px;
-  margin-bottom: 10px;
+  margin-left: 25px;
   font-size: 20px;
 }
