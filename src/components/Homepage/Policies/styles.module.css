@@ -1,0 +1,51 @@
+.policyExamples {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  background: black;
+  padding-bottom: 80px;
+}
+
+.policyExamplesTitle {
+  float: left;
+}
+
+.policyExamplesContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: stretch;
+  width: 80%;
+  margin: 0 auto;
+  font-family: "Roboto";
+  margin-top: 70px;
+}
+
+.policyExample {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  font-weight: 500;
+
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.policyExampleTitle{
+  font-weight: 700;
+  margin-bottom:10px;
+}
+
+.policyExampleContent {
+  background-color: #2A2A2A;
+  border-radius: 6px;
+}
+
+.policyExamplesTitle {
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 70px;
+}

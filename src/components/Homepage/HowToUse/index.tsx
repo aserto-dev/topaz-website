@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import styles from "./styles.module.css";
 
 type HowToItem = {
@@ -38,7 +37,7 @@ const HowToList: HowToItem[] = [
   },
 ];
 
-const Benefit = ({ Svg, description }: HowToItem) => {
+const HowTo = ({ Svg, description }: HowToItem) => {
   return (
     <div className={styles.howtoListItem}>
       <div className="text--center">
@@ -57,7 +56,7 @@ export default function HomepageHowTo(): JSX.Element {
       <div className={styles.howtoTitle}>How to use Topaz</div>
       <div className={styles.howtoListContainer}>
         {HowToList.map((props, idx) => (
-          <Benefit key={idx} {...props} />
+          <HowTo key={idx} {...props} />
         ))}
       </div>
     </section>
