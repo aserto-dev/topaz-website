@@ -69,3 +69,32 @@
 html[data-theme='dark'] footer {
   background-color: #1E1E1E;
 }
+
+.navbar__logo {
+  height: 3.5rem
+}
+
+.navbar__title {
+  display: none;
+}
+
+.navbar--fixed-top {
+  height: 80px;
+}
+
+.navbar__item {
+  margin-top: 10px;
+}
+
+
+div.toggle_node_modules-\@docusaurus-theme-classic-lib-theme-ColorModeToggle-styles-module.colorModeToggle_node_modules-\@docusaurus-theme-classic-lib-theme-Navbar-Content-styles-module {
+  display: none;
+}
+
+.navbar__brand:after {
+  content:url('../../static/img/separator.svg') no-repeat top left;
+  padding-left: 10px;
+  width: 10px;
+  height: 80px;
+}
+

@@ -60,7 +60,13 @@ const config = {
             type: 'doc',
             docId: 'intro',
             position: 'left',
-            label: 'Documentation',
+            label: 'Why Topaz?',
+          },
+          {
+            type: 'doc',
+            docId: 'getting-started/index',
+            position: 'left',
+            label: 'Docs',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           {
