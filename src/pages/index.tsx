@@ -6,6 +6,7 @@ import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/Homepage/Features";
 import HomepageBenefits from "@site/src/components/Homepage/Benefits";
 import HomepageHowToUse from "@site/src/components/Homepage/HowToUse";
+import HomepageCommandLine from "@site/src/components/Homepage/CommandLine";
 import styles from "./index.module.css";
 import HomepagePolicies from "../components/Homepage/Policies";
 
@@ -44,6 +45,30 @@ function HomepageHeader() {
   );
 }
 
+function HomepageBottomSection() {
+  return (
+    <>
+      <div className={styles.bottomContainer}>
+        <div className={styles.bottomLogoAndButton}>
+          <div className={styles.bottomLogo}></div>
+          <div className={styles.buttonContainer}>
+            <Link
+              className={clsx(
+                "button button--primary button--lg",
+                styles.primaryButton
+              )}
+              to="/docs/intro"
+            >
+              Get started with Topaz
+            </Link>
+          </div>
+        </div>
+        <div className={styles.bottomGradient}></div>
+      </div>
+    </>
+  );
+}
+
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -57,7 +82,9 @@ export default function Home(): JSX.Element {
         <HomepageBenefits />
         <HomepageHowToUse />
         <HomepagePolicies />
+        <HomepageCommandLine />
       </main>
+      <HomepageBottomSection />
     </Layout>
   );
 }

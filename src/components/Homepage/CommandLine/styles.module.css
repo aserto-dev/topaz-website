@@ -1,0 +1,51 @@
+.cliExamples {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  background: #1E1E1E;
+  padding-bottom: 80px;
+}
+
+.cliExamplesTitle {
+  float: left;
+}
+
+.cliExamplesContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: stretch;
+  width: 80%;
+  margin: 0 auto;
+  font-family: "Roboto";
+  margin-top: 70px;
+}
+
+.cliExample {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  font-weight: 500;
+
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.cliExampleTitle{
+  font-weight: 700;
+  margin-bottom:10px;
+}
+
+.cliExampleContent {
+  background-color: #2A2A2A;
+  border-radius: 6px;
+}
+
+.cliExamplesTitle {
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 70px;
+}

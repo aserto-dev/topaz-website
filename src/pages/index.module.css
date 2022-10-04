@@ -8,7 +8,6 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  /* background-color: #147ADB */
   background: rgb(0,0,0);
   height: 800px;
 }
@@ -24,6 +23,7 @@
   align-items: center;
   justify-content: start;
   margin-top: 25px;
+  z-index: 10;
 }
 
 .primaryButton {
@@ -42,6 +42,17 @@
   width: 100%;
 }
 
+.bottomGradient {
+  background: linear-gradient(0deg,rgb(74,146, 255) 0%, rgb(0,0,0,0) 100%);
+  position: absolute;
+  top:0;
+  /* height: 284px; */
+  border: 1px none;
+  width: 100%;
+  position: relative;
+
+}
+
 .container {
   display: flex;
   align-items: stretch;
@@ -52,6 +63,44 @@
 
   margin: 0 auto;
   font-family: "Roboto"
+}
+
+
+.bottomContainer {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  height: 800px;
+  width: 100%;
+
+  margin: 0 auto;
+  font-family: "Roboto";
+  padding-top: 100px;
+}
+
+.bottomLogoAndButton {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  height: 800px;
+  width: 100%;
+
+  margin: 0 auto;
+  font-family: "Roboto";
+  padding-top: 100px;
+}
+
+.bottomGradient {
+  background: linear-gradient(0deg, #4A92FF -20.62%, rgba(0, 0, 0, 0) 100%);
+  bottom: 40px;
+  height: 600px;
+  width: 100%;
+  margin-top: -200px;
+  z-index: 1;
 }
 
 .title {
@@ -75,9 +124,18 @@
 
 }
 
+.bottomLogo {
+  background: url('../../static/img/bottomLogo.svg') no-repeat top center;
+  background-size: contain;
+  flex: 5;
+  align-self: center;
+  width: 100vw;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
 .topTextContainer {
     display: flex;
-    /* width: 80%; */
     margin-right: 20px;
     margin-left:  20px;
     line-height: 40px;
