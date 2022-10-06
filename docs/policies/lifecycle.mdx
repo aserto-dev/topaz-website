@@ -41,6 +41,12 @@ policy login -s <PATH-TO-REGISTRY> -u <USERNAME> -p <APCR_API_KEY>
 {/* TODO: Opcr connection */}
 To connect to the Open Policy Container Registry, use the path ``.
 
+##### Login to GHCR
+
+```bash
+policy login -s ghcr.io -u <username>
+```
+
 #### Build
 
 To build a policy image, use the `policy build` command. Then, tag your built image by using the `policy tag` command.

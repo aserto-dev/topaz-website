@@ -17,13 +17,37 @@ docker run -it --rm --name topaz -p 8282:8282 -p 8383:8383 -p 8484:8484\
  run -c /aserto/cfg/config.yaml
 ```
 
-After starting Topaz locally, you'll be able to run the following queries to test the policy:
+## Loading data
+
+Once Topaz is running, you can load data into the database using the [Topaz CLI](/docs/command-line-interface/topaz-cli/index):
+
+{/* TODO: CLI Command to load data */}
+
+After loading data into your Topaz instance, you'll be able to run the following queries to test the policy:
 
 ## List policies
 
 ```bash
 curl --location --request GET 'https://localhost:8383/api/v1/policy/policies'
 ```
+
+## Query the policy
+
+curl --location --request POST 'https://localhost:8383/api/v2/authz/is' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+     "identity_context": {
+          "type": "IDENTITY_TYPE_NONE",
+          "identity": "rick@the-citadel.com"
+     },
+     "policy_context": {
+          "path": "todoApp.GET.todos",
+          "decisions": ["allowed"]
+
+     }
+}'
+
+
 
 ## Next steps
 1. Create your own policy

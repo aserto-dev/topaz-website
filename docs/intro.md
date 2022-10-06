@@ -15,11 +15,11 @@ Topaz is an open-source, self-hosted fine-grained access control service for Clo
 ## Why Topaz?
 Topaz is an opinionated fine-grained access control solution that makes it easier to add authorization to your application.
 
-Topaz provides an out-of-the-box fine-grained access control solution that combines the best a library has to offer with the benefits of a service. It calls for a clear separation of the authorization logic from the application logic, and by deploying it close to the application, you can still ensure it maintains very low latency and high availability.
+Topaz calls for a clear separation of the authorization logic from the application code. By deploying it close to the application, you can ensure it maintains very low latency and high availability for authorization decisions.
 
 We wanted to simplify the data flow from and to the authorizer by making it easy to:
-Load user and resource data into the authorizer
-Pass the identity and resource context to the authorizer at query time
+1. Load user and resource data into the authorizer
+2. Pass the identity and resource context to the authorizer at query time
 
 By making this process easier, Topaz ensures authorization decisions can happen in milliseconds. Deployed as a sidecar or a microservice in your cloud, Topaz will always be available to your applications.
 
