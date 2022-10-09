@@ -4,29 +4,49 @@ sidebar_position: 1
 
 # Introduction
 
-Topaz is an open-source, self-hosted fine-grained access control service for Cloud Native applications. It is built on top of [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) and provides a set of APIs to manage identity and resource data easily. Topaz stores identity and resource data close to the authorizer, so decisions based on these data can be made quickly and efficiently.
+Topaz is an open-source, self-hosted, fine-grained access control service for modern cloud applications. It uses the [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) as its decision engine, and provides a built-in directory that implements the Google [Zanzibar](https://research.google/pubs/pub48190/) data model. 
 
-## Why did we build topaz?
+Authorization policies can leverage user attributes, group membership, application resources, and relationships between them. All data used for authorization is modeled and stored locally in an embedded database, so authorization decisions can be evaluated quickly and efficiently.
 
-* Authorization for applications is hard to get right.
-* There are many libraries that help with RBAC and ABAC, but there are no self-hosted, purpose-built authorization services that combine RBAC, ABAC, and ReBAC and support both a policy-as-code workflow as well as help you model your domain and manage the authorization data locally.
-* OPA is a great place to start, but it’s still hard to manage the data used by the authorizer as well as pass data to the authorizer at query time.
+## Why did we build Topaz?
+
+* Authorization for applications is hard to get right. There are many open source libraries that help with RBAC and ABAC, but very few incorporate all the [principles](#principles) of cloud-native authorization.
+* The two cloud-native authorization ecosystems, OPA and Zanzibar, both have advantages, but there isn't a solution that combines the best of both.
+* Developers deserve a self-hosted authorization service that makes it easy to build (and combine) RBAC, ABAC, and ReBAC models, supports a policy-as-code workflow, and provides built-in support for fine-grained authorization.
 
 ## Why Topaz?
-Topaz is an opinionated fine-grained access control solution that makes it easier to add authorization to your application.
+Topaz is an opinionated fine-grained access control solution that makes it easy to add modern authorization to your application.
 
-Topaz calls for a clear separation of the authorization logic from the application code. By deploying it close to the application, you can ensure it maintains very low latency and high availability for authorization decisions.
+Topaz enables a clear separation of authorization logic from application code. By deploying Topaz close to the application, you can ensure it maintains very low latency and high availability for authorization decisions.
 
-We wanted to simplify the data flow from and to the authorizer by making it easy to:
+Topaz simplifies the data flow from and to the authorizer by making it easy to:
 1. Load user and resource data into the authorizer
 2. Pass the identity and resource context to the authorizer at query time
 
-By making this process easier, Topaz ensures authorization decisions can happen in milliseconds. Deployed as a sidecar or a microservice in your cloud, Topaz will always be available to your applications.
+Topaz can be deployed as a sidecar or a microservice in your cloud, ensuring low latency and high availability.
 
-Additionally, we wanted to make it easy for developers to create fine-grained authorization models that follow the RBAC, ABAC, and ReBAC patterns.
+## Principles
+Topaz follows the five principles of cloud-native authorization:
+1. **_Authorization as its own microservice_**: instead of having each microservice implement authorization on its own, authz is extracted as a separate concern and into its own service.
+2. **_Fine-grained_**: instead of relying on coarse-grained roles, the authorization model follows the **Principle of Least Privilege** and allows assigning the smallest set of fine-grained permissions to each user or group.
+3. **_Policy-based_**: instead of authorization being implement as a set of `if`/`switch` statements (a.k.a. spaghetti code), authorization poicy is expressed in its own domain-specific language, managed as code, and built into an immutable, signed artifact. This enables **Separation of Duties** - application developers own the app logic, and security engineers can own the authorization policy.
+4. **_Real-time_**: instead of treating scopes baked into access tokens as permissions, the application makes a call to the authorization service before every access to a protected resource, to ensure that the user has the right permission on the resource. This follows the principle of **Continuous Verification**.
+5. **_Comprehensive decision logging_**: instead of relying on coarse-grained authentication logs, every decision that the application makes is retained for audit trails, compliance, and forensics, following the principle of **Comprehensive Monitoring**.
 
-Today, there are two approaches to building a fine-grained authorization model:
-* _Policy-as-code_ - the policy is set as rules expressed in code, which defines the authorization logic. Two popular authorization models that are based on this approach are RBAC (role-based access control) and ABAC (attribute-based access control).  The Open Policy Agent is based on this approach.
-* _Policy-as-data_ - As the name suggests, the authorization policy resides within a data structure - specifically, in a relationship graph. This approach (popularized by the Zanzibar paper) is the basis for the ReBAC (relationship-based access control) authorization model.
+## Comparing Topaz 
 
-Built on the strong foundations of the Open Policy Agent project, Topaz allows you to marry the “policy-as-code” and “policy-as-data” approaches. With the two approaches working in tandem, you can define fine-grained authorization models that would support practically any domain model.
+### OPA
+
+OPA provides a strong foundation for an authorization service, and Topaz uses the OPA decision engine as a library. OPA is a general-purpose decision engine that lends itself well to creating attribute-based access control (ABAC) policies. OPA is often deployed in service of infrastructure scenarios such as Kubernetes admission control, enforcing policies on configuration files, and enforcing authorization policies in API gateways.
+
+Because it is a general-purpose decision engine, OPA has no particular "opinion" on how to structure authorization policies. Topaz is an opinionated authorization system that is entirely focused on the scenario of API and application authorization.
+
+Topaz addresses the hardest problem with this scenario, which is how to bring user, resource, and relationship to the decision engine, which is critical in implementing a fine-grained authorization system.
+
+### Zanzibar / ReBAC
+
+Google's authorization system for Google Drive, Docs, and a few other services is known internally as "Zanzibar", and is based on a relationship-based access control model (ReBAC). 
+
+ReBAC is an opinionated model that makes it easy to structure fine-grained authorization for data models that link _subjects_ (e.g. users, groups) to _objects_ (e.g. organizations, teams, projects, lists, items) via _relations_ (e.g. owner, admin, editor, member, viewer).
+
+There are many OSS implementation of the Zanzibar ideas, but Topaz is the only one that combines the policy-as-code and decision logging of OPA with a Zanzibar-modeled directory, all in the same container image. Authorization policies can combine ABAC-style rules with ReBAC-style graph queries via a set of Rego built-ins.
