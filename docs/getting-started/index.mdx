@@ -3,7 +3,11 @@ sidebar_position: 1
 ---
 # Setup
 
+## Configuration
+
 Topaz is packaged as a Docker container which requires a configuration file - an example configuration is available [here](/docs/getting-started/configuration). The example configuration file includes the location to a policy image that is store in a policy registry. The policy registry hosts OCI images which you can create and push with the [Policy CLI](https://github.com/opcr-io/policy).
+
+{/* TODO: Update with CLI command to generate configuration */}
 
 After creating the configuration file, you can start the container with the following command:
 
@@ -19,7 +23,7 @@ docker run -it --rm --name topaz -p 8282:8282 -p 8383:8383 -p 8484:8484\
 
 ## Loading data
 
-Once Topaz is running, you can load data into the database using the [Topaz CLI](/docs/command-line-interface/topaz-cli/index):
+Once Topaz is running, you can load user data into the database using the [Topaz CLI](/docs/command-line-interface/topaz-cli/index):
 
 {/* TODO: CLI Command to load data */}
 

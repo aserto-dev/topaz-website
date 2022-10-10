@@ -41,8 +41,7 @@ policy login -s <PATH-TO-REGISTRY> -u <USERNAME> -p <APCR_API_KEY>
 {/* TODO: Opcr connection */}
 To connect to the Open Policy Container Registry, use the path ``.
 
-##### Login to GHCR
-
+To connect to the Github Container Registry, use the path `ghcr.io`.
 ```bash
 policy login -s ghcr.io -u <username>
 ```
@@ -72,12 +71,13 @@ Using the `policy` CLI, you can pull a policy image from a Policy Repository jus
 policy pull my-org/my-policy:v0.1.2
 ```
 
-
 ### Run
 
 To run a policy, you need to create a **policy instance** which is an instance of the decision engine's runtime associated with a tagged version of a policy. You can create multiple policy instances, each associated with a different version of a policy.
 
 {/* TODO: Instructions for updating configuration */}
+
+In your `config.yaml` file, you'll now have to update the resource the authorizer will use to the newly published policy image.
 
 ### Consume
 

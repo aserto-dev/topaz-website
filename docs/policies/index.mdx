@@ -86,8 +86,10 @@ allowed {
   department = ds.object(input.resource.id)
   ds.check_relationship({
     "subject": user.id,
-    "object": department.id,
-    "object_type": "department",
+    "object": ds.object({
+      "key": input.resource.id,
+      "type": "department"
+    }).id,
     "relationship": "owner"
   })
 }
@@ -98,14 +100,38 @@ Similar to the relationship built-in, the `ds.check_permission` built-in allows 
 
 ```rego
 allowed {
-  user = ds.object(input.user.email)
-  department = ds.object(input.resource.id)
   ds.check_permission({
-    "subject": user.id,
-    "object": department.id,
-    "object_type": "department",
+    "subject": input.user.id,
+    "object": ds.object({
+      "key": input.resource.id,
+      "type": "department"
+    }).id,
     "permission": "can-read"
   })
 }
 ```
+## Example policy
 
+The policy below is a sample policy that will take advantage of the relation and permission built-ins to check if a user has permission to delete a department. It will also combine an ABAC rule with that will check if the user is a member of the "IT" department.
+
+
+```rego
+package sample.DELETE.api.departments
+
+default allowed = false
+
+allowed {
+  input.user.attributes.properties.department == "IT"
+}
+
+allowed {
+  ds.check_permission({
+    "subject": input.user.id,
+    "object": ds.object({
+      "key": input.resource.id,
+      "type": "department"
+    }).id,
+    "permission": "can-delete"
+  })
+}
+```
