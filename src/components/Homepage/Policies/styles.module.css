@@ -49,3 +49,12 @@
   font-weight: 700;
   margin-top: 70px;
 }
+
+.topGradient {
+  background: linear-gradient(180deg, #4A92FF 24.76%, rgba(0, 0, 0, 0) 100%);
+  height: 231px;
+  border: 1px none;
+  width: 100%;
+}
+
+

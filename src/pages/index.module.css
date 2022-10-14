@@ -96,13 +96,7 @@
   z-index: 1;
 }
 
-.title {
-  font-size: 60px;
-  line-height: 70px;
-  font-weight: 400;
-  font-family: "Roboto";
-  color: white;
-}
+
 
 .text {
   flex: 8
@@ -139,10 +133,29 @@
 
 }
 
+.title {
+  font-size: 60px;
+  line-height: 70px;
+  font-weight: 400;
+  font-family: "Roboto";
+  color: white;
+}
 
-.topBody {
+.subtitle {
   font-size: 30px;
+  line-height: 38.7px;
   font-weight: 600;
   font-family: "Roboto";
   color: white;
+}
+
+.highlight {
+  color: #4A92FF
+}
+
+.topBody {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Roboto";
+  color: #A0A0A0;
 }

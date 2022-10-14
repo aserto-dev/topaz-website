@@ -1,57 +1,70 @@
-.features {
+.languages {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem 0;
   width: 100%;
-  background-color: #376EBF;
+  background-color: #1E1E1E;
+  height: 593px;
+  justify-content: center;
 }
 
-.featuresTitle{
+.languagesTitle{
   color: white;
   font-size: 30px;
   font-weight: 600px;
 
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+.languagesSubtitle {
+  color: white;
+  font-size: 20px;
+  font-weight: 600px;
 }
 
-.featuresContainer {
+.languageSvg {
+  height: 200px;
+  width: 200px;
+  align-self: center;
+}
+
+.languagesContainer {
   display: flex;
 
   align-items: stretch;
   align-content: stretch;
-  width: 80%;
-  margin: 0 auto;
+
   font-family: "Roboto";
   margin-top: 20px;
+
 }
 
 
-.featuresIconContainer {
+
+
+.languagesIconContainer {
   flex: 8;
   align-self: center
 }
 
-.featuresIcon {
-  background: url('@site/static/img/icons/features.svg') no-repeat top left;
+/* .languagesIcon {
+  background: url('@site/static/img/icons/languages.svg') no-repeat top left;
   background-size: contain;
   height: 400px;
-}
+} */
 
-.featuresListContainer {
+.languagesListContainer {
   flex: 8;
   display: flex;
   flex-direction: row;
 }
 
-.featureListItem {
+.languageListItem {
   display: flex;
   margin: 20px;
   padding: 20px;
+  height: 187px;
+  width: 187px;
   flex-direction: column;
   align-items: center;
   flex: 1;
@@ -59,26 +72,32 @@
   margin-bottom: 10px;
   background-color: black;
   border-radius: 11px;
+  border: 1px solid #717171;
 }
 
-.featureListItemTitle {
+.languageListItemTitle {
   color: white;
   font-weight: 700;
   align-items: center;
+  align-self: center;
+  text-align: center;
   font-size: 20px;
   margin-bottom: 20px;
 }
 
-.featureListItemIcon {
+.languageListItemIcon {
   flex: 3;
   align-self: center;
   margin-bottom: 20px;
+  height: 80px;
+  width: 75px;
 }
 
-.featureListItemText {
+.languageListItemText {
   flex: 8;
-  margin-left: 25px;
   font-size: 20px;
   color: #A0A0A0;
   font-weight: 400;
+  color: white;
+  font-weight: 700;
 }

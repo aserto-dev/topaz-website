@@ -4,77 +4,52 @@ import styles from "./styles.module.css";
 
 type FeatureItem = {
   Svg: React.ComponentType<React.ComponentProps<"svg">>;
+  title: JSX.Element;
   description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    Svg: require("@site/static/img/icons/features/empty.svg").default,
-    description: <h1>Purpose-built fine-grained access control </h1>,
-  },
-  {
     Svg: require("@site/static/img/icons/features/fine-grained.svg").default,
+    title: <>Fine Grained</>,
     description: (
       <>
-        Fine-grained acces control is a critical part of every production-ready
-        application. Topaz is a purpose-built fine-grained access control
-        service that's easy to integrate with.
+        Desing a fine grained authorization model that grows with your
+        application. Evolve from a multi-tenant RBAC model to ABAC, ReBAC or a
+        combination of models.
       </>
     ),
   },
   {
-    Svg: require("@site/static/img/icons/features/rbac-to-rebac.svg").default,
+    Svg: require("@site/static/img/icons/features/policy-based.svg").default,
+    title: <>Policy Based</>,
     description: (
       <>
-        Start with a fine grained authorization model that grows with your
-        application: use RBAC, ABAC and ReBAC interchangeably.
+        Extract authorization policy from application code and into its own
+        artifact, implement a “policy-as-code” workflow for your organization,
+        where you. Build authorization policies into immutable, signed OCI
+        images for a secure software supply chain.
       </>
     ),
   },
   {
-    Svg: require("@site/static/img/icons/features/combine-pac-and-pad.svg")
-      .default,
+    Svg: require("@site/static/img/icons/features/real-time.svg").default,
+    title: <>Real-time</>,
     description: (
       <>
-        Combine “Policy-as-Code” and “Policy-as-Data” to enjoy the best of both
-        worlds.
-      </>
-    ),
-  },
-  {
-    Svg: require("@site/static/img/icons/features/separation-of-duties.svg")
-      .default,
-    description: (
-      <>
-        Maintain a clear separation of duties - Keep your policy separate from
-        your code.
-      </>
-    ),
-  },
-  {
-    Svg: require("@site/static/img/icons/features/pac-as-oci.svg").default,
-    description: (
-      <>
-        Define authorization policy-as-code, and build it into an immutable,
-        signed OCI image.
-      </>
-    ),
-  },
-  {
-    Svg: require("@site/static/img/icons/features/brings-data-to-authorizer.svg")
-      .default,
-    description: (
-      <>
-        Topaz makes it easy to bring user and resource data close to your
-        authorizer.
+        Deploy Topaz right next to your application for lightning-fast
+        authorization decisions with local data. Topaz stores your users,
+        groups, objects, and relationships in an embedded database, so the data
+        used is local.
       </>
     ),
   },
 ];
 
-const Feature = ({ Svg, description }: FeatureItem) => {
+const Feature = ({ Svg, title, description }: FeatureItem) => {
   return (
     <div className={styles.featureListItem}>
+      <div className={styles.featureListItemTitle}>{title}</div>
       <div className="text--center">
         {Svg ? <Svg className={styles.featureListItemIcon} role="img" /> : ""}
       </div>
@@ -88,10 +63,8 @@ const Feature = ({ Svg, description }: FeatureItem) => {
 export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
+      <div className={styles.featuresTitle}>Cloud-native authorization</div>
       <div className={styles.featuresContainer}>
-        <div className={styles.featuresIconContainer}>
-          <div className={styles.featuresIcon}></div>
-        </div>
         <div className={styles.featuresListContainer}>
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />

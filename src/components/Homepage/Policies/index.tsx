@@ -25,7 +25,10 @@ allowed {
     title: "ABAC Policy example",
     content: `
 allowed {
-  input.user.department == "Sales"
+  ns := time.now_ns()
+  day := time.weekday(ns)
+  day == data.workdays[_]
+  input.user.attributes.department == "Sales"
 }
     `,
   },
@@ -33,9 +36,15 @@ allowed {
     title: "ReBAC Policy example",
     content: `
 allowed {
-  input.user.department == "Sales"
-}
-    `,
+  ds.check_permission({
+    "object": {
+      "key": input.resource.document,
+      "type": "document"
+    },
+    "permission": { "name" : "read" },
+    "subject": { "id": input.user.id }
+  })
+}`,
   },
 ];
 
@@ -53,7 +62,10 @@ const PolicyExample = ({ title, content }: PolicyItem) => {
 export default function HomepagePolicies(): JSX.Element {
   return (
     <section className={styles.policyExamples}>
-      <div className={styles.policyExamplesTitle}>How to use Topaz</div>
+      <div className={styles.topGradient}></div>
+      <div className={styles.policyExamplesTitle}>
+        Authorization Policy Examples
+      </div>
       <div className={styles.policyExamplesContainer}>
         {PolicyList.map((props, idx) => (
           <PolicyExample key={idx} {...props} />

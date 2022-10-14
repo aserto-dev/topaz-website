@@ -4,9 +4,8 @@ import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/Homepage/Features";
+import HomepageLanguages from "@site/src/components/Homepage/Languages";
 import HomepageBenefits from "@site/src/components/Homepage/Benefits";
-import HomepageHowToUse from "@site/src/components/Homepage/HowToUse";
-import HomepageCommandLine from "@site/src/components/Homepage/CommandLine";
 import styles from "./index.module.css";
 import HomepagePolicies from "../components/Homepage/Policies";
 
@@ -19,7 +18,12 @@ function HomepageHeader() {
         <div className={styles.container}>
           <div className={styles.text}>
             <div className={styles.topTextContainer}>
-              <h1 className={styles.title}>Open-Source authorization</h1>
+              <h1 className={styles.title}>Cloud-native authorization</h1>
+              <h1 className={styles.subtitle}>
+                Combining the best of{" "}
+                <span className={styles.highlight}>OPA</span> and{" "}
+                <span className={styles.highlight}>Zanzinbar</span>
+              </h1>
               <h4 className={styles.topBody}>
                 Topaz is an open source authorization service providing fine
                 grained, real-time, policy based access control for applications
@@ -79,10 +83,8 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <HomepageBenefits />
-        <HomepageHowToUse />
+        <HomepageLanguages />
         <HomepagePolicies />
-        <HomepageCommandLine />
       </main>
       <HomepageBottomSection />
     </Layout>
