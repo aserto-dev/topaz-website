@@ -23,7 +23,7 @@ function HomepageHeader() {
               <h1 className={styles.subtitle}>
                 Combining the best of{" "}
                 <span className={styles.highlight}>OPA</span> and{" "}
-                <span className={styles.highlight}>Zanzinbar</span>
+                <span className={styles.highlight}>Zanzibar</span>
               </h1>
               <h4 className={styles.topBody}>
                 Topaz is an open source authorization service providing fine

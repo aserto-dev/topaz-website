@@ -13,10 +13,15 @@ const PolicyList: PolicyItem[] = [
     content: `
 allowed {
   ds.check_relation({
-    "sub_id": input.user.id,
-    "obj_id": input.resource.team.id,
-    "type": "team",
-    "relation": "admin"
+    "object": {
+      "key": input.resource.tenant,
+      "type": "tenant"
+    },
+    "relation": {
+      "object_type": "tenant",
+      "name" : "member" 
+    },
+    "subject": { "id": input.user.id }
   })
 }
     `,
