@@ -14,8 +14,8 @@ const FeatureList: FeatureItem[] = [
     title: <>Fine Grained</>,
     description: (
       <>
-        Desing a fine grained authorization model that grows with your
-        application. Evolve from a multi-tenant RBAC model to ABAC, ReBAC or a
+        Design a fine grained authorization model that grows with your
+        application. Evolve from a multi-tenant RBAC model to ABAC, ReBAC or any 
         combination of models.
       </>
     ),
@@ -26,8 +26,8 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Extract authorization policy from application code and into its own
-        artifact, implement a “policy-as-code” workflow for your organization,
-        where you. Build authorization policies into immutable, signed OCI
+        artifact, implement a “policy-as-code” workflow for your organization. 
+        Build authorization policies into immutable, signed OCI
         images for a secure software supply chain.
       </>
     ),
@@ -39,8 +39,8 @@ const FeatureList: FeatureItem[] = [
       <>
         Deploy Topaz right next to your application for lightning-fast
         authorization decisions with local data. Topaz stores your users,
-        groups, objects, and relationships in an embedded database, so the data
-        used is local.
+        groups, objects, and relationships in an embedded database, and optimizes 
+        query evaluation over the object graph.
       </>
     ),
   },
