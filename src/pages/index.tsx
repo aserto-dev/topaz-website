@@ -22,8 +22,13 @@ function HomepageHeader() {
               <h1 className={styles.title}>Cloud-native authorization</h1>
               <h1 className={styles.subtitle}>
                 Combining the best of{" "}
-                <span className={styles.highlight}>OPA</span> and{" "}
-                <span className={styles.highlight}>Zanzibar</span>
+                <span className={styles.highlight}>
+                  <a href="http://openpolicyagent.org/">OPA</a>
+                </span>{" "}
+                and{" "}
+                <span className={styles.highlight}>
+                  <a href="https://research.google/pubs/pub48190/">Zanzibar</a>
+                </span>
               </h1>
               <h4 className={styles.topBody}>
                 Topaz is an open source authorization service providing fine
