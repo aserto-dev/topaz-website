@@ -23,11 +23,18 @@ function HomepageHeader() {
               <h1 className={styles.subtitle}>
                 Combining the best of{" "}
                 <span className={styles.highlight}>
-                  <a href="http://openpolicyagent.org/">OPA</a>
+                  <a href="http://openpolicyagent.org/" target="_blank">
+                    OPA
+                  </a>
                 </span>{" "}
                 and{" "}
                 <span className={styles.highlight}>
-                  <a href="https://research.google/pubs/pub48190/">Zanzibar</a>
+                  <a
+                    href="https://research.google/pubs/pub48190/"
+                    target="_blank"
+                  >
+                    Zanzibar
+                  </a>
                 </span>
               </h1>
               <h4 className={styles.topBody}>
