@@ -266,8 +266,16 @@
 
 
 
+.bottomButton {
+  color: white;
+  align-self:center;
+  z-index: 100;
+}
 
-
+.bottomButtonContainer {
+  display: flex;
+  justify-content: center;
+}
 
 
 

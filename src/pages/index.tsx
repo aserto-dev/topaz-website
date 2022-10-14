@@ -73,11 +73,11 @@ function HomepageBottomSection() {
       <div className={styles.bottomContainer}>
         <div className={styles.bottomLogoAndButton}>
           <div className={styles.bottomLogo}></div>
-          <div className={styles.buttonContainer}>
+          <div className={styles.bottomButtonContainer}>
             <Link
               className={clsx(
                 "button button--primary button--lg",
-                styles.primaryButton
+                styles.bottomButton
               )}
               to="/docs/intro"
             >
