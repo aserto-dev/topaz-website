@@ -2,14 +2,42 @@
   padding: 4rem 0;
   text-align: center;
   position: relative;
-  overflow: hidden;
   background: rgb(0,0,0);
-  height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @media screen and (max-width: 996px) {
   .header {
-    padding: 2rem;
+    height: 600px;
+    overflow: visible;
+    justify-content: normal;
+
+  }
+  .codeSnippet {
+    display: none;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+  }
+  .topGradient {
+    height: 100px;
+  }
+}
+
+@media screen and (min-width: 997px) {
+  .header {
+    overflow: hidden;
+  }
+  .topGradient {
+    height: 284px;
+  }
+
+  .container {
+    display: flex;
   }
 }
 
@@ -27,11 +55,19 @@
   font-size: 18px;
 }
 
+.codeSnippet{
+  margin-top: 150px;
+  background: #2A2A2A;
+  width: 60%;
+  border-radius: 6px;
+  padding: 15px 10px 10px 10px;
+}
+
 .topGradient {
   background: linear-gradient(180deg,rgb(74,146, 255) 0%, rgb(0,0,0,0) 100%);
   position: absolute;
   top:0;
-  height: 284px;
+
   border: 1px none;
   width: 100%;
 }
@@ -47,7 +83,7 @@
 }
 
 .container {
-  display: flex;
+
   align-items: stretch;
   align-content: stretch;
   height: 300px;
@@ -103,12 +139,11 @@
 }
 
 .mainLogo {
-  background: url('../../static/img/mainLogo.svg') no-repeat top left;
+  background: url('../../static/img/mainLogo.svg') no-repeat top center;
   background-size: contain;
   flex: 5;
   height: 400px;
   align-self: center;
-
 }
 
 .bottomLogo {

@@ -5,8 +5,9 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/Homepage/Features";
 import HomepageLanguages from "@site/src/components/Homepage/Languages";
-import HomepageBenefits from "@site/src/components/Homepage/Benefits";
+
 import styles from "./index.module.css";
+import Highlight from "@site/src/components/common/Highlight";
 import HomepagePolicies from "../components/Homepage/Policies";
 
 function HomepageHeader() {
@@ -43,6 +44,11 @@ function HomepageHeader() {
             </div>
           </div>
           <div className={styles.mainLogo}></div>
+        </div>
+        <div className={styles.codeSnippet}>
+          <Highlight language="bash">
+            brew install topaz-cli && topaz run
+          </Highlight>
         </div>
       </header>
     </>

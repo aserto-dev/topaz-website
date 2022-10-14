@@ -49,7 +49,7 @@ const Language = ({ Svg, title, link }: LanguageItem) => {
         </div>
       </a>
       <div className={styles.languageListItemText}>
-        <p>{title}</p>
+        <div>{title}</div>
       </div>
     </div>
   );

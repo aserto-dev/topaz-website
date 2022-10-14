@@ -5,21 +5,22 @@
   padding: 2rem 0;
   width: 100%;
   background-color: #1E1E1E;
-  height: 593px;
   justify-content: center;
 }
 
 .languagesTitle{
   color: white;
   font-size: 30px;
-  font-weight: 600px;
+  font-weight: 600;
+  text-align: center;
 
 }
 
 .languagesSubtitle {
   color: white;
   font-size: 20px;
-  font-weight: 600px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .languageSvg {
@@ -30,16 +31,12 @@
 
 .languagesContainer {
   display: flex;
-
   align-items: stretch;
   align-content: stretch;
-
   font-family: "Roboto";
   margin-top: 20px;
 
 }
-
-
 
 
 .languagesIconContainer {
@@ -47,33 +44,18 @@
   align-self: center
 }
 
-/* .languagesIcon {
-  background: url('@site/static/img/icons/languages.svg') no-repeat top left;
-  background-size: contain;
-  height: 400px;
-} */
 
 .languagesListContainer {
   flex: 8;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.languageListItem {
-  display: flex;
-  margin: 20px;
-  padding: 20px;
-  height: 187px;
-  width: 187px;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  font-weight: 500;
-  margin-bottom: 10px;
-  background-color: black;
-  border-radius: 11px;
-  border: 1px solid #717171;
-}
+
+
+
+
 
 .languageListItemTitle {
   color: white;
@@ -85,13 +67,6 @@
   margin-bottom: 20px;
 }
 
-.languageListItemIcon {
-  flex: 3;
-  align-self: center;
-  margin-bottom: 20px;
-  height: 80px;
-  width: 75px;
-}
 
 .languageListItemText {
   flex: 8;
@@ -100,4 +75,125 @@
   font-weight: 400;
   color: white;
   font-weight: 700;
+}
+
+
+@media screen and (max-width: 997px) {
+  .languagesContainer {
+    display: flex;
+
+    align-items: stretch;
+    align-content: stretch;
+
+    font-family: "Roboto";
+    margin-top: 20px;
+    width: 100%;
+
+  }
+
+  .languagesTitle{
+    margin-bottom: 20px;
+  }
+
+  .languagesSubtitle {
+    padding: 10px;
+  }
+
+  .languagesListContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    width: 100%;
+  }
+
+
+  .languageListItem {
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    background-color: black;
+    border-radius: 11px;
+    border: 1px solid #717171;
+    padding: 10px;
+  }
+
+  .languageListItemIcon {
+    flex: 3;
+    align-self: center;
+
+    height: 3.2em;
+    width: 3em;
+  }
+
+  .languageListItemText {
+    margin-left: 20px;
+    font-size: 18px;
+    justify-content: center;
+    margin-bottom: 0px;
+  }
+}
+
+
+@media screen and (min-width: 997px) {
+  .languagesContainer {
+    display: flex;
+
+    align-items: stretch;
+    align-content: stretch;
+
+    font-family: "Roboto";
+    margin-top: 20px;
+
+
+  }
+  .languagesListContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+
+  }
+  .languageListItem {
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 20px;
+
+    border-radius: 11px;
+    border: 1px solid #717171;
+  }
+
+  .languageListItemIcon {
+    flex: 3;
+    align-self: center;
+    margin-bottom: 20px;
+    height: 80px;
+    width: 75px;
+  }
+
+  .languageListItemText {
+    margin-left: 20px;
+  }
+
+  .languageListItem {
+    display: flex;
+    margin: 20px;
+    padding: 20px;
+    height: 187px;
+    width: 187px;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    font-weight: 500;
+    margin-bottom: 10px;
+    background-color: black;
+    border-radius: 11px;
+    border: 1px solid #717171;
+  }
 }
