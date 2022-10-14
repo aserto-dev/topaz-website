@@ -19,13 +19,65 @@
     display: none;
   }
   .container {
-    display: flex;
+    width: 90%;
+    display: block;
+    align-items: center;
     flex-direction: column;
     justify-content: top;
+    padding: 0px;
   }
   .topGradient {
-    height: 100px;
+    height: 150px;
+    z-index: 1;
   }
+  .topTextContainer {
+    margin-top: -40px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 25px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    line-height: 26.7px;
+    text-align: center;
+  }
+
+  .topBody {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .mainLogo {
+    margin-top: 20px;
+    height: 200px;
+  }
+
+  .bottomLogo {
+    width: 70vw;
+  }
+
+  .bottomLogoAndButton {
+    height: 300px;
+    padding-top: 10px;
+  }
+
+  .bottomGradient {
+    height: 100px;
+    width: 100%;
+  }
+
+  .bottomContainer{
+    height: 300px;
+    padding-top: 10px;
+  }
+
 }
 
 @media screen and (min-width: 997px) {
@@ -38,15 +90,134 @@
 
   .container {
     display: flex;
+    padding: 20px;
+  }
+  .topTextContainer {
+    float: right;
+  }
+  .title {
+    font-size: 60px;
+    line-height: 70px;
+  }
+  .subtitle {
+    font-size: 30px;
+    line-height: 38.7px;
+  }
+  .topBody {
+    font-size: 20px;
+  }
+
+  .buttonContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    z-index: 10;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .mainLogo {
+    height: 400px;
+  }
+  .bottomLogo {
+    width: 100vw;
+  }
+  .bottomLogoAndButton {
+    height: 800px;
+    padding-top: 100px;
+  }
+
+  .bottomGradient {
+    height: 600px;
+    width: 100%;
+    margin-top: -200px;
+  }
+
+  .bottomContainer{
+    height: 800px;
+    padding-top: 100px;
   }
 }
 
-.buttonContainer {
+.bottomContainer {
+  background-color: black;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-top: 25px;
-  z-index: 10;
+  align-content: center;
+  width: 100%;
+  margin: 0 auto;
+  font-family: "Roboto";
 }
+
+.bottomLogoAndButton {
+  background-color: black;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  font-family: "Roboto";
+
+}
+
+.bottomGradient {
+  background: linear-gradient(0deg, #4A92FF -20.62%, rgba(0, 0, 0, 0) 100%);
+  bottom: 40px;
+  z-index: 1;
+}
+
+.mainLogo {
+  background: url('../../static/img/mainLogo.svg') no-repeat top center;
+  background-size: contain;
+  flex: 5;
+
+  align-self: center;
+}
+
+.bottomLogo {
+  background: url('../../static/img/bottomLogo.svg') no-repeat top center;
+  background-size: contain;
+  flex: 5;
+  align-self: center;
+
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+
+
+.topBody {
+  font-weight: 400;
+  font-family: "Roboto";
+  color: #A0A0A0;
+}
+
+.topTextContainer {
+    display: flex;
+    margin-right: 20px;
+    margin-left:  20px;
+    line-height: 40px;
+    flex-direction: column;
+    align-content: flex-start;
+    text-align: left;
+
+}
+
+.title {
+  font-family: "Roboto";
+  color: white;
+}
+
+
+.subtitle {
+  font-weight: 600;
+  font-family: "Roboto";
+  color: white;
+}
+
+
 
 .primaryButton {
   color: white;
@@ -83,54 +254,21 @@
 }
 
 .container {
-
   align-items: stretch;
   align-content: stretch;
   height: 300px;
-  padding: 20px;
-  width: 90%;
-
-  margin: 0 auto;
-  font-family: "Roboto"
-}
-
-
-.bottomContainer {
-  background-color: black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  height: 800px;
-  width: 100%;
 
   margin: 0 auto;
   font-family: "Roboto";
-  padding-top: 100px;
+  z-index: 100;
 }
 
-.bottomLogoAndButton {
-  background-color: black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  height: 800px;
-  width: 100%;
 
-  margin: 0 auto;
-  font-family: "Roboto";
-  padding-top: 100px;
-}
 
-.bottomGradient {
-  background: linear-gradient(0deg, #4A92FF -20.62%, rgba(0, 0, 0, 0) 100%);
-  bottom: 40px;
-  height: 600px;
-  width: 100%;
-  margin-top: -200px;
-  z-index: 1;
-}
+
+
+
+
 
 
 
@@ -138,59 +276,16 @@
   flex: 8
 }
 
-.mainLogo {
-  background: url('../../static/img/mainLogo.svg') no-repeat top center;
-  background-size: contain;
-  flex: 5;
-  height: 400px;
-  align-self: center;
-}
 
-.bottomLogo {
-  background: url('../../static/img/bottomLogo.svg') no-repeat top center;
-  background-size: contain;
-  flex: 5;
-  align-self: center;
-  width: 100vw;
-  margin: 0 auto;
-  margin-bottom: 30px;
-}
 
-.topTextContainer {
-    display: flex;
-    margin-right: 20px;
-    margin-left:  20px;
-    line-height: 40px;
-    flex-direction: column;
-    float: right;
-    align-content: flex-start;
-    text-align: left;
 
-}
 
-.title {
-  font-size: 60px;
-  line-height: 70px;
-  font-weight: 400;
-  font-family: "Roboto";
-  color: white;
-}
 
-.subtitle {
-  font-size: 30px;
-  line-height: 38.7px;
-  font-weight: 600;
-  font-family: "Roboto";
-  color: white;
-}
+
+
 
 .highlight {
   color: #4A92FF
 }
 
-.topBody {
-  font-size: 20px;
-  font-weight: 400;
-  font-family: "Roboto";
-  color: #A0A0A0;
-}
+

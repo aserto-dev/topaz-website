@@ -8,9 +8,7 @@
   padding-bottom: 80px;
 }
 
-.policyExamplesTitle {
-  float: left;
-}
+
 
 .policyExamplesContainer {
   display: flex;
@@ -45,17 +43,67 @@
   border-radius: 6px;
 }
 
-.policyExamplesTitle {
-  font-size: 30px;
-  font-weight: 700;
-  margin-top: 70px;
+
+
+
+
+
+@media screen and (max-width: 996px) {
+  .policyExample {
+    width: 99%;
+    margin: 0 auto;
+  }
+  .policyExamplesContainer {
+    width: 95%;
+  }
+  .policyExamplesTitle {
+    text-align: center;
+  }
+
+  .topGradient {
+    height: 131px;
+  }
+    .policyExamplesTitle {
+    font-size: 25px;
+    margin-top: -40px;
+  }
+
+}
+
+@media screen and (min-width: 997px) {
+  .policyExample {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .policyExamplesContainer {
+    width: 80%;
+  }
+
+  .policyExamplesTitle {
+    float: left;
+  }
+
+  .topGradient {
+    height: 231px;
+  }
+
+  .policyExamplesTitle {
+    margin-top: 70px;
+    font-size: 30px;
+  }
+
+
 }
 
 .topGradient {
   background: linear-gradient(180deg, #4A92FF 24.76%, rgba(0, 0, 0, 0) 100%);
-  height: 231px;
   border: 1px none;
   width: 100%;
 }
 
+.policyExamplesTitle {
 
+  font-weight: 700;
+
+}

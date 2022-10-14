@@ -31,10 +31,6 @@
 }
 
 
-.featuresIconContainer {
-  flex: 8;
-  align-self: center
-}
 
 .featuresIcon {
   background: url('@site/static/img/icons/features.svg') no-repeat top left;
@@ -43,7 +39,7 @@
 }
 
 .featuresListContainer {
-  flex: 8;
+
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -82,4 +78,16 @@
   font-size: 20px;
   color: #A0A0A0;
   font-weight: 400;
+}
+
+@media screen and (min-width: 555px) and (max-width: 996px) {
+  .featuresListContainer {
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 997px) {
+    .featuresListContainer {
+      flex-direction: row;
+    }
 }
