@@ -21,7 +21,7 @@ allowed {
       "object_type": "tenant",
       "name" : "member" 
     },
-    "subject": { "id": input.user.id }
+    "subject": {"id": input.user.id}
   })
 }
     `,
@@ -33,7 +33,7 @@ allowed {
   ns := time.now_ns()
   day := time.weekday(ns)
   day == data.workdays[_]
-  input.user.attributes.department == "Sales"
+  input.user.department == "Sales"
 }
     `,
   },
@@ -43,11 +43,11 @@ allowed {
 allowed {
   ds.check_permission({
     "object": {
-      "key": input.resource.document,
+      "key": input.resource.doc,
       "type": "document"
     },
-    "permission": { "name" : "read" },
-    "subject": { "id": input.user.id }
+    "permission": {"name": "read"},
+    "subject": {"id": input.user.id}
   })
 }`,
   },

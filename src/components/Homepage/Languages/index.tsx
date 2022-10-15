@@ -26,12 +26,12 @@ const LanguageList: LanguageItem[] = [
   },
   {
     Svg: require("@site/static/img/icons/languages/dotnet-logo.svg").default,
-    title: <>ASP.NET Core</>,
+    title: <>ASP.NET</>,
     link: "/docs/software-development-kits/dotnet/",
   },
   {
     Svg: require("@site/static/img/icons/languages/ruby-logo.svg").default,
-    title: <>Ruby on Rails</>,
+    title: <>Ruby</>,
     link: "/docs/software-development-kits/ruby/middleware",
   },
 ];
@@ -62,7 +62,7 @@ export default function HomepageLanguages(): JSX.Element {
         Supported languages and frameworks
       </div>
       <div className={styles.languagesSubtitle}>
-        Get started quickly with docs and resources for every popular language.
+        Get started quickly with docs and resources for popular languages.
       </div>
       <div className={styles.languagesContainer}>
         <div className={styles.languagesListContainer}>

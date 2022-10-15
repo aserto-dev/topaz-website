@@ -78,7 +78,7 @@
 }
 
 
-@media screen and (max-width: 997px) {
+@media screen and (max-width: 767px) {
   .languagesContainer {
     display: flex;
 
@@ -137,6 +137,65 @@
   }
 }
 
+@media screen and (min-width: 768px) and (max-width: 996px) {
+  .languagesContainer {
+    display: flex;
+
+    align-items: stretch;
+    align-content: stretch;
+
+    font-family: "Roboto";
+    margin-top: 20px;
+
+
+  }
+  .languagesListContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+
+  }
+  .languageListItem {
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 20px;
+
+    border-radius: 11px;
+    border: 1px solid #717171;
+  }
+
+  .languageListItemIcon {
+    flex: 3;
+    align-self: center;
+    margin-bottom: 20px;
+    height: 80px;
+    width: 75px;
+  }
+
+  .languageListItemText {
+    margin-left: 0px;
+  }
+
+  .languageListItem {
+    display: flex;
+    margin: 10px;
+    padding: 10px;
+    height: 167px;
+    width: 167px;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    font-weight: 500;
+    margin-bottom: 10px;
+    background-color: black;
+    border-radius: 11px;
+    border: 1px solid #717171;
+  }
+}
 
 @media screen and (min-width: 997px) {
   .languagesContainer {
@@ -178,7 +237,7 @@
   }
 
   .languageListItemText {
-    margin-left: 20px;
+    margin-left: 0px;
   }
 
   .languageListItem {
