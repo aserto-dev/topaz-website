@@ -37,7 +37,7 @@
   }
 
   .title {
-    font-size: 25px;
+    font-size: 28px;
     line-height: 40px;
     text-align: center;
     font-weight: 700;
@@ -47,11 +47,15 @@
     font-size: 20px;
     line-height: 26.7px;
     text-align: center;
+    margin-left: 40px;
+    margin-right: 40px;
   }
 
   .topBody {
     font-size: 20px;
     text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
   }
 
   .mainLogo {
@@ -94,6 +98,8 @@
   }
   .topTextContainer {
     float: right;
+    margin-right: 20px;
+    margin-left:  20px;
   }
   .title {
     font-size: 60px;
@@ -196,8 +202,6 @@
 
 .topTextContainer {
     display: flex;
-    margin-right: 20px;
-    margin-left:  20px;
     line-height: 40px;
     flex-direction: column;
     align-content: flex-start;

@@ -24,7 +24,6 @@
 
   align-items: stretch;
   align-content: stretch;
-  width: 80%;
   margin: 0 auto;
   font-family: "Roboto";
   margin-top: 20px;
@@ -74,7 +73,7 @@
 
 .featureListItemText {
   flex: 8;
-  margin-left: 25px;
+  margin-left: 10px;
   font-size: 20px;
   color: #A0A0A0;
   font-weight: 400;
@@ -84,10 +83,18 @@
   .featuresListContainer {
     flex-direction: column;
   }
+
+  .featuresContainer {
+    width: 100%;
+  }
 }
 
 @media screen and (min-width: 997px) {
-    .featuresListContainer {
-      flex-direction: row;
-    }
+  .featuresListContainer {
+    flex-direction: row;
+  }
+
+  .featuresContainer {
+    width: 90%;
+  }  
 }
