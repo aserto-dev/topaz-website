@@ -2,7 +2,7 @@
   padding: 4rem 0;
   text-align: center;
   position: relative;
-  background: rgb(0,0,0);
+  background: rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,11 +13,12 @@
     height: 600px;
     overflow: visible;
     justify-content: normal;
-
   }
+
   .codeSnippet {
     display: none;
   }
+
   .container {
     width: 90%;
     display: block;
@@ -26,10 +27,12 @@
     justify-content: top;
     padding: 0px;
   }
+
   .topGradient {
     height: 150px;
     z-index: 1;
   }
+
   .topTextContainer {
     margin-top: -40px;
     text-align: center;
@@ -40,7 +43,7 @@
     font-size: 28px;
     line-height: 40px;
     text-align: center;
-    font-weight: 700;
+    font-weight: 400;
   }
 
   .subtitle {
@@ -77,17 +80,17 @@
     width: 100%;
   }
 
-  .bottomContainer{
+  .bottomContainer {
     height: 300px;
     padding-top: 10px;
   }
-
 }
 
 @media screen and (min-width: 997px) {
   .header {
     overflow: hidden;
   }
+
   .topGradient {
     height: 284px;
   }
@@ -96,19 +99,23 @@
     display: flex;
     padding: 20px;
   }
+
   .topTextContainer {
     float: right;
     margin-right: 20px;
-    margin-left:  20px;
+    margin-left: 20px;
   }
+
   .title {
     font-size: 60px;
     line-height: 70px;
   }
+
   .subtitle {
     font-size: 30px;
     line-height: 38.7px;
   }
+
   .topBody {
     font-size: 20px;
   }
@@ -125,9 +132,11 @@
   .mainLogo {
     height: 400px;
   }
+
   .bottomLogo {
     width: 100vw;
   }
+
   .bottomLogoAndButton {
     height: 800px;
     padding-top: 100px;
@@ -139,7 +148,7 @@
     margin-top: -200px;
   }
 
-  .bottomContainer{
+  .bottomContainer {
     height: 800px;
     padding-top: 100px;
   }
@@ -165,17 +174,16 @@
   display: flex;
   margin: 0 auto;
   font-family: "Roboto";
-
 }
 
 .bottomGradient {
-  background: linear-gradient(0deg, #4A92FF -20.62%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(0deg, #4a92ff -20.62%, rgba(0, 0, 0, 0) 100%);
   bottom: 40px;
   z-index: 1;
 }
 
 .mainLogo {
-  background: url('../../static/img/mainLogo.svg') no-repeat top center;
+  background: url("../../static/img/mainLogo.svg") no-repeat top center;
   background-size: contain;
   flex: 5;
 
@@ -183,7 +191,7 @@
 }
 
 .bottomLogo {
-  background: url('../../static/img/bottomLogo.svg') no-repeat top center;
+  background: url("../../static/img/bottomLogo.svg") no-repeat top center;
   background-size: contain;
   flex: 5;
   align-self: center;
@@ -192,21 +200,18 @@
   margin-bottom: 30px;
 }
 
-
-
 .topBody {
   font-weight: 400;
   font-family: "Roboto";
-  color: #A0A0A0;
+  color: #a0a0a0;
 }
 
 .topTextContainer {
-    display: flex;
-    line-height: 40px;
-    flex-direction: column;
-    align-content: flex-start;
-    text-align: left;
-
+  display: flex;
+  line-height: 40px;
+  flex-direction: column;
+  align-content: flex-start;
+  text-align: left;
 }
 
 .title {
@@ -214,47 +219,47 @@
   color: white;
 }
 
-
 .subtitle {
   font-weight: 600;
   font-family: "Roboto";
   color: white;
 }
 
-
-
 .primaryButton {
   color: white;
-  background-color: #2072C0;
+  background-color: #2072c0;
   border-radius: 3px;
   font-size: 18px;
 }
 
-.codeSnippet{
+.codeSnippet {
   margin-top: 150px;
-  background: #2A2A2A;
+  background: #2a2a2a;
   width: 60%;
   border-radius: 6px;
   padding: 15px 10px 10px 10px;
 }
 
 .topGradient {
-  background: linear-gradient(180deg,rgb(74,146, 255) 0%, rgb(0,0,0,0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgb(74, 146, 255) 0%,
+    rgb(0, 0, 0, 0) 100%
+  );
   position: absolute;
-  top:0;
+  top: 0;
 
   border: 1px none;
   width: 100%;
 }
 
 .bottomGradient {
-  background: linear-gradient(0deg,rgb(74,146, 255) 0%, rgb(0,0,0,0) 100%);
+  background: linear-gradient(0deg, rgb(74, 146, 255) 0%, rgb(0, 0, 0, 0) 100%);
   position: absolute;
-  top:0;
+  top: 0;
   border: 1px none;
   width: 100%;
   position: relative;
-
 }
 
 .container {
@@ -267,12 +272,9 @@
   z-index: 100;
 }
 
-
-
-
 .bottomButton {
   color: white;
-  align-self:center;
+  align-self: center;
   z-index: 100;
 }
 
@@ -281,23 +283,10 @@
   justify-content: center;
 }
 
-
-
-
 .text {
-  flex: 8
+  flex: 8;
 }
-
-
-
-
-
-
-
-
 
 .highlight {
-  color: #4A92FF
+  color: #4a92ff;
 }
-
-
