@@ -23,7 +23,11 @@ function HomepageHeader() {
               <h1 className={styles.subtitle}>
                 Combining the best of{" "}
                 <span className={styles.highlight}>
-                  <a href="http://openpolicyagent.org/" target="_blank">
+                  <a
+                    href="http://openpolicyagent.org/"
+                    target="_blank"
+                    rel="noopener"
+                  >
                     OPA
                   </a>
                 </span>{" "}
@@ -32,6 +36,7 @@ function HomepageHeader() {
                   <a
                     href="https://research.google/pubs/pub48190/"
                     target="_blank"
+                    rel="noopener"
                   >
                     Zanzibar
                   </a>
