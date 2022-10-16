@@ -67,11 +67,11 @@
   }
 
   .bottomLogo {
-    width: 40%;
+    width: 50%;
   }
 
   .bottomLogoAndButton {
-    height: 300px;
+    height: 230px;
     padding-top: 10px;
   }
 
@@ -138,7 +138,7 @@
   }
 
   .bottomLogoAndButton {
-    height: 800px;
+    height: 600px;
     padding-top: 100px;
   }
 
