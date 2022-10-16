@@ -52,10 +52,18 @@
   flex-wrap: wrap;
 }
 
+a:hover.languageLink,
+a:visited.languageLink,
+a:link.languageLink,
+a:active.languageLink
+{
+  text-decoration: none;
+}
 
-
-
-
+a:hover.languageLink .languageListItem {
+  border-width: 4px;
+  border-color: #3c99f0;
+}
 
 .languageListItemTitle {
   color: white;

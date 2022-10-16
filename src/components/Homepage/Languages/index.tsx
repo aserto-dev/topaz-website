@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
+import Link from "@docusaurus/Link";
 
 type LanguageItem = {
   Svg: React.ComponentType<React.ComponentProps<"svg">>;
@@ -38,8 +39,9 @@ const LanguageList: LanguageItem[] = [
 
 const Language = ({ Svg, title, link }: LanguageItem) => {
   return (
+    <Link to={link} className={styles.languageLink}>
+
     <div className={styles.languageListItem}>
-      <a href={link}>
         <div className="text--center">
           {Svg ? (
             <Svg className={styles.languageListItemIcon} role="img" />
@@ -47,11 +49,12 @@ const Language = ({ Svg, title, link }: LanguageItem) => {
             ""
           )}
         </div>
-      </a>
       <div className={styles.languageListItemText}>
         <div>{title}</div>
       </div>
     </div>
+    </Link>
+
   );
 };
 
