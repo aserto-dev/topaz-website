@@ -129,6 +129,12 @@
     margin: 0 auto;
   }
 
+  .primaryButton:hover{
+    background-color: #438BF4;
+    text-decoration: underline;
+    color: white;
+  }
+
   .mainLogo {
     height: 400px;
   }
