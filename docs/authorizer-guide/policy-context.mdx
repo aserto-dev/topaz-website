@@ -16,7 +16,7 @@ The policy bundle is identified by the policy `id`, the policy within the bundle
 {/* Todo:  */}
 ## Setting the Policy Context
 
-`POST .../api/v1/authz/is`
+`POST .../api/v2/authz/is`
 
 ```json
 {
@@ -60,7 +60,7 @@ Calling `is` with the above payload will return the following response:
 
 The common usage for `policyContext` in the `decisiontree` API is to identify the policy ID and the policy root.
 
-`POST .../api/v1/authz/decisiontree`
+`POST .../api/v2/authz/decisiontree`
 
 ```json
 {
