@@ -7,6 +7,8 @@ type HighlightProps = {
   language: string;
 };
 
+const style = { ...customAtomDark, fontFamily: "Ubuntu Mono" };
+
 const Highlight: React.FC<HighlightProps> = ({ children, language }) => {
   return (
     <CodeContainer>
@@ -15,6 +17,9 @@ const Highlight: React.FC<HighlightProps> = ({ children, language }) => {
           language={language}
           lineProps={{ style: { whiteSpace: "break-spaces" } }}
           style={customAtomDark}
+          customStyle={{
+            fontFamily: "Ubuntu Mono",
+          }}
           wrapLines={true}
         >
           {children}

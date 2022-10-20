@@ -61,9 +61,9 @@ a:active.languageLink
 }
 
 a:hover.languageLink .languageListItem {
-  border-width: 4px;
-  border-color: #3c99f0;
+  box-shadow: 0 0 0 4px #3c99f0;
 }
+
 
 .languageListItemTitle {
   color: white;

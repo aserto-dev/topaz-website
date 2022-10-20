@@ -69,7 +69,7 @@ By default, `jwtAuthz` derives the policy file name and resource key from the Ex
 
 `jwtAuthz(options[, packageName[, resourceMap]])`:
 
-- `options`: a javascript map containing at least `{ authorizerServiceUrl, policyId, policyRoot }` as well as `authorizerApiKey` and `tenantId` for the hosted authorizer
+- `options`: a javascript map containing at least `{ authorizerServiceUrl, policyRoot, authorizerCertCAFile }` 
 - `packageName`: a string representing the policy package name (optional)
 - `resourceMap`: a map of key/value pairs to use as the resource context for evaluation (optional)
 
@@ -77,8 +77,6 @@ By default, `jwtAuthz` derives the policy file name and resource key from the Ex
 
 - `authorizerServiceUrl`: URL of authorizer service (_required_)
 - `policyRoot`: Policy root (_required_)
-- `authorizerApiKey`: API key for authorizer service (_required_ if using hosted authorizer)
-- `authorizerCertFile`: location on the filesystem of the CA certificate that signed the Topaz authorizer self-signed certificate. See the "Certificates" section for more information.
 - `disableTlsValidation`: ignore TLS certificate validation when creating a TLS connection to the authorizer. Defaults to false.
 - `failWithError`: When set to `true`, will forward errors to `next` instead of ending the response directly.
 - `useAuthorizationHeader`: When set to `true`, will forward the Authorization header to the authorizer. The authorizer will crack open the JWT and use that as the identity context. Defaults to `true`.
