@@ -279,9 +279,11 @@
 }
 
 .bottomButton {
+  background-color: #2072c0;
   color: white;
   align-self: center;
   z-index: 100;
+  border: 0px;
 }
 
 .bottomButton:hover {

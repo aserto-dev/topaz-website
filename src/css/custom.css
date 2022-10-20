@@ -92,8 +92,16 @@ html[data-theme='dark'] footer {
 
 .navbar__item:hover{
   color:#E7E7E7;
+}
 
+.footer__link-item {
 
+  color: #A0A0A0;
+  transition: none;
+}
+
+.footer__link-item:hover{
+  color:#E7E7E7;
 }
 
 code {
