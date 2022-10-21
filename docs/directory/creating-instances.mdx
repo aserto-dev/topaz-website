@@ -4,8 +4,115 @@ sidebar_position: 3
 
 # Creating instances
 
-## Using the Topaz CLI
+To populate the database with some data from a JSON file, use the `topaz load` command:
 
-## Using the gRPC API
+```
+topaz load <JSON file>
+```
 
-## Using the REST API
+The JSON file should contain
+1. An array of objects, each of which represents a single instance of a the the types defined in the manifest.
+2. An array of relations, each specifying the subject, object and relation type.
+
+For example, the following sample JSON file contains
+1. three instances of the `user` type (which is built-in)
+2. three instances of the `document` type (defined in the `manifest.yaml`).
+3. three relations between the users and the documents.
+
+```json
+{
+  "objects": [
+    {
+      "display_name": "Rick Sanchez",
+      "key": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
+      "properties": {
+        "email": "rick@the-citadel.com",
+        "picture": "https://github.com/aserto-demo/contoso-ad-sample/raw/main/UserImages/Rick%20Sanchez.jpg",
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "type": "user"
+    },
+    {
+      "display_name": "Morty Smith",
+      "key": "CiRmZDE2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
+      "properties": {
+        "email": "morty@the-citadel.com",
+        "picture": "https://github.com/aserto-demo/contoso-ad-sample/raw/main/UserImages/Morty%20Smith.jpg",
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "type": "user"
+    },
+    {
+      "display_name": "Jerry Smith",
+      "key": "CiRmZDQ2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
+      "properties": {
+        "email": "jerry@the-smiths.com",
+        "picture": "https://github.com/aserto-demo/contoso-ad-sample/raw/main/UserImages/Jerry%20Smith.jpg",
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "type": "user"
+    },
+    {
+      "display_name": "Document 1",
+      "key": "doc1",
+      "properties": {
+        "path": "/docs/doc1"
+      },
+      "type": "document"
+    },
+    {
+      "display_name": "Document 2",
+      "key": "doc2",
+      "properties": {
+        "path": "/docs/doc2"
+      },
+      "type": "document"
+    },
+    {
+      "display_name": "Document 3",
+      "key": "doc3",
+      "properties": {
+        "path": "/docs/doc3"
+      },
+      "type": "document"
+    }
+  ],
+  "relations": [
+    {
+      "object": {
+        "key": "doc1",
+        "type": "document:owner"
+      },
+      "relation": "member",
+      "subject": {
+        "key": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
+        "type": "user"
+      }
+    },
+    {
+      "object": {
+        "key": "doc2",
+        "type": "document:editor"
+      },
+      "relation": "member",
+      "subject": {
+        "key": "CiRmZDE2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
+        "type": "user"
+      }
+    },
+    {
+      "object": {
+        "key": "doc3",
+        "type": "document:viewer"
+      },
+      "relation": "member",
+      "subject": {
+        "key": "CiRmZDQ2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
+        "type": "user"
+      }
+    }
+  ]
+}
+
+```
+

@@ -52,7 +52,8 @@ const sidebars = {
         'directory/index',
         'directory/define-domain-model',
         'directory/creating-instances',
-        'directory/loading-identities'
+        'directory/built-ins'
+
       ]
     },
     {
