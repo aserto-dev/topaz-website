@@ -104,14 +104,16 @@ html[data-theme='dark'] footer {
   color:#E7E7E7;
 }
 
+.codeSnippet_src-pages-index-module > div > div > pre > code {
+  font-size: 1.4em !important;
+}
+
 code {
   font-family: "Ubuntu Mono" !important;
   font-size: 1.1em !important;
 }
 
-.codeSnippet_src-pages-index-module > div > div > pre > code {
-  font-size: 1.4em !important;
-}
+
 
 div.toggle_node_modules-\@docusaurus-theme-classic-lib-theme-ColorModeToggle-styles-module.colorModeToggle_node_modules-\@docusaurus-theme-classic-lib-theme-Navbar-Content-styles-module {
   display: none;
