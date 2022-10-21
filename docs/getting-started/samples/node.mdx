@@ -1,0 +1,36 @@
+# Node.JS
+
+## Setup
+
+### Clone the server
+Start by cloning the server repository from GitHub. You can do this by running the following command:
+```
+git clone https://github.com/aserto-demo/todo-node-js-v2
+```
+
+### Install dependencies
+To install the application dependencies, run the following command:
+```
+yarn
+```
+
+### Set up the `.env` file
+Rename the `.env.example` file to `.env` and update the `CA_FILE` path to correspond to the path in which Topaz generated your certificates:
+
+```
+ASERTO_POLICY_ROOT="todoApp"
+ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
+
+JWKS_URI=https://citadel.demo.aserto.com/dex/keys
+ISSUER=https://citadel.demo.aserto.com/dex
+AUDIENCE=citadel-app
+
+CA_FILE=<PATH_TO_CERTIFICATES>/certs/grpc-ca.crt
+```
+
+## Start the server
+```
+yarn start
+```
+## Next steps
+Test your server by [using the sample web Todo application](/docs/getting-started/samples/test-application).

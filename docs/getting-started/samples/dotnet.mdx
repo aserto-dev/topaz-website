@@ -1,0 +1,50 @@
+# ASP.net Core
+
+## Setup
+
+### Clone the server
+Start by cloning the server repository from GitHub. You can do this by running the following command:
+```
+git clone https://github.com/aserto-demo/todo-dotnet-v2
+```
+
+### Install dependencies
+To install the application dependencies, run the following command:
+```
+cd todo-dotnet-v2
+dotnet restore
+```
+
+### Update the `appsettings.Development.json` file
+Update the content of the `appsettings.Development.json` file with the following:
+```json
+{
+  "AllowedHosts": "*",
+  "Aserto": {
+    "PolicyRoot": "todoApp",
+    "ServiceUrl": "https://localhost:8282"
+  },
+  "Directory": {
+    "Insecure": true,
+    "ServiceUrl": "https://localhost:9292"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "OAuth": {
+    "Audience": "citadel-app",
+    "Domain": "citadel.demo.aserto.com/dex"
+  }
+}
+```
+
+## Start the server
+```
+dotnet run
+```
+## Next steps
+Test your server by [using the sample web Todo application](/docs/getting-started/samples/test-application).

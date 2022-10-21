@@ -1,0 +1,38 @@
+# Python (Flask)
+
+## Setup
+
+### Install `pipenv`
+This app uses `pipenv`. Follow [these instructions](https://pipenv.pypa.io/en/latest/#install-pipenv-today) to install it.
+
+### Clone the server
+Start by cloning the server repository from GitHub. You can do this by running the following command:
+```
+git clone https://github.com/aserto-demo/todo-python-v2
+```
+
+### Install dependencies
+To install the application dependencies, run the following command:
+```
+cd todo-python-v2
+pipenv install
+```
+
+### Set up the `.env` file
+Rename the `.env.example` file to `.env` and update its content with the following:
+
+```
+ASERTO_POLICY_ROOT="todoApp"
+ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
+
+JWKS_URI=https://citadel.demo.aserto.com/dex/keys
+OIDC_ISSUER=https://citadel.demo.aserto.com/dex
+OIDC_CLIENT_ID=citadel-app
+```
+
+## Start the server
+```
+pipenv run flask run
+```
+## Next steps
+Test your server by [using the sample web Todo application](/docs/getting-started/samples/test-application).

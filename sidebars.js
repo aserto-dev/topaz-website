@@ -21,12 +21,17 @@ const sidebars = {
     {
       'Getting Started': [
         'getting-started/index',
-        'getting-started/configuration',
-      ]
-    },
-    {
-      'Deployment': [
-        'deployment/index',
+        'getting-started/samples/index',
+        {
+          'Sample Applications': [
+            'getting-started/samples/node',
+            'getting-started/samples/flask',
+            'getting-started/samples/dotnet',
+            'getting-started/samples/go',
+            'getting-started/samples/rails',
+          ]
+        },
+        'getting-started/samples/test-application',
       ]
     },
     {

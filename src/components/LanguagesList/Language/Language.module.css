@@ -1,0 +1,76 @@
+/* Aserto SDK cards - set to Aserto's light and dark theme */
+
+.languageCard {
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    margin: 10px;
+    width: 241px;
+    height: 217px;
+    text-align: center;
+}
+
+.languageCard:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+html[data-theme='dark'] .languageCard {
+    background-color: #1e1e1e;
+}
+
+html[data-theme='dark'] .languageCard:hover {
+    background-color: #2a2a2a;
+}
+
+.languageTitle {
+    height: 48px;
+    color: #121212;
+    font-size: 22px;
+    font-weight: bold;
+    border-width: 2px 0;
+    border-color: #414141;
+    border-style: solid;
+    padding: 0 20px;
+    margin: 0 20px;
+    line-height: 48px;
+}
+
+html[data-theme='dark'] .languageTitle {
+    color: #e7e7e7;
+}
+
+.languageImage {
+    display: inline-block;
+    margin: 20px 0;
+    height: 100px;
+}
+
+.languageGithubLink {
+    display: block;
+    font-size: 14px;
+    font-weight: 900;
+    color: #3ecacf;
+    padding: 0 20px;
+    margin: 20px;
+}
+
+.launchButton {
+    display: none;
+    width: 201px;
+    color: white;
+    background-color: rgb(31, 83, 85);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    border-width: 0;
+    padding: 9px 1px;
+}
+
+.languageCard:hover .launchButton, .launchButton:hover {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.launchButton:hover {
+    background-color: rgb(37, 116, 119);
+}
