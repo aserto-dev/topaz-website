@@ -25,8 +25,6 @@ import (
 mw := middleware.New(
     authClient,
     mw.Policy{
-      // TODO: PATH?
-        // ID:       "<Aserto policy ID>",
         Decision: "allowed",             // Name of the policy rule to evaluate.
     },
 )
