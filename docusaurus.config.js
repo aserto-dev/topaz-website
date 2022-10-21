@@ -111,7 +111,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Topaz. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Topaz. built with <span role="img" aria-label="heart">❤️</span> by <a link="https://www.aserto.com/" target="_blank">Aserto</a>.`,
       },
       colorMode: {
         defaultMode: 'dark',

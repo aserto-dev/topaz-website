@@ -14,7 +14,9 @@ brew install topaz-cli
 
 Topaz is packaged as a Docker container which requires a configuration file - an example configuration is available [here](/docs/getting-started/configuration). The example configuration file includes the location to a policy image that is store in a policy registry. The policy registry hosts OCI images which you can create and push with the [Policy CLI](https://github.com/opcr-io/policy).
 
-{/* TODO: Update with CLI command to generate configuration */}
+```bash
+topaz configure <policy>
+```
 
 After creating the configuration file, you can start the container with the following command:
 
@@ -30,6 +32,9 @@ topaz run
 Once Topaz is running, you can load user data into the database using the [Topaz CLI](/docs/command-line-interface/topaz-cli/index):
 
 {/* TODO: CLI Command to load data */}
+```
+topaz load ...
+```
 
 After loading data into your Topaz instance, you'll be able to run the following queries to test the policy:
 
