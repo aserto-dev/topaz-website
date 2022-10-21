@@ -3,12 +3,43 @@ sidebar_position: 1
 ---
 # Setup
 
-## Install the Topaz CLI
-You can run Topaz using the `topaz-cli`. To install the CLI, run:
+## Installation
 
-```bash
-brew install topaz-cli
-```
+`topaz` is available on Linux, macOS and Windows platforms.
+
+* Binaries for Linux, Windows and Mac are available as tarballs in the [release](https://github.com/aserto-dev/topaz-private/releases) page.
+
+* Via Homebrew for macOS or LinuxBrew for Linux
+
+   ```shell
+  brew tap aserto-dev/tap && brew install aserto-dev/tap/topaz
+   ```
+
+* Via a GO install
+
+  ```shell
+  go install github.com/topaz/cmd/topaz@latest
+  ```
+
+## Building from source
+
+ `topaz` is currently using go v1.17 or above. In order to build `topaz` from source you must:
+
+ 1. Install [mage](https://magefile.org/)
+ 2. Clone the repo
+ 3. Build and run the executable
+
+      ```shell
+      mage build && ./dist/build_linux_amd64/topaz
+      ```
+
+## Running with Docker
+
+  You can run as a Docker container:
+
+  ```shell
+  docker run -it --rm ghcr.io/aserto-dev/topaz:latest --help
+  ```
 
 ## Configuration
 
@@ -24,7 +55,7 @@ To start Topaz locally, you'll need to have Docker installed and running.
 
 Then, run the following command:
 ```bash
-topaz run
+topaz run <policy>
 ```
 
 ## Loading data
@@ -33,7 +64,7 @@ Once Topaz is running, you can load user data into the database using the [Topaz
 
 {/* TODO: CLI Command to load data */}
 ```
-topaz load ...
+topaz load <path to JSON file>
 ```
 
 After loading data into your Topaz instance, you'll be able to run the following queries to test the policy:
