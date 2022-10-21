@@ -35,11 +35,25 @@ sidebar_position: 1
 
 ## Running with Docker
 
-  You can run as a Docker container:
+You can run as a Docker container:
 
-  ```shell
-  docker run -it --rm ghcr.io/aserto-dev/topaz:latest --help
-  ```
+```shell
+docker run -it --rm ghcr.io/aserto-dev/topaz:latest --help
+```
+
+## gRPC Endpoints
+
+To interact with the authorizer endpoint, install `grpcui` or `grpcurl` and point them to `localhost:8282`:
+
+```shell
+grpcui localhost:8282
+```
+
+To interact with the directory endpoint, use `localhost:9292`:
+
+```shell
+grpcui localhost:9292
+```
 
 ## Configuration
 
