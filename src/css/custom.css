@@ -104,7 +104,7 @@ html[data-theme='dark'] footer {
   color:#E7E7E7;
 }
 
-.codeSnippet_src-pages-index-module > div > div > pre > code {
+header > div > div > div > pre > code {
   font-size: 1.4em !important;
 }
 
