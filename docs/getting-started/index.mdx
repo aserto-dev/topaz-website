@@ -7,7 +7,7 @@ sidebar_position: 1
 
 `topaz` is available on Linux, macOS and Windows platforms.
 
-* Binaries for Linux, Windows and Mac are available as tarballs in the [release](https://github.com/aserto-dev/topaz-private/releases) page.
+* Binaries for Linux, Windows and Mac are available as tarballs in the [release](https://github.com/aserto-dev/topaz/releases) page.
 
 * Via Homebrew for macOS or LinuxBrew for Linux
 
@@ -21,24 +21,91 @@ sidebar_position: 1
   go install github.com/topaz/cmd/topaz@latest
   ```
 
-## Building from source
+## Quickstart
 
- `topaz` is currently using go v1.17 or above. In order to build `topaz` from source you must:
+These instructions help you get Topaz up and running as the authorizer for a sample Todo app. 
 
- 1. Install [mage](https://magefile.org/)
- 2. Clone the repo
- 3. Build and run the executable
+### Install Topaz authorizer container image
 
-      ```shell
-      mage build && ./dist/build_linux_amd64/topaz
-      ```
-
-## Running with Docker
-
-You can run as a Docker container:
+The Topaz authorizer is packaged as a Docker container. You can get the latest image using the following command:
 
 ```shell
-docker run -it --rm ghcr.io/aserto-dev/topaz:latest --help
+topaz install 
+```
+
+### Create a configuration
+
+Topaz requires a configuration file to run. An example configuration is available [here](/docs/getting-started/configuration). The example configuration file includes the location to a policy image that is store in a policy registry. The policy registry hosts OCI images which you can create and push with the [Policy CLI](https://github.com/opcr-io/policy).
+
+You can use the CLI to create a configuration file:
+
+```shell
+topaz configure <policy-name> -d -s -r <resource-url>
+```
+
+For example, this command creates a configuration file for the sample Todo policy image.
+
+```shell
+topaz configure -d -s -r opcr.io/aserto-templates/policy-todo-rebac:latest policy-todo
+```
+
+The configuration file is generated in `$(HOME)/.config/topaz/cfg`.
+* the config instructs Topaz to create a local directory instance (`-d`)
+* when started, Topaz will seed the directory with default object types (`-s`)
+* the config references an authorization policy for a sample "Todo" app, retrieved from the Open Policy Registry as a container image
+* the config is named "policy-todo"
+
+### Start Topaz in interative mode
+
+```shell
+topaz run
+```
+
+### Import sample data
+
+Once Topaz is running, you can load user data into the database using the [Topaz CLI](/docs/command-line-interface/topaz-cli/index).
+
+The CLI contains commands to create schema and import data. In this quickstart we'll import the users, groups, and relationships for the Todo sample app.
+
+First, retrieve the "Citadel" json file, placing it in the current directory:
+
+```shell
+curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel.json >./citadel.json
+```
+
+Import the contents of the file into Topaz directory. This creates the sample users (Rick, Morty, and friends); groups; and relations.
+
+```shell
+topaz import -d .
+```
+
+### Issue an API call
+
+To verify that Topaz is running with the right policy image, you can issue a `curl` call to interact with the REST API.
+
+This API call retrieves the set of policies that Topaz has loaded:
+
+```shell
+curl -k https://localhost:8383/api/v2/policies
+```
+
+### Issue a query
+
+Issue a query using the `is` REST API to verify that the user Rick is allowed to GET the list of todos:
+
+```shell
+curl -k -X POST 'https://localhost:8383/api/v2/authz/is' \
+-H 'Content-Type: application/json' \
+-d '{ 
+     "identity_context": {
+          "type": "IDENTITY_TYPE_SUB",
+          "identity": "rick@the-citadel.com"
+     },
+     "policy_context": {
+          "path": "todoApp.GET.todos",
+          "decisions": ["allowed"]
+     }
+}'
 ```
 
 ## gRPC Endpoints
@@ -55,67 +122,8 @@ To interact with the directory endpoint, use `localhost:9292`:
 grpcui localhost:9292
 ```
 
-## Configuration
-
-Topaz is packaged as a Docker container which requires a configuration file - an example configuration is available [here](/docs/getting-started/configuration). The example configuration file includes the location to a policy image that is store in a policy registry. The policy registry hosts OCI images which you can create and push with the [Policy CLI](https://github.com/opcr-io/policy).
-
-```bash
-topaz configure <policy-name> -r <resource-url>
-```
-
-For example:
-
-```
-topaz configure policy-todo -r opcr.io/aserto-templates/policy-todo-rebac:1.0.0
-```
-
-After configuring Topaz, you can start the container with the following command:
-
-To start Topaz locally, you'll need to have Docker installed and running.
-
-Then, run the following command:
-```bash
-topaz run
-```
-
-## Loading data
-
-Once Topaz is running, you can load user data into the database using the [Topaz CLI](/docs/command-line-interface/topaz-cli/index):
-
-{/* TODO: CLI Command to load data */}
-```
-topaz load <path to JSON file>
-```
-
-After loading data into your Topaz instance, you'll be able to run the following queries to test the policy:
-
-## List policies
-
-```bash
-curl --location --request GET 'https://localhost:8383/api/v2/policies'
-```
-
-## Query the policy
-
-```bash
-curl --location --request POST 'https://localhost:8383/api/v2/authz/is' \
---header 'Content-Type: application/json' \
---data-raw '{
-     "identity_context": {
-          "type": "IDENTITY_TYPE_NONE",
-          "identity": "rick@the-citadel.com"
-     },
-     "policy_context": {
-          "path": "todoApp.GET.todos",
-          "decisions": ["allowed"]
-
-     }
-}'
-```
-
-
 ## Next steps
 1. Review a sample app in your [favorite language](/docs/getting-started/samples/)
 2. Create your own [policy](/docs/policies/)
 3. Push your policy to a [registry](/docs/policies/lifecycle#policy-cli)
-4. Start Topaz by pointing it to your new policy with `topaz run <your-policy>`
+4. Start Topaz by pointing it to your new policy with `topaz configure` and `topaz start`

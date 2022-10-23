@@ -71,10 +71,26 @@ Using the `policy` CLI, you can pull a policy image from a Policy Repository jus
 policy pull my-org/my-policy:v0.1.2
 ```
 
+For a complete reference on the `policy` CLI, refer to the [policy CLI](/docs/command-line-interface/policy-cli/download.mdx) documentation.
+
 ### Run
-To run Topaz with the policy image, run the following command:
+
+To run Topaz with the policy image, you first need to ensure the Topaz configuration file contains a reference to the policy. You can do this via the `topaz configure` command:
+
+```bash
+topaz configure -s -d -r my-org/my-policy:v0.1.2 my-policy
 ```
-topaz run my-org/my-policy:v0.1.2
+
+To start Topaz interactively:
+
+```bash
+topaz run 
+```
+
+To start Topaz as a daemon:
+
+```bash
+topaz start 
 ```
 
 ### Consume
