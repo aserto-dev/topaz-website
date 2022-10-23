@@ -39,7 +39,7 @@ export default [
     icon: 'dotnet-core.svg',
     link: 'https://dotnet.microsoft.com/apps/aspnet',
     github: 'https://github.com/aserto-dev/aserto-dotnet',
-    docs: '/docs/software-development-kits/dotnet/index',
+    docs: '/docs/software-development-kits/dotnet',
   },
   {
     title: 'Go',
@@ -62,7 +62,4 @@ export default [
     github: 'https://github.com/aserto-dev/aserto-rails',
     docs: '/docs/software-development-kits/ruby/rails',
   },
-
-
-
 ]
