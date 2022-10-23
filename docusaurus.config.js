@@ -7,8 +7,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Topaz',
-  tagline: 'An open-source, self-hosted, fine-grained access control service for Cloud Native applications',
-  url: 'https://topaz.dev',
+  tagline: 'An open-source, self-hosted, fine-grained access control service for cloud native applications',
+  url: 'https://www.topaz.sh',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -17,7 +17,9 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'aserto-dev', // Usually your GitHub org/user name.
-  projectName: 'Topaz', // Usually your repo name.
+  projectName: 'topaz', // Usually your repo name.
+
+  trailingSlash: false,
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -27,6 +29,25 @@ const config = {
     locales: ['en'],
   },
 
+  plugins: [
+    ['docusaurus2-dotenv',
+      {
+        path: "./.env", // The path to your environment variables.
+        safe: false, // If false ignore safe-mode, if true load './.env.example', if a string load that file as the sample
+        systemvars: true, // Set to true if you would rather load all system variables as well (useful for CI purposes)
+        silent: false, //  If true, all warnings will be suppressed
+        expand: false, // Allows your variables to be "expanded" for reusability within your .env file
+        defaults: false, //  Adds support for dotenv-defaults. If set to true, uses ./.env.defaults
+      }
+    ],
+    ['@docusaurus/plugin-google-gtag',
+      {
+        trackingID: process.env.REACT_APP_GOOGLE_ANALYTICS_MEASUREMENT_ID ?? '_',
+        anonymizeIP: true,
+      },
+    ],
+    //'docusaurus-plugin-hubspot',
+  ],
   presets: [
     [
       'classic',
@@ -34,10 +55,15 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          editUrl: 'https://github.com/aserto-dev/topaz-website/edit/main/',
           routeBasePath: "docs",
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
+        },
+        sitemap: {
+          changefreq: 'weekly',
+          priority: 0.5,
         },
       }),
     ],
@@ -46,6 +72,12 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        apiKey: process.env.REACT_APP_ALGOLIA_API_KEY || '_',
+        indexName: process.env.REACT_APP_ALGOLIA_INDEX_NAME || '_',
+        appId: process.env.REACT_APP_ALGOLIA_APP_ID || '_',
+        contextualSearch: false,
+      },
       navbar: {
         title: 'Topaz',
         logo: {
@@ -111,7 +143,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Topaz. built with <span role="img" aria-label="heart">❤️</span> by <a href="https://www.aserto.com/" target="_blank">Aserto</a>.`,
+        copyright: `Copyright © ${new Date().getFullYear()} - built with <span role="img" aria-label="heart">❤️</span> by <a href="https://www.aserto.com/" target="_blank">Aserto</a>.`,
       },
       colorMode: {
         defaultMode: 'dark',
@@ -122,6 +154,11 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      /*
+      hubspot: {
+        accountId: process.env.REACT_APP_HUBSPOT_ACCOUNT_ID ?? '_'
+      },
+      */
     }),
 };
 

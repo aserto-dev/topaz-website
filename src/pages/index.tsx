@@ -10,6 +10,8 @@ import styles from "./index.module.css";
 import Highlight from "@site/src/components/common/Highlight";
 import HomepagePolicies from "../components/Homepage/Policies";
 
+import FlexBanner from "flex-banner";
+
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -99,17 +101,29 @@ function HomepageBottomSection() {
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout
-      title={`${siteConfig.title}`}
-      description="An open-source, self-hosted, fine-grained access control service for Cloud Native applications"
-    >
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-        <HomepageLanguages />
-        <HomepagePolicies />
-      </main>
-      <HomepageBottomSection />
-    </Layout>
+    <>
+      <FlexBanner
+        title="⭐️ Star on GitHub to follow ⭐️"
+        ctaLink="https://github.com/aserto-dev/topaz"
+        animationTime={0}
+        delayToShowBanner={0}
+        isCenter={true}
+        crossIconSize={20}
+        wrapperStyle={{ backgroundColor: '#2072c0' }}
+        mainStyleTitle={{ textDecoration: "none", fontSize: "1rem" }}
+      />
+      <Layout
+        title={`${siteConfig.title}`}
+        description="An open-source, self-hosted, fine-grained access control service for Cloud Native applications"
+      >
+        <HomepageHeader />
+        <main>
+          <HomepageFeatures />
+          <HomepageLanguages />
+          <HomepagePolicies />
+        </main>
+        <HomepageBottomSection />
+      </Layout>
+    </>
   );
 }
