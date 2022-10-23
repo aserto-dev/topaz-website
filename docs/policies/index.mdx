@@ -49,12 +49,9 @@ allowed {
 ## User context
 
 In the policy above, we were able to use the `department` attribute to help compute the `allowed`
-decision. This is an example of User context that is used in a policy. If you hook up your
-identity providers and/or directories to Topaz, it will automatically synchronize properties from
-these sources and make them available to your policies.
+decision. This is an example of User context that is used in a policy. If you import your identities from your identity provider, any properties they contain about users will be available to your policy.
 
-In addition, you can create and manage extensions for users in the Topaz directory, on a global or
-per-application basis.
+In addition, you can add properties on your objects in an extensible JSON property bag, and use thse properties in authorization decisions.
 
 ## Resource context
 
@@ -69,22 +66,22 @@ allowed {
 ```
 
 ## Objects
-To resolve the identity of an object that is stored in the directory, you can use the `ds.object` built-in. Objects are resolved based on their `key` attribute. For example, you would ideally save users with a useful key such as an email address, and then use that email address to resolve the user object.
 
+To resolve the identity of an object that is stored in the directory, you can use the `ds.object` built-in. Objects are resolved based on their `key` attribute. For example, you would ideally save users with a useful key such as an email address, and then use that email address to resolve the user object.
 
 ```rego
 user = ds.object(input.user.email)
 ```
 
-## Relationship built-in
+## check_relation built-in
 
-The `ds.check_relationship` built-in allows you to query the Topaz directory for a relationship between an object an a subject. Once we resolve the object and the subject, we can use the `ds.check_relationship` built-in to check if the object has a relationship with the subject.
+The `ds.check_relation` built-in allows you to query the Topaz directory for a relationship between an object an a subject. Once we resolve the object and the subject, we can use the `ds.check_relation` built-in to check if the object has a relationship with the subject.
 
 ```rego
 allowed {
   user = ds.object(input.user.email)
   department = ds.object(input.resource.id)
-  ds.check_relationship({
+  ds.check_relation({
     "subject": user.id,
     "object": ds.object({
       "key": input.resource.id,
@@ -96,7 +93,8 @@ allowed {
 ```
 
 ## Permission built-in
-Similar to the relationship built-in, the `ds.check_permission` built-in allows you to query the Topaz directory for a permission that is associated with a relationship between an object and a subject. Once we resolve the object and the subject, we can use the `ds.check_permission` built-in to check if the object has a permission with the subject.
+
+Similar to the `ds.check_relation` built-in, the `ds.check_permission` built-in allows you to query the Topaz directory for a permission that is associated with a relationship between an object and a subject. Once we resolve the object and the subject, we can use the `ds.check_permission` built-in to check if the object has a permission with the subject.
 
 ```rego
 allowed {
@@ -110,10 +108,10 @@ allowed {
   })
 }
 ```
+
 ## Example policy
 
 The policy below is a sample policy that will take advantage of the relation and permission built-ins to check if a user has permission to delete a department. It will also combine an ABAC rule with that will check if the user is a member of the "IT" department.
-
 
 ```rego
 package sample.DELETE.api.departments
@@ -121,7 +119,7 @@ package sample.DELETE.api.departments
 default allowed = false
 
 allowed {
-  input.user.attributes.properties.department == "IT"
+  input.user.properties.department == "IT"
 }
 
 allowed {

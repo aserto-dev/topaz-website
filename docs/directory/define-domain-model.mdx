@@ -4,27 +4,26 @@ The authorization model needs to mirror the domain model used by the application
 
 ## Object types
 
-Object types define the entities in the system, such as `user`, `document`, etc. Objects are differentiated from one another by their type and by their definition as either a _subject_ or an _object_. A subject is an entity that can be the subject of an authorization decision. An object is an
-entity that can be the object of an authorization request. For example, a `user` is a subject, but a `document` is an object.
+Object types define the entities in the system, such as `user`, `department`, `task`, etc. Some object types can be designated as _subjects_. This means they can function as the target of a relation. For example, a `user` is a subject, and a `task` is an object. A `group` can function as an _object_ when defining a _member_ relation to a user (_subject_), or it can function as a _subject_ when defining an _owner_ relation to a task (_object_).
 
 ## Relation types
 
-Relation types define the relationships between entities, such as `admin`, `editor`, `viewer`, etc. Relation types are defined as applicable to specific object types. In the context of authorization, we can think of relation types as roles that can be assigned to subjects. For example, a `user` can be assigned the `editor` viewer for a `document`. In our policy, we can check whether a relation exists for a `subject` and an `object` using the `ds.check_relation` built-in.
+Relation types define the relationships between entities, such as `member`, `owner`, `manager`, etc. Relation types are defined on object types. In the context of authorization, we can think of relation types as roles that can be assigned to subjects. For example, a `user` can be assigned the `owner` role for a `department`. In our policy, we can check whether a relation exists for a `subject` and an `object` using the `ds.check_relation` built-in.
 
 ## Permissions
 
-While relations are helpful to model roles, we can associate many permissions to a single role. In the directory, permissions are associated with relation types. For example, we can define the `editor` viewer type as associated with the `create`, `update`, and `view` _permissions_. In our policy, we can check whether a permission exists for a `subject` and an `object` using the `ds.check_permission` built-in.
+While relations are helpful to model roles, we can associate many permissions to a single role. In the directory, permissions are associated with relation types. For example, we can define the `owner` relation type as associated with the `can_create`, `can_delete`, and `can_view` _permissions_. In our policy, we can check whether a permission exists between a `subject` and an `object` using the `ds.check_permission` built-in.
 
 ## Defining the domain model
 
-Create a `manifest.yaml` to define object types, relations and permission. For example:
+Create a `manifest.yaml` to define object types, relation types and permission. For example:
 
 ```yaml
-#object type (document)
+# object type (document)
 document:
-  #object relation (document:owner)
+  # object relation (document:owner)
   admin:
-    # incl permissions of other object relations on the same object type
+    # include permissions of other object relations on the same object type
     union:
     - editor
     - viewer
@@ -32,9 +31,9 @@ document:
     permissions:
     - sample.document.delete
 
-  #object relation (document:editor)
+  # object relation (document:editor)
   editor:
-    # incl permissions of other object relations on the same object type
+    # include permissions of other object relations on the same object type
     union:
     - viewer
     # permissions for relation on object type
@@ -42,16 +41,15 @@ document:
     - sample.document.create
     - sample.document.update
 
-  #object relation (document:viewer)
+  # object relation (document:viewer)
   viewer:
     # permissions for relation on object type
     permissions:
     - sample.document.read
 ```
 
-Load the `mainfest.yaml` file into Topaz by running:
+Load the `manifest.yaml` file into Topaz by running:
 
-{/* TODO: Finalize command */}
 ```
 topaz load manifest.yaml
 ```

@@ -12,6 +12,7 @@ Authorization policies can leverage user attributes, group membership, applicati
 
 * Authorization for applications is hard to get right. There are many open source libraries that help with RBAC and ABAC, but very few incorporate all the [principles](#principles) of cloud-native authorization.
 * The two cloud-native authorization ecosystems, OPA and Zanzibar, both have advantages, but there isn't a solution that combines the best of both.
+* Authorization requires both rules and data. Zanzibar hard-codes its rules, and focuses only on data. OPA lets you specify rules, but data is left as an exercise to the user.
 * Developers deserve a self-hosted authorization service that makes it easy to build (and combine) RBAC, ABAC, and ReBAC models, supports a policy-as-code workflow, and provides built-in support for fine-grained authorization.
 
 ## Why Topaz?
