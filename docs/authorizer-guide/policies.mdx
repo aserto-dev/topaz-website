@@ -1,0 +1,115 @@
+---
+sidebar_position: 9
+sidebar_label: policies APIs
+title: policies APIs
+description: The policies APIs
+---
+
+# policies
+
+The `policies` API returns information about all the policy modules loaded into the authorizer.
+
+## URL
+
+`GET .../api/v2/policies`
+
+`GET .../api/v2/policies?field_mask={string,...}`
+
+The `field_mask` URL parameter indicates which fields to return. Available fields are described in the Results section below.
+
+Example: 
+
+```shell
+curl -k "https://localhost:8383/api/v2/policies?field_mask=id,raw"
+```
+
+## Results
+
+The result is returned as a JSON array which contains an object for every module in the policy. The object contains:
+* an `id`, which can be used as a path parameter to return only information about this module (see [below](/docs/authorizer-guide/policies.mdx#policies-by-id))
+* a `raw` field that contains the module text as a string
+* a `package_path` which is where the module is loaded in the `data` namespace
+* an `ast` field which contains the abstract syntax tree of the module
+
+```json
+{
+  "result":  [
+    {
+      "id":  "todo/tmp/opa/oci/github/workspace/content/src/policies/todos.GET.rego",
+      "raw":  "package todoApp.GET.todos\n\ndefault allowed = true\n",
+      "package_path":  "data.todoApp.GET.todos",
+      "ast":  {
+        "package":  {
+          "path":  [
+            {
+              "type":  "var",
+              "value":  "data"
+            },
+            {
+              "type":  "string",
+              "value":  "todoApp"
+            },
+            {
+              "type":  "string",
+              "value":  "GET"
+            },
+            {
+              "type":  "string",
+              "value":  "todos"
+            }
+          ]
+        },
+        "rules":  [
+          {
+            "body":  [
+              {
+                "index":  0,
+                "terms":  {
+                  "type":  "boolean",
+                  "value":  true
+                }
+              }
+            ],
+            "default":  true,
+            "head":  {
+              "name":  "allowed",
+              "value":  {
+                "type":  "boolean",
+                "value":  true
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+# policies by ID
+
+## URL
+
+`GET .../api/v2/policies/{id}`
+
+`GET .../api/v2/policies/{id}?field_mask={string,...}`
+
+The `id` is retrieved from the `id` field in the `/api/v2/policies` call. 
+
+The `field_mask` URL parameter indicates which fields to return. Available fields are thje same as the ones described in the Results section above.
+
+## Results
+
+The result returned is an object with the same fields as described above.
+
+```json
+{
+  "result":  {
+    "id":  "todo/tmp/opa/oci/github/workspace/content/src/policies/todo.GET.user.__userID.rego",
+    "raw":  "package todoApp.GET.user.__userID\n\ndefault allowed = true\n",
+    "package_path":  "data.todoApp.GET.user.__userID",
+    "ast":  {
+    }
+  }
+}
+```

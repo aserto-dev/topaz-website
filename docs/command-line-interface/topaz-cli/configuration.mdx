@@ -1,0 +1,82 @@
+---
+sidebar_position: 2
+---
+# Configuration
+
+Topaz requires a configuration file to run. By default, the location of the config file is `$(HOME)\.config/topaz/cfg/config.yaml`. 
+
+Below is an annotated sample of a `config.yaml` file.
+
+```yaml
+---
+logging:
+  prod: true
+  log_level: info
+
+directory_service:
+  edge:
+    # path to embedded database file
+    db_path: /db/directory.db
+    # seed the object type and relation type metadata
+    seed_metadata: true
+
+  # endpoint for directory service
+  # can be set to a remote directory, like directory.prod.aserto.com:8443
+  remote:
+    address: "0.0.0.0:9292"
+    insecure: true
+
+# set up API endpoints: gRPC on :8282, REST on :8383
+# set up certs for gRPC and HTTPS gateway. this will be generated on first run.
+api:
+  grpc:
+    connection_timeout_seconds: 2
+    listen_address: "0.0.0.0:8282"
+    certs:
+      tls_key_path: "/certs/grpc.key"
+      tls_cert_path: "/certs/grpc.crt"
+      tls_ca_cert_path: "/certs/grpc-ca.crt"
+  gateway:
+    listen_address: "0.0.0.0:8383"
+    allowed_origins:
+    - https://*.aserto.com
+    - https://*aserto-console.netlify.app
+    - https://*localhost
+    certs:
+      tls_key_path: "/certs/gateway.key"
+      tls_cert_path: "/certs/gateway.crt"
+      tls_ca_cert_path: "/certs/gateway-ca.crt"
+  health:
+    listen_address: "0.0.0.0:8484"
+
+# set up OPA config
+opa:
+  instance_id: "-"
+  graceful_shutdown_period_seconds: 2
+  # configure local bundle directory (empty here)
+  local_bundles:
+    paths: []
+    skip_verification: true
+  config:
+    services:
+      # configure the Open Policy Registry as a bundle source
+      opcr:
+        url: https://opcr.io/v2/
+        type: "oci"
+        response_header_timeout_seconds: 5
+        headers:
+          # if pointint to a private image, configure authorization header
+          Authorization: "basic iDog"
+    bundles:
+      # configure the "todo" bundle
+      todo:
+        service: opcr
+        # OCI image path
+        resource: "opcr.io/aserto-templates/policy-todo-rebac:latest"
+        persist: false
+        config:
+          # how often to poll for a new image version
+          polling:
+            min_delay_seconds: 60
+            max_delay_seconds: 120
+```

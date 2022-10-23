@@ -35,8 +35,6 @@ topaz install
 
 ### Create a configuration
 
-Topaz requires a configuration file to run. An example configuration is available [here](/docs/getting-started/configuration). The example configuration file includes the location to a policy image that is store in a policy registry. The policy registry hosts OCI images which you can create and push with the [Policy CLI](https://github.com/opcr-io/policy).
-
 You can use the CLI to create a configuration file:
 
 ```shell
@@ -113,17 +111,17 @@ curl -k -X POST 'https://localhost:8383/api/v2/authz/is' \
 To interact with the authorizer endpoint, install `grpcui` or `grpcurl` and point them to `localhost:8282`:
 
 ```shell
-grpcui localhost:8282
+grpcui --insecure localhost:8282
 ```
 
 To interact with the directory endpoint, use `localhost:9292`:
 
 ```shell
-grpcui localhost:9292
+grpcui --insecure localhost:9292
 ```
 
 ## Next steps
-1. Review a sample app in your [favorite language](/docs/getting-started/samples/)
-2. Create your own [policy](/docs/policies/)
+1. Review a sample app in your [favorite language](/docs/getting-started/samples)
+2. Create your own [policy](/docs/policies)
 3. Push your policy to a [registry](/docs/policies/lifecycle#policy-cli)
 4. Start Topaz by pointing it to your new policy with `topaz configure` and `topaz start`

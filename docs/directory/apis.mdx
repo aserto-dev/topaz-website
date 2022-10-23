@@ -1,0 +1,18 @@
+---
+sidebar_position: 6
+sidebar_label: Directory APIs
+title: Directory APIs
+description: The Directory APIs
+---
+
+# Directory APIs
+
+The Directory APIs are currently only exposed over gRPC. They are organized into four services:
+- [`aserto.directory.reader.v2.Reader`](/docs/directory/reader) - Reader APIs
+- [`aserto.directory.writer.v2.Writer`](/docs/directory/writer) - Writer APIs
+- `aserto.directory.importer.v2.Importer/Import` - import entities
+- `aserto.directory.exporter.v2.Exporter/Export` - export entities
+
+The Reader APIs and Writer APIs can be used to read and write data to the directory.
+
+The Import and Export APIs can be used to stream data in and out of the directory.

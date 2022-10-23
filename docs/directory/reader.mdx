@@ -1,0 +1,28 @@
+---
+sidebar_position: 6
+sidebar_label: Reader APIs
+title: Reader APIs
+description: The Directory Reader APIs
+---
+
+# Reader APIs
+
+The Directory Reader APIs are in the `aserto.directory.reader.v2.Reader` service.
+
+- `CheckPermission` - check whether a subject has a permission (via a relation) on an object
+- `CheckRelation` - check whether a subject has a relation to an object
+
+
+- `GetGraph` - get the graph of relations using the object as an anchor
+- `GetObject` - get an object by an `id`, or by the combination of `type` and `key`
+- `GetObjectMany` - get a set of objects by an `id`, or by the combination of `type` and `key`
+- `GetObjectType` - get an object type definition by `id` or by `name`
+- `GetObjectTypes` - get all object types registered in the system. This is a paged interface.
+- `GetObjects` - get all objects in the system that match a filter. This is a paged interface.
+- `GetPermission` - get a permission by `id` or by `name`
+- `GetPermissions` - get all permissions registered in the system. This is a paged interface.
+- `GetRelation` - get a relation instance between the provided subject and object using the relation type.
+- `GetRelationType` - get a relation type using the `object_type`, by either `id` or `name`
+- `GetRelationTypes` - get all relation types registered in the system. This is a paged interface.
+- `GetRelations` - get all relations in the system that match a filter. This is a paged interface.
+

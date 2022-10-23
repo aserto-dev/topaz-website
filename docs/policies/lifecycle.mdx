@@ -36,22 +36,29 @@ There are two paths for managing the lifecycle of a policy image:
 #### Login
 
 ```bash
-policy login -s <PATH-TO-REGISTRY> -u <USERNAME> -p <APCR_API_KEY>
+policy login -s <PATH-TO-REGISTRY> -u <USERNAME> -p <PAT>
 ```
-{/* TODO: Opcr connection */}
-To connect to the Open Policy Container Registry, use the path ``.
+
+The `policy` CLI defaults to using the Open Policy Registry (`opcr.io`). To login to the Open Policy Container Registry:
+
+```bash
+policy login -u <GITHUB_USER> -p <GITHUB_PAT>
+```
 
 To connect to the Github Container Registry, use the path `ghcr.io`.
 ```bash
-policy login -s ghcr.io -u <username>
+policy login -s ghcr.io -u <username> -p <GITHUB_PAT>
 ```
+
+Note that the GITHUB_PAT must have the `delete:packages, read:org, repo, write:packages` scopes.
 
 #### Build
 
 To build a policy image, use the `policy build` command. Then, tag your built image by using the `policy tag` command.
 
 ```bash
-policy build . -t my-org/my-policy:v0.1.2
+policy build ./src -t my-org/my-policy:v0.1.2
+
 policy tag my-org/my-policy:v0.1.2 my-org/my-policy:latest
 ```
 

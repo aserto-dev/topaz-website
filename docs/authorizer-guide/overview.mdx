@@ -18,10 +18,22 @@ The Topaz authorizer is [deployed as a sidecar (or as a local service)](/docs/de
 
 ## Authorizer API categories
 
-The Authorizer provides the following APIs to calling applications:
+The Authorizer provides the following APIs to calling applications.
 
-- [Authorization](/docs/authorizer-guide/authz) (`authz`)
-- [Directory](/docs/directory/index.mdx) (`dir`)
-- Information (`info`)
-- [Policy](/docs/policies/index.mdx) (`policy`)
-- System (`sys`)
+- [Authorization](/docs/authorizer-guide/authz) (`authz`) - perform authorization queries
+- [Policies](/docs/authorizer-guide/policies) (`policies`) - return information about loaded policies
+- Information (`info`) - return build information
+
+The REST APIs are all exposed with the `/api/v2` URL prefix. By default, the Topaz REST APIs are hosted on `https://localhost:8383`. For example, the `policies` REST API can be called in the following way:
+
+```shell
+curl -k https://localhost:8383/api/v2/policies
+```
+
+By default, the gRPC APIs are hosted on `localhost:8282`. `grpcui` represents a convenient way to browse the gRPC APIs:
+
+```shell
+brew install grpcui
+
+grpcui --insecure localhost:8282
+```

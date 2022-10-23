@@ -44,7 +44,8 @@ const sidebars = {
         'authorizer-guide/is',
         'authorizer-guide/decisiontree',
         'authorizer-guide/query',
-        'authorizer-guide/display-state-map',
+        'authorizer-guide/policies',
+        'authorizer-guide/display-state-map'
       ]
     },
     {
@@ -52,8 +53,10 @@ const sidebars = {
         'directory/index',
         'directory/define-domain-model',
         'directory/creating-instances',
-        'directory/built-ins'
-
+        'directory/built-ins',
+        'directory/apis',
+        'directory/reader',
+        'directory/writer',
       ]
     },
     {
@@ -99,6 +102,10 @@ const sidebars = {
     },
     {
       'CLIs': {
+        'Topaz CLI': [
+          'command-line-interface/topaz-cli/index',
+          'command-line-interface/topaz-cli/configuration',
+        ],
         'Policy CLI': [
           'command-line-interface/policy-cli/download',
           'command-line-interface/policy-cli/login',

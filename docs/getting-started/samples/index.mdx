@@ -5,15 +5,11 @@ title: Run Topaz with the sample policy
 
 import LanguagesList from '../../../src/components/LanguagesList'
 
-To test Topaz with a sample policy, run the following command:
+To test Topaz with the policy for the Todo sample application, make sure you follow the instructions in the [previous section](/docs/getting-started/index.mdx) to properly install and configure Topaz.
 
-```bash
-topaz run opcr.io/aserto-templates/policy-todo-rebac
-```
+The configuration file in `$(HOME)/.config/topaz/cfg/config.yaml` should point to the policy image `opcr.io/aserto-templates/policy-todo-rebac`.
 
 You can view the policy modules [here](https://github.com/aserto-templates/template-policy-todo-rebac/tree/main/content/src/policies).
-
-Topaz will spin up and generate certificates in the folder in which it was run.
 
 Continue setting up a server and a web application using your favorite language:
 
