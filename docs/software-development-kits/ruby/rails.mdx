@@ -1,12 +1,12 @@
 ---
 sidebar_label: Ruby on Rails
-title: Aserto SDKs -  Ruby on Rails - Installation and setup
-description: Aserto SDKs -  Ruby on Rails - Installing and using the rails aserto gem
+title: Topaz SDKs -  Ruby on Rails - Installation and setup
+description: Topaz SDKs -  Ruby on Rails - Installing and using the rails aserto gem
 ---
 
 # Aserto Rails
 
-Aserto authorization library for Ruby and Ruby on Rails.
+Topaz authorization library for Ruby and Ruby on Rails.
 
 Built on top of [aserto](https://github.com/aserto-dev/aserto-ruby) and [aserto-grpc-authz](https://github.com/aserto-dev/ruby-grpc-authz).
 
@@ -32,13 +32,11 @@ gem install aserto-rails
 ```
 
 ## Configuration
-The `policy_root` is required to configure the authorization middleware.
-
-Optional parameters:
+Configuration parameters:
 
 | Parameter name | Default value | Description |
 | -------------- | ------------- | ----------- |
-| service_url | `"localhost:8443"` | Sets the URL for the authorizer endpoint. |
+| service_url | `"localhost:8282"` | Sets the URL for the authorizer endpoint. |
 | decision | `"allowed"` | The decision that will be used when executing an authorizer request. |
 | logger | `STDOUT` | The logger to be used. |
 | identity_mapping | `{ type: :none }` | The strategy for retrieveing the identity, possible values: `:jwt, :sub, :none` |
@@ -116,8 +114,12 @@ require "aserto/rails"
 
 Aserto.configure do |config|
   config.enabled = true
+  config.policy_name = "my-policy-name"
+  config.instance_label = "my-instance"
+  config.authorizer_api_key = Rails.application.credentials.aserto[:authorizer_api_key]
   config.policy_root = "peoplefinder"
-  config.service_url = "authorizer.eng.aserto.com:8443"
+  config.service_url = "localhost:8282"
+  config.cert_path = "/path/to/topaz/cert.crt"
   config.decision = "allowed"
   config.logger = Rails.logger
   config.identity_mapping = {
