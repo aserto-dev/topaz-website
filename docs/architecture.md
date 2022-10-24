@@ -58,4 +58,4 @@ The [Directory Guide](/docs/directory/index.mdx) provides a more complete overvi
 
 ### Decision logs
 
-The authorizer captures and stores decision logs for every decision that it evaluates.
+The authorizer captures and stores decision logs for every decision that it evaluates. Topaz [decision logs](/docs/decision-logs) are implemented as an OPA plugin and a logger component that writes logs to a rotating set of files.
