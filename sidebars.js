@@ -96,7 +96,13 @@ const sidebars = {
             'software-development-kits/python/identity-providers',
           ]
         },
-        'software-development-kits/dotnet/index',
+        {
+          'ASP.NET Core':[
+            'software-development-kits/dotnet/install',
+            'software-development-kits/dotnet/options',
+            'software-development-kits/dotnet/asp-core-mvc',
+          ]
+        },
         {
           'Ruby': [
             'software-development-kits/ruby/middleware',
