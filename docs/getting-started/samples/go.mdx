@@ -8,6 +8,21 @@ Start by cloning the server repository from GitHub. You can do this by running t
 git clone https://github.com/aserto-demo/todo-go-v2
 ```
 
+## Set up an `.env` file
+Create the `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+After setting the `todo` policy instance in your Aserto account, update the the `.env` to contain the following values:
+
+```
+JWKS_URI=https://citadel.demo.aserto.com/dex/keys
+ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
+POLICY_ROOT="todoApp"
+```
+
 ### Install dependencies
 To install the application dependencies, run the following command:
 ```
