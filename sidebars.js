@@ -86,7 +86,7 @@ const sidebars = {
         {
           'Python': [
             'software-development-kits/python/api-client',
-            'software-development-kits/python/authorizers',
+            'software-development-kits/python/options',
             'software-development-kits/python/flask',
             'software-development-kits/python/identity-providers',
           ]

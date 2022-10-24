@@ -12,16 +12,17 @@ Python 3 and mypy-compatible middleware for the Flask web framework.
 
 This package provides three capabilities for Flask apps:
 
-1.  `authorize`: route decorator that validates incoming requests and authorizes access to a route.
-2.  `register_display_state_map`: application middleware which implements and exposes an endpoint for returning the [display state map](/docs/authorizer-guide/display-state-map) for a service, based on its authorization policy.
-3.  `check`: function that can be called to make a decision about a user's access to a resource based on a policy.
+1. `authorize`: route decorator that validates incoming requests and authorizes access to a route.
+2. `register_display_state_map`: application middleware which implements and exposes an endpoint for returning the
+   [display state map](/docs/authorizer-guide/display-state-map) for a service, based on its authorization policy.
+3. `check`: function that can be called to make a decision about a user's access to a resource based on a policy.
 
 ## Installation
 
 Using [pip](https://pip.pypa.io):
 
 ```sh
-pip install flask-aserto
+pip install -U flask-aserto
 ```
 
 Using [Poetry](https://python-poetry.org):
@@ -44,8 +45,9 @@ aserto = AsertoMiddleware(**options)
 
 All options must be passed as keyword arguments, but may be provided in any order.
 
+- `authorizer_options` (_required_): An [`AuthorizerOptions`](/docs/software-development-kits/python/options) instance
+  that describes the Authorizer service being used.
 - `policy_path_root` (_required_): Policy root
-- `authorizer` (_required_): An [`Authorizer`](/docs/software-development-kits/python/authorizers) instance that describes the Authorizer service being used.
 - `identity_provider` (_required_): A callable object which returns an `Identity` instance that represents a user.
 
   #### Example using the [aserto-idp](/docs/software-development-kits/python/identity-providers) package to define an Auth0 identity provider
@@ -55,7 +57,7 @@ All options must be passed as keyword arguments, but may be provided in any orde
   :::
 
   ```py
-  from aserto import Identity
+  from aserto.client import Identity
   from aserto_idp.auth0 import AccessTokenError, provide_identity
   from flask import request
 
@@ -126,6 +128,9 @@ All options must be passed as keyword arguments, but may be provided in any orde
       """A naive implementation of the default resolver"""
       return request.view_args
   ```
+
+- `policy_instance_name` (_optional_): The name of the policy instance to target when calling a hosted authorizer.
+- `policy_instance_label` (_optional_): The label of the policy instance to target when calling a hosted authorizer.
 
 ## `authorize` decorator
 
