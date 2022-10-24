@@ -23,12 +23,14 @@ Rename the `.env.example` file to `.env` and update its content with the followi
 
 ```
 ASERTO_POLICY_ROOT="todoApp"
-ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
+AUTHORIZER_SERVICE_URL=localhost:8282
 
 JWKS_URI=https://citadel.demo.aserto.com/dex/keys
 OIDC_ISSUER=https://citadel.demo.aserto.com/dex
 OIDC_CLIENT_ID=citadel-app
 ```
+
+Also, ensure that the AUTHORIZER_CERT_PATH variable is set to `$HOME/.config/topaz/certs/grpc-ca.crt`.
 
 ## Start the server
 ```
