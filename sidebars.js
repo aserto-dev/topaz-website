@@ -66,6 +66,11 @@ const sidebars = {
       ]
     },
     {
+      'Decision Logs': [
+        'decision-logs/index'
+      ]
+    },
+    {
       'SDKs': [
         'software-development-kits/overview',
         {
