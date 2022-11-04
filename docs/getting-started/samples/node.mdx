@@ -15,16 +15,18 @@ yarn
 ```
 
 ### Set up the `.env` file
-Rename the `.env.example` file to `.env` and update the `CA_FILE` path to correspond to the path in which Topaz generated your certificates (by default this path will be `~/.config/topaz/certs/grpc-ca.crt`).
+Copy the `.env.example` file to `.env` and update the `CA_FILE` path to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.config/topaz/certs/grpc-ca.crt`).
+
+Also make sure that `ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282` and `ASERTO_DIRECTORY_SERVICE_URL=localhost:9292`.
 
 ```
-ASERTO_POLICY_ROOT="todoApp"
-ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
-
 JWKS_URI=https://citadel.demo.aserto.com/dex/keys
 ISSUER=https://citadel.demo.aserto.com/dex
 AUDIENCE=citadel-app
 
+ASERTO_POLICY_ROOT=todoApp
+ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
+ASERTO_DIRECTORY_SERVICE_URL=localhost:9292
 CA_FILE=<PATH_TO_CERTIFICATES>/certs/grpc-ca.crt
 ```
 
