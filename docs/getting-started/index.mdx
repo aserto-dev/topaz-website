@@ -18,19 +18,19 @@ sidebar_position: 1
 * Via a GO install
 
   ```shell
-  go install github.com/topaz/cmd/topaz@latest
+  go install github.com/aserto-dev/topaz/cmd/topaz@latest
   ```
 
 ## Quickstart
 
-These instructions help you get Topaz up and running as the authorizer for a sample Todo app. 
+These instructions help you get Topaz up and running as the authorizer for a sample Todo app.
 
 ### Install Topaz authorizer container image
 
 The Topaz authorizer is packaged as a Docker container. You can get the latest image using the following command:
 
 ```shell
-topaz install 
+topaz install
 ```
 
 ### Create a configuration
@@ -94,7 +94,7 @@ Issue a query using the `is` REST API to verify that the user Rick is allowed to
 ```shell
 curl -k -X POST 'https://localhost:8383/api/v2/authz/is' \
 -H 'Content-Type: application/json' \
--d '{ 
+-d '{
      "identity_context": {
           "type": "IDENTITY_TYPE_SUB",
           "identity": "rick@the-citadel.com"
