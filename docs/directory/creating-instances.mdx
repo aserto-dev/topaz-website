@@ -81,9 +81,12 @@ For example, the following sample JSON file contains
     {
       "object": {
         "key": "doc1",
-        "type": "document:owner"
+        "type": "document"
       },
-      "relation": "member",
+      "relation": {
+        "object_type": "document",
+        "name": "owner"
+      },
       "subject": {
         "key": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
         "type": "user"
@@ -92,9 +95,12 @@ For example, the following sample JSON file contains
     {
       "object": {
         "key": "doc2",
-        "type": "document:editor"
+        "type": "document"
       },
-      "relation": "member",
+      "relation": {
+        "object_type": "document",
+        "name": "editor"
+      },
       "subject": {
         "key": "CiRmZDE2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
         "type": "user"
@@ -103,9 +109,12 @@ For example, the following sample JSON file contains
     {
       "object": {
         "key": "doc3",
-        "type": "document:viewer"
+        "type": "document"
       },
-      "relation": "member",
+      "relation": {
+        "object_type": "document",
+        "name": "viewer"
+      },
       "subject": {
         "key": "CiRmZDQ2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
         "type": "user"
