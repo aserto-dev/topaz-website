@@ -87,7 +87,10 @@ allowed {
       "key": input.resource.id,
       "type": "department"
     }).id,
-    "relationship": "owner"
+    "relation": {
+      "object_type": "department",
+      "name": "owner"
+    }
   })
 }
 ```
@@ -104,7 +107,9 @@ allowed {
       "key": input.resource.id,
       "type": "department"
     }).id,
-    "permission": "can-read"
+    "permission": {
+      "name": "can-read"
+    }
   })
 }
 ```
@@ -129,7 +134,9 @@ allowed {
       "key": input.resource.id,
       "type": "department"
     }).id,
-    "permission": "can-delete"
+    "permission": {
+      "name": "can-delete"
+    }
   })
 }
 ```
