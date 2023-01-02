@@ -5,6 +5,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import HomepageFeatures from "@site/src/components/Homepage/Features";
 import HomepageLanguages from "@site/src/components/Homepage/Languages";
+import Marketecture from "@site/src/components/Homepage/Marketecture";
 
 import styles from "./index.module.css";
 import Highlight from "@site/src/components/common/Highlight";
@@ -119,6 +120,7 @@ export default function Home(): JSX.Element {
         <HomepageHeader />
         <main>
           <HomepageFeatures />
+          <Marketecture />
           <HomepageLanguages />
           <HomepagePolicies />
         </main>
