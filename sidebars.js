@@ -130,7 +130,6 @@ const sidebars = {
           'command-line-interface/policy-cli/export',
           'command-line-interface/policy-cli/repl',
           'command-line-interface/policy-cli/sign',
-          'command-line-interface/policy-cli/open-policy-registry',
         ]
       }
     }
