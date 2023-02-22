@@ -10,7 +10,7 @@ description: The Topaz Policy Lifecycle - an Overview
 
 At the core of Topaz’s authorization model is an authorization policy, which we refer to simply as a **Policy**. Policies are authored in a textual language called [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/), defined as part of the [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) project in the [Cloud Native Computing Foundation](https://www.cncf.io/).
 
-Policies are treated just like application code or infrastructure-as-code - they can be stored as code in a git repository, or as an OCIv2 image in a policy repository (like the [Open Policy Registry](https://www.openpolicyregistry.io/) or a commercial registry like GitHub Container Registry).
+Policies are treated just like application code or infrastructure-as-code - they can be stored as code in a git repository, or as an OCIv2 image in a policy repository like GitHub Container Registry, Docker Hub, Google Container Registry, or the Aserto Policy Registry.
 
 ## The policy lifecycle
 
@@ -36,29 +36,27 @@ There are two paths for managing the lifecycle of a policy image:
 #### Login
 
 ```bash
-policy login -s <PATH-TO-REGISTRY> -u <USERNAME> -p <PAT>
+echo $PAT | policy login -s <REGISTRY> -u <USERNAME> --password-stdin
 ```
 
-The `policy` CLI defaults to using the Open Policy Registry (`opcr.io`). To login to the Open Policy Container Registry:
-
+For example, to login to the Github Container Registry, use the server name `ghcr.io`.
 ```bash
-policy login -u <GITHUB_USER> -p <GITHUB_PAT>
+echo $GITHUB_PAT | policy login -s ghcr.io -u <username> --password-stdin
 ```
 
-To connect to the Github Container Registry, use the path `ghcr.io`.
-```bash
-policy login -s ghcr.io -u <username> -p <GITHUB_PAT>
-```
-
-Note that the GITHUB_PAT must have the `delete:packages, read:org, repo, write:packages` scopes.
+Note that the GITHUB_PAT must have the `repo` and `write:packages` scopes, as well as `read:org` for reading packages in other orgs, and `delete:packages` to be able to use `policy rm -r` to remove an image from a remote registry.
 
 #### Build
 
-To build a policy image, use the `policy build` command. Then, tag your built image by using the `policy tag` command.
+To build a policy image, use the `policy build` command. You can specify a tag using the `-t` option:
 
 ```bash
 policy build ./src -t my-org/my-policy:v0.1.2
+```
 
+You can tag any image by using the `policy tag` command:
+
+```bash
 policy tag my-org/my-policy:v0.1.2 my-org/my-policy:latest
 ```
 
