@@ -7,7 +7,7 @@ sidebar_position: 3
 To populate the database with some data from a JSON file, make sure `topaz` is running and then use the `topaz import` command:
 
 ```
-topaz import -d <directory containing JSON file>
+topaz import -i -d <directory containing JSON file>
 ```
 
 The two JSON files should contain
@@ -133,5 +133,5 @@ Copy this block into `./relations.json`:
 Now run the following command to import the data:
 
 ```
-topaz import -d .
+topaz import -i -d .
 ```
