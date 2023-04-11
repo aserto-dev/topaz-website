@@ -72,3 +72,35 @@ Then login using `policy` the same way you would login to `docker`:
 ```bash
 cat KEY-FILE | policy login -s gcr.io -u _json_key --password-stdin 
 ```
+
+** Important **
+Version 0.2.0 of the policy CLI adds support for [docker credential helpers](https://github.com/docker/docker-credential-helpers) to securely store credentials. Credential helpers are configured in `~/.policy/config.json`.
+
+### On Windows
+To use the credential manager on Windows:
+
+1. Install the [wincred](https://github.com/docker/docker-credential-helpers/releases/download/v0.7.0/docker-credential-wincred-v0.7.0.windows-amd64.exe) binary into a directory in your $PATH.
+2. Edit `~/.policy/config.json` to set `wincred` as the credential store:
+```
+    {
+        "auths": {},
+        "credStore": "wincred"
+    }
+```
+3. Log in with the policy CLI.
+
+Your credentials are now securely stored with Windows Credential Manager.
+
+### On MacOS
+1. Install `osxkeychain` for [amd64](https://github.com/docker/docker-credential-helpers/releases/download/v0.7.0/docker-credential-osxkeychain-v0.7.0.darwin-amd64) or [arm64](https://github.com/docker/docker-credential-helpers/releases/download/v0.7.0/docker-credential-osxkeychain-v0.7.0.darwin-arm64) into a directory in your $PATH.
+2. Edit `~/.policy/config.json` to set `osxkeychain` as the credential store:
+
+```
+    {
+        "auths": {},
+        "credStore": "osxkeychain"
+    }
+```
+3. Log in with the policy CLI.
+
+Your credentials are now securely stored in your MacOS KeyChain.
