@@ -71,6 +71,11 @@ const sidebars = {
       ]
     },
     {
+      'Deployment': [
+        'deployment/index'
+      ]
+    },
+    {
       'SDKs': [
         'software-development-kits/overview',
         {

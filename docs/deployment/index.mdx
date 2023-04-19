@@ -1,5 +1,93 @@
-# Deployment
+# Deployment Guide
+
+Topaz is most easily deployed as a container, either as a sidecar or as a microservice in the same region / AZ as the application it supports.
+
+For environments that don't support running container images, Topaz can be run as a binary.
 
 ## Deploy as a Sidecar
 
+WIP
+
 ## Deploy as a Microservice
+
+The `topaz run` command will run the docker container in interactive mode. The following docker command can be used to run the container as a microservice.
+
+```sh
+#!/usr/bin/env bash
+
+docker run \
+-ti \
+--rm \
+--name topaz \
+--platform=linux/amd64 \
+-p 8282:8282 \
+-p 8383:8383 \
+-p 8484:8484 \
+-p 9292:9292 \
+-v $PWD/certs:/certs:rw \
+-v $PWD/cfg:/app/cfg:ro \
+-v $PWD/eds:/app/db:rw \
+ghcr.io/aserto-dev/topaz:latest run \
+--config-file /app/cfg/config.yaml
+```
+
+## Run as a binary
+
+Topaz releases are available on [github](https://github.com/aserto-dev/topaz/releases/latest). The tarball contains both the `topaz` CLI (which can be used to create a configuration file), as well as `topazd` (which can be run as a daemon, and provides the authorizer APIs).
+
+### Download the tarball
+
+Downloads are available for Linux (amd64, arm64); MacOS (amd64, arm64); and Windows (zip, MSI).
+
+For example, for Linux amd64:
+
+```sh
+curl -L https://github.com/aserto-dev/topaz/releases/download/v0.20.30/topaz_linux_x86_64.zip >topaz.zip
+```
+
+For Linux arm64:
+
+```sh
+curl -L https://github.com/aserto-dev/topaz/releases/download/v0.20.30/topaz_linux_arm64.zip >topaz.zip
+```
+
+### Unzip the tarball
+
+```sh
+unzip topaz_darwin_arm64.zip
+Archive:  topaz_darwin_arm64.zip
+  inflating: LICENSE
+  inflating: README.md
+  inflating: topazd
+  inflating: topaz
+```
+
+### Run the configure command 
+
+For example, to use the sample policy, you can run the following:
+
+```sh
+./topaz configure -d -s -r ghcr.io/aserto-policies/policy-todo-rebac:latest -n policy-todo
+```
+
+This will create a directory structure in `$HOME/.config/topaz` like this:
+
+```sh
+├──  certs
+│   ├──  gateway-ca.crt
+│   ├──  gateway.crt
+│   ├──  gateway.key
+│   ├──  grpc-ca.crt
+│   ├──  grpc.crt
+│   └──  grpc.key
+├──  cfg
+│   └──  config.yaml
+└──  db
+    └──  directory.db
+```
+
+### Run the topaz daemon
+
+```sh
+TOPAZ_DIR=$HOME/.config/topaz ./topazd run -c $HOME/.config/topaz/cfg/config.yaml
+```
