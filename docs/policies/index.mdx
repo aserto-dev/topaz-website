@@ -67,10 +67,10 @@ allowed {
 
 ## Objects
 
-To resolve the identity of an object that is stored in the directory, you can use the `ds.object` built-in. Objects are resolved based on their `key` attribute. For example, you would ideally save users with a useful key such as an email address, and then use that email address to resolve the user object.
+To resolve the identity of an object that is stored in the directory, you can use the `ds.object` built-in. Objects are resolved based on their `type` and `key` value. For example, you can look up a user using their `key`, which is automatically resolved as `input.user.key` if you pass an identity context.
 
 ```rego
-user = ds.object(input.user.email)
+user = ds.object({ "type": "user", "key": input.user.key })
 ```
 
 ## Check Relation built-in
@@ -79,12 +79,13 @@ The `ds.check_relation` built-in allows you to query the Topaz directory for a r
 
 ```rego
 allowed {
-  user = ds.object(input.user.email)
-  department = ds.object(input.resource.id)
   ds.check_relation({
-    "subject": user.id,
+    "subject": {
+      "key": input.user.key,
+      "type": "user"
+    },
     "object": ds.object({
-      "key": input.resource.id,
+      "key": input.resource.key,
       "type": "department"
     }).id,
     "relation": {
@@ -102,9 +103,12 @@ Similar to the `ds.check_relation` built-in, the `ds.check_permission` built-in 
 ```rego
 allowed {
   ds.check_permission({
-    "subject": input.user.id,
+    "subject": {
+      "key": input.user.key,
+      "type": "user"
+    },
     "object": ds.object({
-      "key": input.resource.id,
+      "key": input.resource.key,
       "type": "department"
     }).id,
     "permission": {
@@ -129,9 +133,12 @@ allowed {
 
 allowed {
   ds.check_permission({
-    "subject": input.user.id,
+    "subject": {
+      "key": input.user.key,
+      "type": "user"
+    },
     "object": ds.object({
-      "key": input.resource.id,
+      "key": input.resource.key,
       "type": "department"
     }).id,
     "permission": {
