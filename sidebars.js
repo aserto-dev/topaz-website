@@ -113,6 +113,12 @@ const sidebars = {
             'software-development-kits/ruby/middleware',
             'software-development-kits/ruby/rails',
           ]
+        },
+        {
+          'Java': [
+            'software-development-kits/java/grpc-bindings',
+            'software-development-kits/java/authorizer'
+          ],
         }
       ]
     },
