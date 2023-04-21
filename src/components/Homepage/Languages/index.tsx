@@ -26,6 +26,11 @@ const LanguageList: LanguageItem[] = [
     link: "/docs/software-development-kits/python/api-client",
   },
   {
+    Svg: require("@site/static/img/icons/languages/java-logo.svg").default,
+    title: <>Java</>,
+    link: "/docs/software-development-kits/java/authorizer",
+  },
+  {
     Svg: require("@site/static/img/icons/languages/dotnet-logo.svg").default,
     title: <>ASP.NET</>,
     link: "/docs/software-development-kits/dotnet/install",
