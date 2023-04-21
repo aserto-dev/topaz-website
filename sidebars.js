@@ -25,9 +25,9 @@ const sidebars = {
         {
           'Sample Applications': [
             'getting-started/samples/node',
+            'getting-started/samples/go',
             'getting-started/samples/flask',
             'getting-started/samples/dotnet',
-            'getting-started/samples/go',
             'getting-started/samples/rails',
           ]
         },
@@ -102,6 +102,12 @@ const sidebars = {
           ]
         },
         {
+          'Java': [
+            'software-development-kits/java/grpc-bindings',
+            'software-development-kits/java/authorizer'
+          ],
+        },
+        {
           'ASP.NET Core':[
             'software-development-kits/dotnet/install',
             'software-development-kits/dotnet/options',
@@ -114,12 +120,6 @@ const sidebars = {
             'software-development-kits/ruby/rails',
           ]
         },
-        {
-          'Java': [
-            'software-development-kits/java/grpc-bindings',
-            'software-development-kits/java/authorizer'
-          ],
-        }
       ]
     },
     {

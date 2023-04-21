@@ -5,10 +5,14 @@ export default [
     link: '/docs/getting-started/samples/node'
   },
   {
+    title: 'Go',
+    icon: 'go.svg',
+    link: '/docs/getting-started/samples/go'
+  },
+  {
     title: 'Flask',
     icon: 'flask.svg',
     link: '/docs/getting-started/samples/flask'
-
   },
   {
     title: 'ASP.NET Core',
@@ -16,19 +20,8 @@ export default [
     link: '/docs/getting-started/samples/dotnet'
   },
   {
-    title: 'Go',
-    icon: 'go.svg',
-    link: '/docs/getting-started/samples/go'
-  },
-  {
     title: 'Ruby on Rails',
     icon: 'rails.svg',
     link: '/docs/getting-started/samples/rails'
   },
-  {
-    title: 'Java',
-    icon: 'java.svg',
-    link: 'https://www.java.com/en/',
-    docs: '/docs/software-development-kits/java/grpc-bindings',
-  }
 ]
