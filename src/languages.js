@@ -25,4 +25,10 @@ export default [
     icon: 'rails.svg',
     link: '/docs/getting-started/samples/rails'
   },
+  {
+    title: 'Java',
+    icon: 'java.svg',
+    link: 'https://www.java.com/en/',
+    docs: '/docs/software-development-kits/java/grpc-bindings',
+  }
 ]
