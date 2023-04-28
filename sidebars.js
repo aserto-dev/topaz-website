@@ -72,7 +72,10 @@ const sidebars = {
     },
     {
       'Deployment': [
-        'deployment/index'
+        'deployment/index',
+        'deployment/sidecar',
+        'deployment/microservice',
+        'deployment/binary',
       ]
     },
     {
