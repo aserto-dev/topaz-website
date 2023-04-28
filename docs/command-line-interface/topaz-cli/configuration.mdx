@@ -5,6 +5,34 @@ sidebar_position: 2
 
 Topaz requires a configuration file to run. By default, the location of the config file is `$HOME/.config/topaz/cfg/config.yaml`. 
 
+## Generating a config file
+
+`topaz configure` will generate a configuration file with the most common options.
+
+```
+Flags:
+  -h, --help                         Show context-sensitive help.
+
+  -n, --policy-name=STRING           policy name
+  -l, --local-policy-image=STRING    local policy image name
+  -r, --resource=STRING              resource url
+  -p, --stdout                       generated configuration is printed to stdout but not saved
+  -d, --edge-directory               enable edge directory
+  -s, --seed-metadata                enable seed metadata
+```
+
+For example, to generate a configuration file for the demo "todo" policy, use the following command:
+
+```shell
+topaz configure -d -s -r ghcr.io/aserto-policies/policy-todo-rebac:latest -n policy-todo
+```
+
+## Config file documentation
+
+A full description of the config format is available [here](https://github.com/aserto-dev/topaz/blob/main/docs/config.md).
+
+## Annotated example
+
 Below is an annotated sample of a `config.yaml` file.
 
 ```yaml
