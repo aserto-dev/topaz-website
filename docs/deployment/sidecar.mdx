@@ -25,7 +25,7 @@ apiserver: Running
 kubeconfig: Configured
 ```
 
-## Preparing our backend application container
+## Preparing your backend application container
 1. Clone [todo-go-v2](https://github.com/aserto-demo/todo-go-v2) repository 
 2. Add the following docker file to the root of your repository
 
@@ -59,19 +59,17 @@ ENTRYPOINT ["./todo-go"]
 
 4. Load the docker image into the minikube environment using: `minikube image load todo-go-v2:latest`
 
-## Prepare you deployment
+## Prepare your deployment
 
-We use the [sidecar-deployment](sidecar-deployment/deployment.yaml).
+Your deployment directory should contain the following files:
 
-Your deployment directory should contain the following files [see sidecar-deployment folder]
-```
-.
-├── configmap.yaml
-├── deployment.yaml
-└── topaz-configmap.yaml
-```
+* [configmap.yaml](/sidecar-deployment/configmap.yaml)
+* [deployment.yaml](/sidecar-deployment/deployment.yaml)
+* [topaz-configmap.yaml](/sidecar-deployment/topaz-configmap.yaml)
 
-6. Apply the deployment on your minikube cluster use: `kubectl apply -f . --recursive`
+## Apply the deployment 
+
+To apply on your minikube cluster use: `kubectl apply -f . --recursive`
 
 Once the deployment is finished you will have a pod that will contain 2 running containers that use the following images:
 ```
