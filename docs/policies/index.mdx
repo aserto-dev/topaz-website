@@ -84,10 +84,10 @@ allowed {
       "key": input.user.key,
       "type": "user"
     },
-    "object": ds.object({
+    "object": {
       "key": input.resource.key,
       "type": "department"
-    }).id,
+    },
     "relation": {
       "object_type": "department",
       "name": "owner"
@@ -107,10 +107,10 @@ allowed {
       "key": input.user.key,
       "type": "user"
     },
-    "object": ds.object({
+    "object": {
       "key": input.resource.key,
       "type": "department"
-    }).id,
+    },
     "permission": {
       "name": "can-read"
     }
@@ -137,10 +137,10 @@ allowed {
       "key": input.user.key,
       "type": "user"
     },
-    "object": ds.object({
+    "object": {
       "key": input.resource.key,
       "type": "department"
-    }).id,
+    },
     "permission": {
       "name": "can-delete"
     }
