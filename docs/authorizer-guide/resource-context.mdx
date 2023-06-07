@@ -21,7 +21,7 @@ Passing in the following `resourceContext`:
 
 ```json
 "resourceContext": {
-  "ownerId": "[owner-resource-id]"
+  "ownerKey": "[owner-key]"
 }
 ```
 
@@ -32,9 +32,9 @@ package sample.GET.api.orders
 default allowed = false
 
 allowed {
-  input.user.id == input.resource.ownerId
+  input.user.key == input.resource.ownerKey
 }
 ```
 
-If the logged-in user's ID is the same as the ownerId passed in for the sales order, the `allowed`
+If the logged-in user's key is the same as the ownerKey passed in for the sales order, the `allowed`
 decision will evaluate to `true`.
