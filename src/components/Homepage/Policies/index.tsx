@@ -19,9 +19,12 @@ allowed {
     },
     "relation": {
       "object_type": "tenant",
-      "name" : "member" 
+      "name" : "member"
     },
-    "subject": {"id": input.user.id}
+    "subject": {
+        "key": input.user.key,
+        "type": "user"
+    }
   })
 }
     `,
@@ -47,7 +50,10 @@ allowed {
       "type": "document"
     },
     "permission": {"name": "read"},
-    "subject": {"id": input.user.id}
+    "subject": {
+      "key": input.user.key,
+      "type": "user"
+    }
   })
 }`,
   },
