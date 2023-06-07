@@ -56,12 +56,12 @@ In addition, you can add properties on your objects in an extensible JSON proper
 ## Resource context
 
 Policies can also use resource context in their evaluation process. If we added the allowed clause
-below to our policy, and the caller included a resource context that contains `{ "id": "<the-user-id>" }`,
-the policy would evaluate `allowed` to `true` if the user id and the resource id match.
+below to our policy, and the caller included a resource context that contains `{ "user_key": "<the-user-key>" }`,
+the policy would evaluate `allowed` to `true` if the user key and the resource `user_key` match.
 
 ```rego
 allowed {
-  input.user.id == input.resource.id
+  input.user.key == input.resource.user_key
 }
 ```
 

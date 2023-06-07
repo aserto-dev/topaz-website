@@ -14,18 +14,11 @@ ds.identity({
   "key": "<value>"
 })
 ```
-Looks up a user identity by one of the keys (e.g. email address or PID), and returns the `id` of the user object.
+Looks up a user identity by one of the keys (e.g. email address or PID), and returns the `key` of the user object.
 
 For example: `ds.identity({ "key": "euang@acmecorp.com" })` will return `dfdadc39-7335-404d-af66-c77cf13a15f8`.
 
 ### `ds.object`
-```js
-ds.object({
-  "id": "<id>"
-})
-```
-Returns an object instance looked up by its unique `<id>`.
-
 ```js
 ds.object({
   "type": "<type>",
@@ -40,21 +33,7 @@ For example: `ds.object({ "type": "identity", "key": "euang@acmecorp.com" })` wi
 
 ```js
 ds.relation({
-  "object_id": "<object-id>",
-  "object_type": "<object-type>",
-  "relation": "<relation-name>",
-  "subject_id": "<subject-id>",
-  "subject_type": "<subject-type>"
-})
-```
-Returns the relation instance that connects the subject with the object through the relation identified by `<object-type>` and `<relation-name>`.
-
-### `ds.check_relation`
-
-```js
-ds.check_relation({
   "object": {
-    "id": "<object-id>",
     "key": "<object-key>",
     "type": "<object-type>"
   },
@@ -63,13 +42,34 @@ ds.check_relation({
     "object_type": "<object-type>"
   },
   "subject": {
-    "id": "<subject-id>",
+    "key": "<subject-key>",
+    "type": "<subject-type>"
+  },
+  "with_objects": <boolean>
+})
+```
+Returns the relation instance that connects the subject with the object through the relation identified by `<object-type>` and `<relation-name>`.
+If `with_objects` is inclued and set to `true`, the response includes the full subject and object instances.
+
+### `ds.check_relation`
+
+```js
+ds.check_relation({
+  "object": {
+    "key": "<object-key>",
+    "type": "<object-type>"
+  },
+  "relation": {
+    "name": "<relation-name>",
+    "object_type": "<object-type>"
+  },
+  "subject": {
     "key": "<subject-key>",
     "type": "<subject-type>"
   }
 })
 ```
-An object can be identified either by its `<object-id>` or by the combination of its `<object-type>` and `<object-key>`. The same is true for a subject.
+An object is identified by the combination of its `<object-type>` and `<object-key>`. The same is true for a subject.
 
 A relation type is uniquely identified by the object type name and the relation name. A relation instance of that type will relate an object instance to a subject instance.
 
@@ -80,7 +80,6 @@ A relation type is uniquely identified by the object type name and the relation 
 ```js
 ds.check_permission({
   "object": {
-    "id": "<object-id>",
     "key": "<object-key>",
     "type": "<object-type>"
   },
@@ -88,13 +87,12 @@ ds.check_permission({
     "name": "<permission-name>",
   },
   "subject": {
-    "id": "<subject-id>",
     "key": "<subject-key>",
     "type": "<subject-type>"
   }
 })
 ```
-An object can be identified either by its `<object-id>` or by the combination of its `<object-type>` and `<object-key>`. The same is true for a subject.
+An object is identified by the combination of its `<object-type>` and `<object-key>`. The same is true for a subject.
 
 `ds.check_permission` returns`true` if the subject has the permission `permission-name` referenced through one or more relations to the object.
 
@@ -102,12 +100,22 @@ An object can be identified either by its `<object-id>` or by the combination of
 
 ```js
 ds.graph({
-	"id": "<object-id>",
-	"object_type": "",
-	"object_id": "",
-	"subject_type": "",
-	"subject_id": "",
-	"relation": ""
+    "anchor": {
+      "key": "<anchor-key>",
+      "type": "<anchor-type>"
+    },
+    "object": {
+      "key": "<object-key>",
+      "type": "<object-type>"
+    },
+    "relation": {
+      "name": "<relation-name>",
+      "object_type": "<object-type>"
+    },
+    "subject": {
+      "key": "<subject-key>",
+      "type": "<subject-type>"
+    }
 })
 ```
-Returns the graph of relations and objects that is anchored in `object-id`. All other arguments are optional and restrict the graph returned to specific subjects, objects, or relations. The graph will be traversed up until a maximum depth, to avoid infinite recursion through graph cycles.
+Returns the graph of relations and objects that is anchored in `anchor-key`. All other arguments are optional and restrict the graph returned to specific subjects, objects, or relations. The graph will be traversed up until a maximum depth, to avoid infinite recursion through graph cycles.

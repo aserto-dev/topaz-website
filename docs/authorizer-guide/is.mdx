@@ -50,7 +50,7 @@ Given the following policy:
 package sample
 
 allowed {
-  input.user.id == input.resource.id
+  input.user.key == input.resource.user_key
 }
 ```
 
@@ -67,7 +67,7 @@ And given the following payload passed to the `is` call:
     "path": "sample"
   },
   "resourceContext": {
-    "id": "011a88bc-7df9-4d92-ba1f-2ff319e101e1"
+    "user_key": "011a88bc-7df9-4d92-ba1f-2ff319e101e1"
   }
 }
 ```
