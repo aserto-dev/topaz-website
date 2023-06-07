@@ -33,14 +33,23 @@ For example: `ds.object({ "type": "identity", "key": "euang@acmecorp.com" })` wi
 
 ```js
 ds.relation({
-  "object_key": "<object-key>",
-  "object_type": "<object-type>",
-  "relation": "<relation-name>",
-  "subject_key": "<subject-key>",
-  "subject_type": "<subject-type>"
+  "object": {
+    "key": "<object-key>",
+    "type": "<object-type>"
+  },
+  "relation": {
+    "name": "<relation-name>",
+    "object_type": "<object-type>"
+  },
+  "subject": {
+    "key": "<subject-key>",
+    "type": "<subject-type>"
+  },
+  "with_objects": <boolean>
 })
 ```
 Returns the relation instance that connects the subject with the object through the relation identified by `<object-type>` and `<relation-name>`.
+If `with_objects` is inclued and set to `true`, the response includes the full subject and object instances.
 
 ### `ds.check_relation`
 
