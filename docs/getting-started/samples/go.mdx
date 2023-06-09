@@ -9,18 +9,25 @@ git clone https://github.com/aserto-demo/todo-go-v2
 ```
 
 ## Set up an `.env` file
-Create the `.env` file:
+Copy the `.env.example` file to `.env` and update the `ASERTO_AUTHORIZER_CERT_PATH` and `ASERTO_DIRECTORY_GRPC_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.config/topaz/certs/grpc-ca.crt`).
 
 ```bash
 cp .env.example .env
 ```
 
-After setting the `todo` policy instance in your Aserto account, update the the `.env` to contain the following values:
+Your `.env` file should look like:
 
 ```
 JWKS_URI=https://citadel.demo.aserto.com/dex/keys
+ISSUER=https://citadel.demo.aserto.com/dex
+AUDIENCE=citadel-app
+
+ASERTO_POLICY_ROOT="todoApp"
+
 ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
-POLICY_ROOT="todoApp"
+ASERTO_AUTHORIZER_CERT_PATH=$HOME/.config/topaz/certs/grpc-ca.crt
+ASERTO_DIRECTORY_SERVICE_URL=localhost:9292
+ASERTO_DIRECTORY_GRPC_CERT_PATH=$HOME/.config/topaz/certs/grpc-ca.crt
 ```
 
 ### Install dependencies
