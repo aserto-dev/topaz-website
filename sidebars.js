@@ -29,6 +29,7 @@ const sidebars = {
             'getting-started/samples/flask',
             'getting-started/samples/dotnet',
             'getting-started/samples/rails',
+            'getting-started/samples/java',
           ]
         },
         'getting-started/samples/test-application',
