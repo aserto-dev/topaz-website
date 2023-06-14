@@ -21,9 +21,11 @@ Update the content of the `appsettings.Development.json` file with the following
 {
   "AllowedHosts": "*",
   "Aserto": {
+    "Insecure": true,
     "PolicyRoot": "todoApp",
     "ServiceUrl": "https://localhost:8282"
   },
+  "Urls": "http://localhost:3001",
   "Directory": {
     "Insecure": true,
     "ServiceUrl": "https://localhost:9292"
