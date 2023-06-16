@@ -40,11 +40,11 @@ const config = {
         defaults: false, //  Adds support for dotenv-defaults. If set to true, uses ./.env.defaults
       }
     ],
-    ['@docusaurus/plugin-google-gtag',
+    ['@docusaurus/plugin-google-tag-manager',
       {
-        trackingID: process.env.REACT_APP_GOOGLE_ANALYTICS_MEASUREMENT_ID ?? '_',
-        anonymizeIP: true,
-      },
+        containerId:
+            process.env.REACT_APP_GOOGLE_TAG_MANAGER_ID ?? '_',
+      }
     ],
     //'docusaurus-plugin-hubspot',
   ],
