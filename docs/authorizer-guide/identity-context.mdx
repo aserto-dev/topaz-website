@@ -52,7 +52,7 @@ default allowed = false
 
 # only allow salespeople
 allowed {
-  input.user.attributes.properties.department == "Sales"
+  input.user.properties.department == "Sales"
 }
 ```
 
@@ -88,7 +88,7 @@ token = {"payload": payload} {
 
 # only allow sales managers
 allowed {
-  input.user.attributes.properties.department == "Sales"
+  input.user.properties.department == "Sales"
   token.payload.manager
 }
 ```
