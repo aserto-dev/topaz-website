@@ -33,7 +33,7 @@ A _decision_ is an output from the evaluation of a _policy_. The policy above ex
 decision called `allowed`, and sets its value to `true`.
 
 The policy below exports the same decision (`allowed`), has a default value of `false` for this
-decision, and a rule that sets `allowed` to true only if the logged-in users's `department` attribute
+decision, and a rule that sets `allowed` to true only if the logged-in users's `department` property
 is equal to `"Sales"`:
 
 ```rego
@@ -42,16 +42,20 @@ package sample.GET.api.orders
 default allowed = false
 
 allowed {
-  input.user.attributes.department == "Sales"
+  input.user.properties.department == "Sales"
 }
 ```
 
+This is known as _attribute-based accesc control_, or ABAC, because the `department` property is an _attribute_ of the user.
+
 ## User context
 
-In the policy above, we were able to use the `department` attribute to help compute the `allowed`
+The Topaz [authorization APIs](/docs/authorizer-guide/authz.mdx) take an [identity context](/docs/authorizer-guide/identity-context.mdx), which allows the caller to pass in the identity of the user as a JWT or a Subject. Topaz will automatically resolve the user and make it available as `input.user`, so that the policy can access any of the user's properties.
+
+In the policy above, we were able to use the `department` property to help compute the `allowed`
 decision. This is an example of User context that is used in a policy. If you import your identities from your identity provider, any properties they contain about users will be available to your policy.
 
-In addition, you can add properties on your objects in an extensible JSON property bag, and use thse properties in authorization decisions.
+In addition, you can add properties on your objects in an extensible JSON property bag, and use these properties in authorization decisions. 
 
 ## Resource context
 
@@ -67,10 +71,14 @@ allowed {
 
 ## Objects
 
-To resolve the identity of an object that is stored in the directory, you can use the `ds.object` built-in. Objects are resolved based on their `type` and `key` value. For example, you can look up a user using their `key`, which is automatically resolved as `input.user.key` if you pass an identity context.
+The directory can store any object, and if you pass in a key in your resource context, you may want to load the object (with its properties) based on this key.
+
+To do this you can use the `ds.object` built-in. Objects are resolved based on their `type` and `key` value.
+
+You don't need to do this for the user, since Topaz automatically does it for you. But if you wanted to load a `department` resource based on a key passed in the resource context, you would do it as follows:
 
 ```rego
-user = ds.object({ "type": "user", "key": input.user.key })
+user = ds.object({ "type": "department", "key": input.resource.key })
 ```
 
 ## Check Relation built-in
@@ -96,6 +104,8 @@ allowed {
 }
 ```
 
+The example above will check whether the user represented in the identity context is a `department owner` of the `department` object with the key passed in as `input.resource.key`.
+
 ## Check Permission built-in
 
 Similar to the `ds.check_relation` built-in, the `ds.check_permission` built-in allows you to query the Topaz directory for a permission that is associated with a relationship between an object and a subject. Once we resolve the object and the subject, we can use the `ds.check_permission` built-in to check if the object has a permission with the subject.
@@ -120,18 +130,42 @@ allowed {
 
 ## Example policy
 
-The policy below is a sample policy that will take advantage of the relation and permission built-ins to check if a user has permission to delete a department. It will also combine an ABAC rule with that will check if the user is a member of the "IT" department.
+The policy below is a sample policy that will take advantage of the relation and permission built-ins to check if a user has permission to delete a department. It will also combine an ABAC rule with that will check if the user is a member of the "IT" department. The resulting policy will be true if either of these conditions is met.
 
 ```rego
 package sample.DELETE.api.departments
 
 default allowed = false
 
+## allow if the department property of the user is "IT"
 allowed {
   input.user.properties.department == "IT"
 }
 
+## allow if the user has the "can-delete" permission on the department identified by "key"
 allowed {
+  ds.check_permission({
+    "subject": {
+      "key": input.user.key,
+      "type": "user"
+    },
+    "object": {
+      "key": input.resource.key,
+      "type": "department"
+    },
+    "permission": {
+      "name": "can-delete"
+    }
+  })
+}
+```
+
+To combine the rules so that BOTH must be true for the `allowed` decision to evaluate to `true`, you can put them in the same `allowed` block: these conditions are `AND`-ed together.
+
+```rego
+## allow if BOTH conditions are true
+allowed {
+  input.user.properties.department == "IT"
   ds.check_permission({
     "subject": {
       "key": input.user.key,

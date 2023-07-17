@@ -46,13 +46,48 @@ echo $GITHUB_PAT | policy login -s ghcr.io -u <username> --password-stdin
 
 Note that the GITHUB_PAT must have the `repo` and `write:packages` scopes, as well as `read:org` for reading packages in other orgs, and `delete:packages` to be able to use `policy rm -r` to remove an image from a remote registry.
 
+#### Create a policy
+
+To create a sample policy, you can use the `policy templates apply` command:
+
+```bash
+policy templates apply policy-template
+```
+
+This will generate a minimal "hello world" policy, accompanied by the following output:
+
+```bash
+Processing template 'policy-template'
+
+Generating files .
+
+The template 'policy-template' was created successfully.
+```
+
+The generated directory structure should look like this:
+```bash
+tree -a .
+.
+├── README.md
+└── src
+    ├── .manifest
+    └── policies
+        └── hello-rego.rego
+
+2 directories, 3 files
+```
+
 #### Build
 
-To build a policy image, use the `policy build` command. You can specify a tag using the `-t` option:
+To build a policy image, use the `policy build` command, with the directory containing the policy source (in the example above, `./src`). You can specify a tag using the `-t` option:
 
 ```bash
 policy build ./src -t my-org/my-policy:v0.1.2
 ```
+
+:::note Tip
+If you get an error like `rego_type_error: undefined function ds.check_relation`, chances are you are building from a directory that does not contain a `.manifest` file that declares the Topaz built-ins.
+:::
 
 You can tag any image by using the `policy tag` command:
 
