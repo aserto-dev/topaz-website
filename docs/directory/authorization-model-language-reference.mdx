@@ -1,0 +1,76 @@
+# Authorization Model Language Reference
+
+## Manifest Structure
+
+This section details the layout of a `manifest.yaml` file
+
+### Schema Version 3 (WIP)
+
+```
+# yaml-language-server: $schema=https://topaz.sh/schema.json
+---
+model:
+  schema: 3
+
+# <object type definitions>
+types:
+  # <object type name>
+  t1:
+    # relation type definitions for object type 't1'
+    relations:
+      # <relation type name>: <relation type definition>
+      r1: <relation type definition>
+
+    # permission definitions for object type 't1'
+    permissions:
+      # permission name: permission definition
+      p1: <permission definition>
+
+  t2:
+    # relation type definitions for object type 't2'
+    relations:
+      # <relation type name>: <relation type definition>
+      r2: <relation type definition>
+
+    # permission definitions for object type 't2'
+    permissions:
+      # permission name: permission definition
+      p2: <permission definition>
+
+...
+```
+
+
+## Definitions
+
+### Object Types
+
+### Relation Types
+
+### Permissions
+
+### Comments
+
+### Example
+
+```
+
+```
+
+## External Permission Definitions (WIP)
+
+Permissions can be implemented using external functions. The functions are declare in a platform specific section in the manifest file and referenced by a permission definition.
+
+
+### OPA rego rules
+
+```
+
+```
+
+
+### Google CEL (Common Expression Language)
+
+```
+
+```
