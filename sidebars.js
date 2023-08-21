@@ -108,7 +108,8 @@ const sidebars = {
         {
           'Java': [
             'software-development-kits/java/grpc-bindings',
-            'software-development-kits/java/authorizer'
+            'software-development-kits/java/authorizer',
+            'software-development-kits/java/middleware',
           ],
         },
         {
