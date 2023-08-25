@@ -81,8 +81,7 @@ E.g.
         return new SubjectIdentityMapper(headerExtractor);
     }
 ```
-
-You can also implement your own IdentityMapper by implementing the `IdentityMapper` interface.
+By default the middleware uses the `NoneIdentityMapper`. You can also implement your own IdentityMapper by implementing the `IdentityMapper` interface.
 
 ## Policy path
 By default, when computing the policy path, the middleware:
