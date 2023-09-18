@@ -6,40 +6,63 @@ This section details the layout of a `manifest.yaml` file
 
 ### Schema Version 3 (WIP)
 
+#### Example manifest
+
 ```
-# yaml-language-server: $schema=https://topaz.sh/schema.json
+# yaml-language-server: $schema=manifest.json
 ---
+# model
 model:
-  schema: 3
+  version: 3
 
-# <object type definitions>
+# object type definitions
 types:
-  # <object type name>
-  t1:
-    # relation type definitions for object type 't1'
+  #  user represents a user that can be granted role(s)
+  user: {}
+
+  # group represents a collection of users and/or (nested) groups
+  group:
     relations:
-      # <relation type name>: <relation type definition>
-      r1: <relation type definition>
+      # group member is a direct relation to a user or a subject relation
+      member: user | group#member
 
-    # permission definitions for object type 't1'
-    permissions:
-      # permission name: permission definition
-      p1: <permission definition>
-
-  t2:
-    # relation type definitions for object type 't2'
+  # folder represents a folder that can contain documents and/or other folders
+  folder:
+    # folder relations
     relations:
-      # <relation type name>: <relation type definition>
-      r2: <relation type definition>
+      # owner relation
+      owner: user
 
-    # permission definitions for object type 't2'
+    # folder permissions
     permissions:
-      # permission name: permission definition
-      p2: <permission definition>
+      # list documents permission
+      read: owner
 
-...
+  # document represents a protected document
+  document:
+    # document relations
+    relations:
+      # parent folder relation
+      parent_folder: folder
+      # writer relation
+      writer: user
+      # reader relation
+      reader: |
+        user | user:*
+
+    # document permissions
+    permissions:
+      # edit permission
+      edit: writer
+      # view permission (union)
+      view: reader | writer
+      # read_and_write permission (intersection)
+      read_and_write: reader & writer
+      # can_only_read_permission (exclusion)
+      can_only_read: reader - writer
+      #  read permission (inherited from parent folder)
+      read: parent_folder->read
 ```
-
 
 ## Definitions
 
@@ -50,27 +73,3 @@ types:
 ### Permissions
 
 ### Comments
-
-### Example
-
-```
-
-```
-
-## External Permission Definitions (WIP)
-
-Permissions can be implemented using external functions. The functions are declare in a platform specific section in the manifest file and referenced by a permission definition.
-
-
-### OPA rego rules
-
-```
-
-```
-
-
-### Google CEL (Common Expression Language)
-
-```
-
-```
