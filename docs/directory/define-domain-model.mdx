@@ -1,22 +1,83 @@
+---
+sidebar_label: Defining a model
+title: Defining a model
+description: Defining a domain model
+---
+
 # Defining a domain model
 
-The authorization model needs to mirror the domain model used by the application. To populate the directory we need to define the domain model which is comprised of objects and relations. To define these objects and relations, we first need to declare object types and relation types.
+The authorization model needs to mirror the domain model used by the application. To populate the directory we need to define the domain model which is comprised of objects and relations. To define these objects and relations, we first need to declare object types, and their relations and permissions.
 
 ## Object types
 
-Object types define the entities in the system, such as `user`, `department`, `task`, etc. Some object types can be designated as _subjects_. This means they can function as the target of a relation. For example, a `user` is a subject, and a `task` is an object. A `group` can function as an _object_ when defining a _member_ relation to a user (_subject_), or it can function as a _subject_ when defining an _owner_ relation to a task (_object_).
+Object types define the entities in the system, such as `user`, `department`, `document`, etc. Any declared object type can also be designated as a _subject_ of a relationship, by specifying it as the _target_ of a relation.
 
-## Relation types
+For example:
+* `document` can be defined an object type.
+* `user` object type is typically used as a subject of a relation.
+* `group` can function as an _object_ when defining a _member_ relation to a user (_subject_), or it can function as a _subject_ when defining an _owner_ relation to a document (_object_).
 
-Relation types define the relationships between entities, such as `member`, `owner`, `manager`, etc. Relation types are defined on object types. In the context of authorization, we can think of relation types as roles that can be assigned to subjects. For example, a `user` can be assigned the `owner` role for a `department`. In our policy, we can check whether a relation exists for a `subject` and an `object` using the `ds.check_relation` built-in.
+## Relations
+
+Relations define the relationships between entities, such as `member`, `owner`, `manager`, etc. Relations are defined on object types. In the context of authorization, we can think of relations as roles that can be assigned to subjects. For example, a `user` can be assigned the `owner` role for a `document`. In our policy, we can check whether a relation exists for a `subject` and an `object` using the `ds.check_relation` built-in.
 
 ## Permissions
 
-While relations are helpful to model roles, we can associate many permissions to a single role. In the directory, permissions are associated with relation types. For example, we can define the `owner` relation type as associated with the `can_create`, `can_delete`, and `can_view` _permissions_. In our policy, we can check whether a permission exists between a `subject` and an `object` using the `ds.check_permission` built-in.
+While relations are helpful to model roles, we can associate many permissions to a single role. In the directory, permissions are associated with relations. For example, we can declare that the `owner` relation confers the `can_read`, `can_write`, and `can_delete` _permissions_. In our policy, we can check whether a permission exists between a `subject` and an `object` using the `ds.check_permission` built-in.
 
 ## Defining the domain model
 
-Create a `manifest.yaml` to define object types, relation types and permission. For example:
+Create a `manifest.yaml` to define object types, relations, and permission. For example:
+
+```yaml
+# yaml-language-server: $schema=https://www.topaz.sh/schema/manifest.json
+---
+
+model:
+  version: 3
+
+types:
+  ### display_name: User ###
+  user:
+    relations:
+      manager: user
+
+  ### display_name: Identity ###
+  identity:
+    relations:
+      identifier: user
+
+  ### display_name: Group ###
+  group:
+    relations:
+      member: user | group#member
+
+  ### display_name: Document ###
+  document:
+    relations:
+      owner: user | group#member
+      editor: user | group#member
+      viewer: user | group#member
+
+    permissions:
+      can_read: viewer | editor | owner
+      can_write: editor | owner
+      can_delete: owner
+```
+
+## Loading the manifest
+
+Load the `manifest.yaml` file into Topaz by running:
+
+```sh
+topaz manifest set ./manifest.yaml
+```
+
+## Manifest language reference
+
+A full annotated example of the manifest can be found [here](./manifest-reference.mdx).
+
+## (Deprecated) v2 model syntax
 
 ```yaml
 # object type (document)

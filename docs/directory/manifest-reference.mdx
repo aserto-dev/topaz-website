@@ -1,0 +1,75 @@
+---
+sidebar_label: Manifest Reference
+title: Manifest Reference
+description: Reference for the manifest DSL
+---
+
+# Manifest language reference
+
+This topic documents v3 of the Topaz manifest language.
+
+```yaml
+# yaml-language-server: $schema=https://www.topaz.sh/schema/manifest.json
+---
+
+# Declares the version of the model
+# Supported value: 3
+model:
+  version: 3
+
+## Declare object types
+types:
+
+  # Declare the "user" object type
+  # The annotation "display_name" acts as a hint to the Topaz UI for a display name for this type
+  ### display_name: User ###
+  user:
+    # Declare relations that are supported by the user object type
+    # The declaration below means that the target of the "manager" relation 
+    #   can only be an instance of a "user".
+    relations:
+      manager: user
+
+  # Declare the "group" object type
+  group:
+    # Declare relations that are supported by this object type
+    # Format: <relation_name>: <type> | <another_type> | <type#relation>
+    relations:
+      # The declaration below means that the target of the "member" 
+      #   relation can be of type "user" OR the set of objects defined 
+      #   by relation "group#member".
+      member: user | group#member
+
+  # Declare the "folder" object type
+  folder:
+    # Declare relations that are supported on "folder"
+    relations:
+      # The "parent" relation defines a recursive parent relationship
+      parent: folder
+      owner: user | group#member
+      editor: user | group#member
+      viewer: user | group#member
+
+    # Declare permissions that are supported on "folder"
+    permissions:
+      # Format: <permission_name>: relation1 | relation2 | type->permission
+      # The declaration below means that the "can_read_folder" permissin 
+      #   is conferred by the viewer OR editor OR owner relation, OR through 
+      #   a relation to the parent folder that carries the "can_read_folder" 
+      #   permission.
+      can_read_folder: viewer | editor | owner | parent->can_read_folder
+      can_write_folder: editor | owner | parent->can_write_folder
+      can_delete_folder: owner | parent->can_delete_folder
+
+  # Declare the "document" object type
+  document:
+    relations:
+      owner: user | group#member
+      editor: user | group#member
+      viewer: user | group#member
+
+    permissions:
+      can_read_document: viewer | editor | owner | parent->can_read_folder
+      can_write_document: editor | owner | parent->can_write_folder
+      can_delete_document: owner | parent->can_delete_folder
+```

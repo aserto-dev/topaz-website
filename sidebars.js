@@ -58,6 +58,8 @@ const sidebars = {
         'directory/apis',
         'directory/reader',
         'directory/writer',
+        'directory/model',
+        'directory/manifest-reference',
       ]
     },
     {
