@@ -7,12 +7,41 @@ description: The Directory APIs
 
 # Directory APIs
 
-The Directory APIs are currently only exposed over gRPC. They are organized into four services:
+As of Topaz 0.30+, the Directory APIs are exposed both over gRPC as well as REST.
+
+:::note
+Prior versions only support the v2 gRPC contracts. To use the new contracts, upgrade to Topaz 0.30+.
+:::
+
+## gRPC
+
+By default, Topaz exposes all of the directory gRPC endpoints on port `9292`. You can override this in [config](/docs/command-line-interface/topaz-cli/configuration), and configure separate endpoints for the Reader, Writer, Import, and Export services.
+
+Topaz 0.30+ supports two contracts side-by-side - v2 and v3. You can find the contracts on [buf](https://buf.build/aserto-dev/directory).
+
+The v2 Directory APIs are organized into four services:
 - [`aserto.directory.reader.v2.Reader`](/docs/directory/reader) - Reader APIs
 - [`aserto.directory.writer.v2.Writer`](/docs/directory/writer) - Writer APIs
 - `aserto.directory.importer.v2.Importer/Import` - import entities
 - `aserto.directory.exporter.v2.Exporter/Export` - export entities
 
+The v3 Directory APIs add a Model service as well.
+- [`aserto.directory.reader.v3.Reader`](/docs/directory/reader) - Reader APIs
+- [`aserto.directory.writer.v3.Writer`](/docs/directory/writer) - Writer APIs
+- [`aserto.directory.exporter.v3.Model`](/docs/directory/model) - Model APIs
+- `aserto.directory.importer.v3.Importer/Import` - import entities
+- `aserto.directory.exporter.v3.Exporter/Export` - export entities
+
 The Reader APIs and Writer APIs can be used to read and write data to the directory.
 
 The Import and Export APIs can be used to stream data in and out of the directory.
+
+The Model APIs can be used to get, set, and delete a directory manifest.
+
+## REST
+
+Topaz 0.30+ supports REST APIs in addition to the gRPC contracts.
+
+By default, Topaz exposes the directory REST endpoints on port `9393`. You can override this in [config](/docs/command-line-interface/topaz-cli/configuration), and configure separate endpoints for the Reader, Writer, Model, Import, and Export services.
+
+The reference documentation for the REST APIs can be found [here](https://aserto.readme.io/reference/directoryv3check).

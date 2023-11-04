@@ -1,0 +1,21 @@
+---
+sidebar_label: Model APIs
+title: Model APIs
+description: The Directory Model APIs
+---
+
+# Model APIs
+
+The Directory Model APIs are in the `aserto.directory.model.v3.Model` service.
+
+A *manifest* is a textual DSL that describes the domain model of the directory. It contains the definitions for all *object types*, including the *relations* and *permissions* defined for each.
+
+- `GetManifest` - get the directory manifest
+- `SetManifest` - sets the directory manifests
+- `DeleteManifest` - deletes the directory manifest, along with any data in the directory
+
+## Manifest
+
+Learn about defining a manifest for a domain model [here](./define-domain-model.mdx).
+
+A full annotated example of the manifest language can be found [here](./manifest-reference.mdx).
