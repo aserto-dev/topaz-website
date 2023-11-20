@@ -6,14 +6,14 @@ description: Aserto SDKs - Go - Creating a client and making authorization calls
 
 # Authorizer Client
 
-[`AuthorizerClient`](https://github.com/aserto-dev/aserto-go/blob/main/authorizer/grpc/authorizer.go#L17). It can be used on its own to make authorization calls or, more commonly, it can be used to create authorization middleware.
+[`AuthorizerClient`](https://github.com/aserto-dev/go-aserto/blob/main/authorizer/grpc/authorizer.go#L17). It can be used on its own to make authorization calls or, more commonly, it can be used to create authorization middleware.
 
 ## Create a Client
 
 ```go
 import (
-    "github.com/aserto-dev/aserto-go/authorizer/grpc"
-    "github.com/aserto-dev/aserto-go/client"
+    "github.com/aserto-dev/go-aserto/authorizer/grpc"
+    "github.com/aserto-dev/go-aserto/client"
 )
 
 ...
@@ -34,9 +34,9 @@ to perform an operation.
 import (
     "fmt"
 
-    "github.com/aserto-dev/aserto-go/authorizer/grpc"
-  	"github.com/aserto-dev/aserto-go/authorizer/http"
-  	"github.com/aserto-dev/aserto-go/client"
+    "github.com/aserto-dev/go-aserto/authorizer/grpc"
+  	"github.com/aserto-dev/go-aserto/authorizer/http"
+  	"github.com/aserto-dev/go-aserto/client"
   	authz "github.com/aserto-dev/go-authorizer/aserto/authorizer/v2"
   	"github.com/aserto-dev/go-authorizer/aserto/authorizer/v2/api"
 )

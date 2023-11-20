@@ -24,7 +24,7 @@ export default [
     title: 'Go',
     icon: 'go.svg',
     link: 'https://go.dev/',
-    github: 'https://github.com/aserto-dev/aserto-go',
+    github: 'https://github.com/aserto-dev/go-aserto',
     docs: '/docs/software-development-kits/go/install',
   },
   {
