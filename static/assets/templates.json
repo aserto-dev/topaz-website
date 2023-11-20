@@ -1,10 +1,10 @@
 {
     "simple-rbac": {
         "description": "Simple RBAC",
-        "url": "http://localhost:9999/assets/templates/simple-rbac.json"
+        "url": "https://topaz.sh/static/assets/templates/simple-rbac.json"
     },
     "gdrive": {
         "description": "Google Drive",
-        "url": "http://localhost:9999/assets/templates/gdrive.json"
+        "url": "https://topaz.sh/static/assets/templates/gdrive.json"
     }
 }

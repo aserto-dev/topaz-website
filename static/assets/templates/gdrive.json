@@ -3,7 +3,7 @@
     "assets": {
         "manifest": "https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/simple-rbac/manifest.yaml",
         "policy": {
-            "name": "simple-rbac",
+            "name": "gdrive",
             "resource": "ghcr.io/aserto-policies/policy-rebac:latest"
         },
         "idp_data": [
