@@ -79,6 +79,7 @@ const sidebars = {
         'deployment/sidecar',
         'deployment/microservice',
         'deployment/binary',
+        'deployment/docker-compose',
       ]
     },
     {
