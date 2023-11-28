@@ -6,7 +6,7 @@ description: Topaz Deployment - Docker Compose
 
 # Run in docker compose
 
-Running topaz in docker compose is a great way to get started quickly.  It can be a useful as development environment for testing policies locally.
+Running Topaz in docker compose is a great way to get started quickly.  It can be a useful as development environment for testing policies locally.
 
 ## Clone the repo
 
@@ -51,7 +51,7 @@ cp ../citadel/citadel_relations.json data
 cp ../citadel/manifest.yaml data
 ```
 
-Now evoke the topaz client inside the running container to import the sample manifest and data into the topaz edge directory.
+Now invoke the topaz CLI inside the running container to import the sample manifest and data into the topaz edge directory.
 
 ```sh
 docker compose exec topaz ./topaz manifest set --no-check -i /data/manifest.yaml
