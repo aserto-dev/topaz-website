@@ -1,0 +1,47 @@
+name: update_templates
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'topaz version'
+        type: string
+        default: "main"
+        required: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: actions/checkout@v4
+
+      - name: Setup git
+        run: |
+          mkdir -p $HOME/.ssh
+          umask 0077 && echo -e "${SSH_PRIVATE_KEY}" > $HOME/.ssh/id_rsa
+          ssh-keyscan github.com >> $HOME/.ssh/known_hosts
+          git config --global url."git@github.com:".insteadOf https://github.com/
+          git config --global user.email "github-bot@aserto.com"
+          git config --global user.name "Aserto Bot"
+      
+      - name: Get topaz
+        uses: actions/checkout@v4
+        with:
+          repository: "github.com/aserto-dev/topaz"
+          ref: ${{ inputs.version }}
+          path: "./topaz"
+      
+      - name: Copy assets
+        run: |
+        cp -r ./topaz/assets/* static/assets/templates/topaz/
+      
+      - name: Add templates
+        run: |
+        git add .
+        git commit -m "Update static topaz template assets"
+        git push -u origin update_topaz_tempaltes
+      
+      - name: Prepare PR        
+        run: gh pr create -B update_topaz_tempaltes -H main --title 'Update topaz templates' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
