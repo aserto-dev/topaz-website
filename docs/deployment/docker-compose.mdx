@@ -1,0 +1,59 @@
+---
+sidebar_label: Docker Compose
+title: Docker Compose - Deployment
+description: Topaz Deployment - Docker Compose
+---
+
+# Run in docker compose
+
+Running Topaz in docker compose is a great way to get started quickly.  It can be a useful as development environment for testing policies locally.
+
+## Clone the repo
+
+A sample docker-compose.yaml is included in the topaz repo.  Clone the repo to try it out.
+```sh
+git clone https://github.com/aserto-dev/topaz.git topaz
+```
+
+## Start docker compose
+
+Install Docker Desktop from https://www.docker.com/, then start up topaz containers with:
+
+```sh
+cd topaz/assets/docker-compose
+docker compose up
+```
+
+Within a minute or so you should see the topaz services and the web console start up:
+```
+topaz          | 8:44PM INF Starting 0.0.0.0:9292 GRPC server component=service-manager
+topaz          | 8:44PM INF Starting 0.0.0.0:8081 GRPC server component=service-manager
+topaz          | 8:44PM INF Starting 0.0.0.0:8282 GRPC server component=service-manager
+topaz          | 8:44PM INF Starting 0.0.0.0:8080 Gateway server component=service-manager
+topaz          | 8:44PM INF Starting 0.0.0.0:8383 Gateway server component=service-manager
+topaz          | 8:44PM INF Starting 0.0.0.0:9393 Gateway server component=service-manager
+topaz-console  | {"level":"info","time":"2023-11-27T20:44:19.996Z","pid":35,"hostname":"6d6218cae759","name":"self-hosted-console","msg":"Self Hosted Console server started on port 8080"}
+```
+
+## Browse to the console
+
+In a web browser, visit http://localhost:8080 to access the web console.
+
+
+## Load sample directory data
+
+To load sample data, copy files from the topaz repo into the mounted /data directory so that the topaz container will have access to them.
+
+```sh
+cd topaz/assets/docker-compose
+cp ./citadel/citadel_objects.json data
+cp ../citadel/citadel_relations.json data
+cp ../citadel/manifest.yaml data
+```
+
+Now invoke the topaz CLI inside the running container to import the sample manifest and data into the topaz edge directory.
+
+```sh
+docker compose exec topaz ./topaz manifest set --no-check -i /data/manifest.yaml
+docker compose exec topaz ./topaz import --no-check -i -H localhost:9292 -d /data
+```
