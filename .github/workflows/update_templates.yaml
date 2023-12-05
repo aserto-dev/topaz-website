@@ -27,21 +27,22 @@ jobs:
       - name: Get topaz
         uses: actions/checkout@v4
         with:
-          repository: "github.com/aserto-dev/topaz"
+          repository: "aserto-dev/topaz"
           ref: ${{ inputs.version }}
           path: "./topaz"
       
       - name: Copy assets
         run: |
-        cp -r ./topaz/assets/* static/assets/templates/topaz/
+          cp -r ./topaz/assets/* static/assets/templates/
+          rm static/assets/templates/*.gif
       
       - name: Add templates
         run: |
         git add .
         git commit -m "Update static topaz template assets"
-        git push -u origin update_topaz_tempaltes
+        git push -u origin update_topaz_templates
       
       - name: Prepare PR        
-        run: gh pr create -B update_topaz_tempaltes -H main --title 'Update topaz templates' --body 'Created by Github action'
+        run: gh pr create -B update_topaz_templates -H main --title 'Update topaz templates' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
