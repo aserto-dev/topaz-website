@@ -38,9 +38,9 @@ jobs:
       
       - name: Add templates
         run: |
-        git add .
-        git commit -m "Update static topaz template assets"
-        git push -u origin update_topaz_templates
+          git add .
+          git commit -m "Update static topaz template assets"
+          git push -u origin update_topaz_templates
       
       - name: Prepare PR        
         run: gh pr create -B update_topaz_templates -H main --title 'Update topaz templates' --body 'Created by Github action'
