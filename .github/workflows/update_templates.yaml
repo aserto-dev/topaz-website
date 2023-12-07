@@ -8,12 +8,26 @@ on:
         default: "main"
         required: false
 
+env:
+  VAULT_ADDR: https://vault.eng.aserto.com/
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       -
         uses: actions/checkout@v4
+
+      -
+        name: Read Configuration
+        uses: hashicorp/vault-action@v2
+        id: vault
+        with:
+          url: https://vault.eng.aserto.com/
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |                 
+            kv/data/github  "SSH_PRIVATE_KEY"     | SSH_PRIVATE_KEY;
+            kv/data/github  "READ_WRITE_TOKEN"    | READ_WRITE_TOKEN;
 
       - name: Setup git
         run: |
@@ -30,11 +44,13 @@ jobs:
           repository: "aserto-dev/topaz"
           ref: ${{ inputs.version }}
           path: "./topaz"
+          token: ${READ_WRITE_TOKEN}
       
       - name: Copy assets
         run: |
           cp -r ./topaz/assets/* static/assets/templates/
           rm static/assets/templates/*.gif
+          rm -rf ./topaz
       
       - name: Add templates
         run: |
@@ -45,4 +61,4 @@ jobs:
       - name: Prepare PR        
         run: gh pr create -B update_topaz_templates -H main --title 'Update topaz templates' --body 'Created by Github action'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${READ_WRITE_TOKEN}
