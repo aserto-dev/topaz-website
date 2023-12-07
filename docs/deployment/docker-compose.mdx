@@ -20,7 +20,7 @@ git clone https://github.com/aserto-dev/topaz.git topaz
 Install Docker Desktop from https://www.docker.com/, then start up topaz containers with:
 
 ```sh
-cd topaz/assets/docker-compose
+cd topaz/docs/deployments/docker-compose
 docker compose up
 ```
 
@@ -45,7 +45,7 @@ In a web browser, visit http://localhost:8080 to access the web console.
 To load sample data, copy files from the topaz repo into the mounted /data directory so that the topaz container will have access to them.
 
 ```sh
-cd topaz/assets/docker-compose
+cd topaz/docs/deployments/docker-compose
 cp ./citadel/citadel_objects.json data
 cp ../citadel/citadel_relations.json data
 cp ../citadel/manifest.yaml data

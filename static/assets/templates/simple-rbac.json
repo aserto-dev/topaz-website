@@ -2,18 +2,18 @@
     "name": "simple-rbac",
     "description": "Simple RBAC",
     "assets": {
-        "manifest": "https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/simple-rbac/manifest.yaml",
+        "manifest": "/assets/templates/simple-rbac/manifest.yaml",
         "policy": {
-            "name": "simple-rbac",
+            "name": "default",
             "resource": "ghcr.io/aserto-policies/policy-rebac:latest"
         },
         "idp_data": [
-            "https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel/citadel_objects.json",
-            "https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel/citadel_relations.json"
+            "/assets/templates/citadel/citadel_objects.json",
+            "/assets/templates/citadel/citadel_relations.json"
         ],
         "domain_data": [
-            "https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/simple-rbac/simple-rbac_objects.json",
-            "https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/simple-rbac/simple-rbac_relations.json"
+            "/assets/templates/simple-rbac/simple-rbac_objects.json",
+            "/assets/templates/simple-rbac/simple-rbac_relations.json"
         ],
         "assertions": []
     }
