@@ -46,9 +46,9 @@ To load sample data, copy files from the topaz repo into the mounted /data direc
 
 ```sh
 cd topaz/docs/deployments/docker-compose
-cp ./citadel/citadel_objects.json data
-cp ../citadel/citadel_relations.json data
-cp ../citadel/manifest.yaml data
+cp ../../../assets/citadel/citadel_objects.json data
+cp ../../../assets/citadel/citadel_relations.json data
+cp ../../../assets/citadel/manifest.yaml data
 ```
 
 Now invoke the topaz CLI inside the running container to import the sample manifest and data into the topaz edge directory.
