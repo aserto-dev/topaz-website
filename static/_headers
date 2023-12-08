@@ -1,2 +1,5 @@
 /schema/manifest.json
   Access-Control-Allow-Origin: *
+
+/assets/templates/**/*.yaml
+  Access-Control-Allow-Origin: *
