@@ -54,6 +54,7 @@ jobs:
       
       - name: Add templates
         run: |
+          git checkout -b update_topaz_templates
           git add .
           git commit -m "Update static topaz template assets"
           git push -u origin update_topaz_templates
