@@ -62,4 +62,4 @@ jobs:
       - name: Prepare PR        
         run: gh pr create -B update_topaz_templates -H main --title 'Update topaz templates' --body 'Created by Github action'
         env:
-          GITHUB_TOKEN: ${READ_WRITE_TOKEN}
+          GITHUB_TOKEN: ${{ steps.vault.outputs.READ_WRITE_TOKEN }}
