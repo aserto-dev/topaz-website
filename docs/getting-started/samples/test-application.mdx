@@ -4,23 +4,13 @@ sidebar_label: Test with the sample web app
 
 # Test your server with the Todo web application
 
-### Clone the application
-```
-git clone https://github.com/aserto-demo/todo-application.git
-```
+The easy way to test is by simply navigating to a deployed version of the [todo web application](https://todo.demo.aserto.com). The todo app expects your back-end to be running on port 3001.
 
-### Install the application dependencies
-```
-cd todo-application
-yarn
-```
+To build and run the todo application from source, see the section following "Testing the authorization model".
 
-### Start the application
-```
-yarn start
-```
+## Testing the authorization model
 
-Open your browser on `localhost:3000`. You should see the following log in dialog:
+You should see the following login modal:
 
 <img src="/img/samples/login.png" />
 
@@ -40,4 +30,26 @@ Since Morty is only an editor, he won't be able to delete a todo item he did not
 Then, attempt to delete one of Rick's todo items you created before. You should see the following error:
 
 <img src="/img/samples/morty-cant-complete-ricks.png" />
+
+## Building and running the Todo web application from source
+
+Alternatively, you can build and run the todo application from source.
+
+### Clone the application
+```
+git clone https://github.com/aserto-demo/todo-application.git
+```
+
+### Install the application dependencies
+```
+cd todo-application
+yarn
+```
+
+### Start the application
+```
+yarn start
+```
+
+Open your browser on `localhost:3000`.
 
