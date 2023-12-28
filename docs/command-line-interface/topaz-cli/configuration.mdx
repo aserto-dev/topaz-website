@@ -12,20 +12,20 @@ Topaz requires a configuration file to run. By default, the location of the conf
 ```
 Flags:
   -h, --help                         Show context-sensitive help.
-      --no-check                     disable local container running check ($TOPAZ_NO_CHECK)
+  -N, --no-check                     disable local container status check ($TOPAZ_NO_CHECK)
 
   -n, --policy-name=STRING           policy name
   -l, --local-policy-image=STRING    local policy image name
   -r, --resource=STRING              resource url
   -p, --stdout                       generated configuration is printed to stdout but not saved
   -d, --edge-directory               enable edge directory
-  -s, --seed-metadata                enable seed metadata
+  -f, --force                        forcefully create configuration
 ```
 
 For example, to generate a configuration file for the demo "todo" policy, use the following command:
 
 ```shell
-topaz configure -d -s -r ghcr.io/aserto-policies/policy-todo-rebac:latest -n policy-todo
+topaz configure -n policy-todo -r ghcr.io/aserto-policies/policy-todo-rebac:latest -d
 ```
 
 ## Config file documentation

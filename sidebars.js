@@ -135,6 +135,8 @@ const sidebars = {
         'Topaz CLI': [
           'command-line-interface/topaz-cli/index',
           'command-line-interface/topaz-cli/configuration',
+          'command-line-interface/topaz-cli/dev-certs',
+          'command-line-interface/topaz-cli/templates',
         ],
         'Policy CLI': [
           'command-line-interface/policy-cli/download',
