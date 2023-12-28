@@ -12,22 +12,14 @@ const PolicyList: PolicyItem[] = [
     title: "RBAC Policy example",
     content: `
 allowed {
-  ds.check_relation({
-    "object": {
-      "key": input.resource.tenant,
-      "type": "tenant"
-    },
-    "relation": {
-      "object_type": "tenant",
-      "name" : "member"
-    },
-    "subject": {
-        "key": input.user.key,
-        "type": "user"
-    }
+  ds.check({
+    "object_type": "tenant",
+    "object_key": input.resource.tenant,
+    "relation": "member",
+    "subject_type": "user",
+    "subject_key": input.user.key,
   })
-}
-    `,
+}`,
   },
   {
     title: "ABAC Policy example",
@@ -44,16 +36,12 @@ allowed {
     title: "ReBAC Policy example",
     content: `
 allowed {
-  ds.check_permission({
-    "object": {
-      "key": input.resource.doc,
-      "type": "document"
-    },
-    "permission": {"name": "read"},
-    "subject": {
-      "key": input.user.key,
-      "type": "user"
-    }
+  ds.check({
+    "object_type": "document",
+    "object_key": input.resource.doc,
+    "relation": "read",
+    "subject_type": "user",
+    "subject_key": input.user.key,
   })
 }`,
   },
