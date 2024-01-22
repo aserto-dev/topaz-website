@@ -27,7 +27,7 @@ types:
   ### display_name: User ###
   user:
     # Declare relations that are supported by the user object type
-    # The declaration below means that the target of the "manager" relation 
+    # The declaration below means that the target of the "manager" relation
     #   can only be an instance of a "user".
     relations:
       manager: user
@@ -107,12 +107,12 @@ This means that the `can_comment` permission is granted only if the user is the 
 
 ### Exclusion
 
-The Exclusion operator (`!`) indicates that a permission is granted only if the target is NOT part of the listed relation.
+The Exclusion operator (`-`) indicates that a permission is granted only if the target is NOT part of the listed relation.
 
 Example:
 
 ```yaml
-  can_comment: commenter & !guest
+  can_comment: commenter - guest
 ```
 
 This means that the `can_comment` permission is granted to subjects that are commenters and are NOT guests.
