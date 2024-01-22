@@ -7,31 +7,68 @@ description: The Topaz Directory - an Overview
 
 # Directory
 
-The Topaz Directory stores information required to make authorization decisions. It is flexible enough to support different access control strategies including Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), and Relationship-Based Access Control (ReBAC).
+The Topaz Directory stores the information required to make authorization decisions. It is flexible enough to support different access control strategies including Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), and Relationship-Based Access Control (ReBAC).
 
 An authorization decision is an answer to the question *"Is subject __S__ allowed to perform action __A__ on resource __R__?"* In other words, authorization decisions determine whether a subject (e.g. user, group, service) has a given permission on a resource (e.g. document, folder, project).
 
 ## Concepts
 
-The Topaz Directory stores three types of entities:
-* __Object__: Objects represent the participants in authorization decisions. Some objects represent __subjects__&mdash;actors who _perform_
+A Directory has a **model** (which can be thought of as a "schema"), and **data** which conforms to the model. The data is structured in the form of **objects** and **relationships**.
+
+### Model
+
+The model defines **object types**. Each object type has **relations** and **permissions**. Relations can be thought of as the "roles" that an object type supports. Permissions are the actions that can be performed on the object type, and are granted through relations.
+
+For example, a *resource* object type can define the *can_read*, *can_write*, and *can_delete* permissions, and have these granted through the *owner*, *editor*, and *viewer* relations.
+
+### Manifest
+
+The **manifest** is a yaml file that defines the authorization model. Here is a manifest for the example above:
+
+```yaml
+# yaml-language-server: $schema=https://www.topaz.sh/schema/manifest.json
+---
+model:
+  version: 3
+
+types:
+  user: {}
+
+  resource:
+    relations:
+      owner: user
+      editor: user
+      viewer: user
+    permissions:
+      can_read: viewer | editor | owner
+      can_write: editor | owner
+      can_delete: owner
+```
+
+* this manifest defines the `user` and `resource` types.
+* the `user` type is simply used as a subject (target) for relationships.
+* the `resource` type has the `owner`, `editor`, and `viewer` relations, which can each take a `user` as a subject (target) of the relationship.
+* the `resource` type has the `can_read` permission, which is granted through any of the `viewer` OR `editor` OR `owner` relations. It also has the `can_write` permission, which is granted through either the `editor` OR `owner` relation, and the `can_delete` permission, which is only granted through the `owner` relation.
+
+### Data
+
+The Topaz Directory stores two types of entities - **objects** and **relations**:
+* __Objects__: Objects represent the participants in authorization decisions. Some objects represent __subjects__&mdash;actors who _perform_
   actions&mdash;and other may represent __resources__&mdash;the items that subjects can attempt to access in various ways.
 
-* __Permission__: an action that subjects may attempt to perform on an object
-
-* __Relation__: A _labeled_ association between a source object (resource) and a target object (subject), which may carry with it a set of _permissions_.
+* __Relations__: _labeled_ associations between a source object (resource) and a target object (subject), which may carry with it a set of _permissions_.
 
 Using these concepts, an authorization decision can be rephrased as *"Does subject __S__ have a relation to resource __R__, where the relation carries permission __P__ ?"* 
 
-A relation between a subject and a resource can be defined explicitly, or be implied from group membership. For example, the subject __S__ may be a _member_ of group __G__, which in turn has a relation that carries permission __P__ with the resource __R__.
+A relation between a subject and a resource can be defined explicitly, or be implied from a transitive relationship, such as group membership. For example, the subject __S__ may be a _member_ of group __G__, which in turn has a relation that carries permission __P__ with the resource __R__.
 
 ### Directory as a Graph
 
-It is convenient to think of the Topaz Directory as a graph in which objects are the nodes and relations the edges. Under this model, the authorization question in the previous section can be rephrased again as *"Is there a path from the node __S__ to the node __R__ in which one or more edges have permission __P__?"*
+It is convenient to think of the Topaz Directory as a graph in which objects are the nodes and relations are the edges. Under this model, the authorization question in the previous section can be rephrased again as *"Is there a path from the node __S__ to the node __R__ in which one or more edges have permission __P__?"*
 
-Indeed, the directory API provides methods such as `check_relation` and `check_permission` to query and traverse this graph of objects and relations.
+Indeed, the directory API provides a method called `check` to query and traverse this graph of objects and relations, to check whether a subject has a permission or relation on an object.
 
-### Examples
+## Example
 
 With these building blocks, it's possible to construct expressions like:
 * *Euan* is a *member* of the *Sales-group*
@@ -42,49 +79,34 @@ With these building blocks, it's possible to construct expressions like:
 And answer queries like:
 * Does *Euan* have the *read* permission on the *Sales-plan-document* ?
 
-The Topaz directory is able to evaluate this graph query, traversing through these relationship and determining the outcome.
+The Topaz directory is able to evaluate this graph query, traversing through these relationships and determining the outcome.
 
-## Types
+## Common Object Types
 
-To help define different kinds of objects and specify the relations that may exist between them, the Topaz Directory provides two extensible sets of types:
-* __Object Types__ define the kinds of objects (including subjects) that can be created in the directory.
-* __Relation Types__ define the kinds of relations that can be created between directory objects.
+While Topaz does not have any hard-coded types, it does come with a few templates, including `simple-rbac`, `google-docs`, and others. Each of these templates defines its own manifest, but these manifests share a set of common object types and relationships:
 
-### Built-in Object Types
-
-The Directory is pre-configured with a few types:
 * **User**: a principal (used as a subject)
-* **Group**: used to model a collection of users and/or other groups (can be used as a subject or object)
-* **Identity**: an identifier for a User (e.g. email, PID)
-* **Application**: an object that a User may have a relationship to
-* **Resource**: a generic resource
+* **Group**: a collection of users and/or other groups (can be used as a subject or object)
+* **Identity**: a unique identifier for a user (e.g. email, PID)
 
-### Built-in Relation Types
-The following relation types are also pre-configured:
+These object types can be found in almost all identity providers. Topaz templates define these common types to make it easy to model a few universal patterns:
 
-| Relation type | Object type | Description                         |
-|---------------|-------------|-------------------------------------|
-| Member        | Group       | A subject is a member of a group    |
-| Identifier    | Identity    | A user is identified by an identity |
-| User          | Application | A user can have applications        |
-| Manager       | User        | A user has a manager                |
+* Groups are used to model collections of users, and can be nested. This makes it easy to model authorization rules that depend on (nested) group membership.
+* Identities are used to look up users. This makes it easy to look up a user by any of their unique identifiers, including `email`, or the `sub` claim that an identity provider embeds in a JWT.
 
-### User-defined types
+## Object properties
 
-Object and relation types are extensible. Topaz makes it easy to create your own types
-which model your resource hierarchy / domain model. For example, you may have Organizations, which may have Folders.
+Each object has a JSON property bag that allows storing additional information for that object. This makes it easy to implement ABAC-style Policies using Topaz, by refering to those properties in a policy expression.
 
-Topaz lets you create these object types in the directory, along with relation types (like Viewer, Editor, Admin, Owner) which model the relationship between these objects and subject types (such as User or Group).
+## User Context and Identity objects
 
-## User Context
+A calling application can provide an [identity context](/docs/authorizer-guide/identity-context) in an authorization request, which is used to resolve the user object associated with that identity.
 
-Policies can reference [identity context](/docs/authorizer-guide/identity-context). A calling application can provide the [identity context](/docs/authorizer-guide/identity-context) which is used to load that identity context.
+For an identity context of type `IDENTITY_TYPE_JWT`, the Authorizer will load an `identity` object with the `id` that is found in the `sub` claim of the JWT. For an identity context of type `IDENTITY_TYPE_SUB`, the string passed in will be used as the `id` of the identity object to load.
 
-The Authorizer will resolve the user identity in the Directory. It will then load the user context and make it available to the Policy as `input.user`.
+The Authorizer will then look up the `identifier` relationship to the corresponding `user` object, and load the user object, making it available to the Policy as `input.user`.
 
-## Extensible properties
-
-Each object has a JSON property bag that allows storing additional information for that object.
+In this way, a Policy can reference properties of the user using the expression `input.user.properties.<property_name>`.
 
 ## Built-ins
 
