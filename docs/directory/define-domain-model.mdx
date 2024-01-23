@@ -71,7 +71,7 @@ In this manifest, we define four object types: `user`, `identity`, `group`, and 
 * the `identity` object type allows creating (or importing from an IDP) multiple identities associated with a `user` object.
 * the `group` object type defines a `member` relation, whose target can be a `user`, or the set of users that have a `member` relationship from another `group` object. This is designated by the notation `group#member`. For example, if you define a group with an ID of `editor`, you can add individual users to it, and you could also add the `member`'s of the `viewer` group by adding that group object to the `editor` group.
 * the `document` object type defines the `owner`, `editor`, and `viewer` relations, which can have subjects (targets) of either type `user` or `group`. In the case of a group, the set of instances in the `member` relation of that group become part of the set referred to by the relation.
-* the `document` object type also defines the `can_read`, `can_write`, and `can_delete` permissions. These permissions are granted through the relations we just defined. Note that permission definitions can use a few **operators**: union (`|`), intersection (`&`), exclusion (`!`), and the arrow operator (`->`).
+* the `document` object type also defines the `can_read`, `can_write`, and `can_delete` permissions. These permissions are granted through the relations we just defined. Note that permission definitions can use a few **operators**: union (`|`), intersection (`&`), exclusion (`-`), and the arrow operator (`->`).
 
 :::tip
 More information on operators can be found in the [Manifest Reference](./manifest-reference.mdx#operators).
