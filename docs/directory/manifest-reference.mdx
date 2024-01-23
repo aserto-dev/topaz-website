@@ -64,7 +64,7 @@ types:
       # The declaration below means that the "can_read_folder" permission
       #   is granted to:
       #     1. anyone who can write to the folder (has the "can_write_folder" permission).
-      #     2. anyhone who can write to the parent folder (parent->can_read_folder).
+      #     2. anyone who can write to the parent folder (parent->can_read_folder).
       #     3. anyone with the "viewer" relation to the folder.
       can_read_folder: can_write_folder | parent->can_read_folder | viewer
 
@@ -78,8 +78,8 @@ types:
 
     permissions:
       can_delete_document: owner | parent->can_delete_folder
-      can_write_document: can_delete_document | parent->canwrite_document | editor
-      can_read_document: can_write_document | parent->can_read_document | viewer
+      can_write_document:  can_delete_document | parent->can_write_document | editor
+      can_read_document:   can_write_document  | parent->can_read_document  | viewer
 ```
 
 ## Relation definitions
@@ -92,7 +92,7 @@ There are three kinds of assignment specifiers:
 
 ### Direct assignment
 
-Direct assignment specify an object type that can be used as the subject of the relation. For example, the `manager`
+Direct assignment specifies an object type that can be used as the subject of the relation. For example, the `manager`
 relation below can be directly assigned to an object of type `user`:
 
 ```yaml
