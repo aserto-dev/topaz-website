@@ -134,7 +134,14 @@ const sidebars = {
       'CLIs': {
         'Topaz CLI': [
           'command-line-interface/topaz-cli/index',
+          'command-line-interface/topaz-cli/start',
+          'command-line-interface/topaz-cli/templates',
+          'command-line-interface/topaz-cli/console',
+          'command-line-interface/topaz-cli/manifest',
+          'command-line-interface/topaz-cli/data',
           'command-line-interface/topaz-cli/configuration',
+          'command-line-interface/topaz-cli/test',
+          'command-line-interface/topaz-cli/versioning',
         ],
         'Policy CLI': [
           'command-line-interface/policy-cli/download',
