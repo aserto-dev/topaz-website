@@ -21,7 +21,7 @@
   ```
 
 ## Usage
-```
+```shell
 Usage: topaz <command>
 
 Topaz CLI
@@ -42,6 +42,8 @@ Commands:
   restore            restore directory data
   test exec          execute assertions
   test template      output assertions template
+  templates list     list template
+  templates install  install template
   install            install topaz container
   configure          configure topaz service
   update             update topaz container version
@@ -55,3 +57,7 @@ Flags:
 
 Run "topaz <command> --help" for more information on a command.
 ```
+
+:::tip
+If you don't add the Topaz self-signed certs to your trust chain, you'll need to execute most commands that interact with Topazd using the `-i` (insecure) flag.
+:::

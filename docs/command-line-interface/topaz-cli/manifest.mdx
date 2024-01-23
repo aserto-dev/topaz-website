@@ -1,0 +1,69 @@
+# Managing the manifest
+
+Topaz offers three commands to manage the manifest:
+
+```shell
+  manifest get       get manifest
+  manifest set       set manifest
+  manifest delete    delete manifest
+```
+
+## Getting the manifest
+
+`topaz manifest get` retrieves the current manifest and prints it to stdout.
+
+Example:
+
+```shell
+topaz manifest get -i
+>>> get manifest to
+# yaml-language-server: $schema=https://www.topaz.sh/schema/manifest.json
+---
+
+### filename: manifest.yaml ###
+### datetime: 2023-10-17T00:00:00-00:00 ###
+### description: citadel manifest ###
+
+### model ###
+model:
+  version: 3
+
+### object type definitions ###
+types:
+  ### display_name: User ###
+  user:
+    relations:
+      ### display_name: user#manager ###
+      manager: user
+
+  ### display_name: Identity ###
+  identity:
+    relations:
+      ### display_name: identity#identifier ###
+      identifier: user
+
+  ### display_name: Group ###
+  group:
+    relations:
+      ### display_name: group#member ###
+      member: user
+```
+
+## Setting a manifest
+
+`topaz manifest set` set the manifest from stdin. You can also specify a filename as an argument.
+
+Example:
+
+```shell
+topaz manifest set -i ./manifest.yaml
+>>> set manifest from /Users/ogazitt/.config/topaz/model/manifest.yaml
+```
+
+## Deleting the manifest
+
+`topaz manifest delete` removes the manifest and **deletes all data**. After deleting a manifest, you must set a new manifest before you can use the Topaz directory.
+
+:::note
+`topaz load` and `topaz save` have been deprecated in favor of `manifest set` and `manifest get`, respectively.
+:::

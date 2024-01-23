@@ -1,0 +1,121 @@
+# Managing data
+
+Topaz offers four commands to manage data (objects and relations):
+
+```shell
+  import             import directory objects
+  export             export directory objects
+  backup             backup directory data
+  restore            restore directory data
+```
+
+## Importing objects and relations
+
+`topaz import` imports objects and relations in JSON format into the Topaz directory. It takes a directory argument and attempts to import all JSON files in that directory.
+
+Example:
+
+```shell
+topaz import -d .
+>>> importing data from /Users/ogazitt/.config/topaz/data
+   object types skipped
+    permissions skipped
+ relation types skipped
+        objects 19
+      relations 20
+```
+
+### JSON format
+
+The format for the JSON files looks like this:
+
+Each file is a JSON object with an `objects` key or a `relations` key, which in turn provide an array of `object` or `relation` objects.
+
+#### Objects
+
+```json
+{
+  "objects": [
+    {
+      "type": "group",
+      "id": "admin",
+      "display_name": "admin-group",
+      "properties": {},
+    },
+    ...
+  ]
+```
+
+Note that each object must have a `type` key, and the value must be defined as one of the `types` in the manifest.  Each object also must have a unique `id` key (within the scope of that type). Finally, an object may have an optional `display_name` and an optional `properties` bag.
+
+#### Relations
+
+```json
+{
+  "relations": [
+    {
+      "object_type": "group",
+      "object_id": "admin",
+      "relation": "member",
+      "subject_type": "user",
+      "subject_id": "rick@the-citadel.com"
+    },
+    ...
+  ]
+```
+
+Note that each relation has at least five fields:
+* `object_type`: type of the source object (defined in the manifest)
+* `object_id`: unique ID of the source object
+* `relation`: a valid relation for `object_type`, defined in the manifest
+* `subject_type`: the type of the target of the relationship (defined in the manifest)
+* `subject_id`: unique ID of the target object
+* `subject_relation`: (OPTIONAL) target relation, in case the manifest defines the relation target as `type#relation`.
+
+## Exporting objects and relations
+
+`topaz export` dumps the objects and relations into two files called `objects.json` and `relations.json`, in the directory specified with the `-d` option.
+
+Example:
+
+```shell
+topaz export -d . -i
+>>> exporting data to .
+   object types skipped
+    permissions skipped
+ relation types skipped
+        objects 19
+      relations 20
+```
+
+## Backing up a directory
+
+`topaz backup` creates a tarball with the objects.json and relations.json files. The file is named `backup.tar.gz` by default. To choose a different name, pass in the filename argument.
+
+Example:
+
+```shell
+topaz backup -i b.tar.gz
+>>> backup to b.tar.gz
+   object types skipped
+    permissions skipped
+ relation types skipped
+        objects 19
+      relations 20
+```
+
+## Restoring a directory from a backup
+
+`topaz restore` restores the directory data from a tarball named `backup.tar.gz` by default. To choose a different name, pass in the filename argument.
+
+Example:
+
+```shell
+topaz restore  -i backup.tar.gz
+>>> restore from /tmp/new/backup.tar.gz
+   object types skipped
+    permissions skipped
+ relation types skipped
+        objects 19
+      relations 20
+```
