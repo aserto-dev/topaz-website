@@ -64,7 +64,7 @@ types:
       # The declaration below means that the "can_read_folder" permission
       #   is granted to:
       #     1. anyone who can write to the folder (has the "can_write_folder" permission).
-      #     2. anyone who can write to the parent folder (parent->can_read_folder).
+      #     2. anyone who can read from the parent folder (parent->can_read_folder).
       #     3. anyone with the "viewer" relation to the folder.
       can_read_folder: can_write_folder | parent->can_read_folder | viewer
 
