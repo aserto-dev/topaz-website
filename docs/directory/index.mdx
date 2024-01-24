@@ -17,7 +17,7 @@ A Directory has a **model** (which can be thought of as a "schema"), and **data*
 
 ### Model
 
-The model defines **object types**. Each object type has **relations** and **permissions**. Relations can be thought of as the "roles" that an object type supports. Permissions are the actions that can be performed on the object type, and are granted through relations.
+The model defines **object types**. Each object type can have **relations** and **permissions**. Relations can be thought of as the "roles" that an object type supports. Permissions are the actions that can be performed on the object type, and are granted through relations.
 
 For example, a *resource* object type can define the *can_read*, *can_write*, and *can_delete* permissions, and have these granted through the *owner*, *editor*, and *viewer* relations.
 
@@ -40,15 +40,15 @@ types:
       editor: user
       viewer: user
     permissions:
-      can_read: viewer | editor | owner
-      can_write: editor | owner
       can_delete: owner
+      can_write: editor | can_delete
+      can_read: viewer | can_edit
 ```
 
-* this manifest defines the `user` and `resource` types.
-* the `user` type is simply used as a subject (target) for relationships.
-* the `resource` type has the `owner`, `editor`, and `viewer` relations, which can each take a `user` as a subject (target) of the relationship.
-* the `resource` type has the `can_read` permission, which is granted through any of the `viewer` OR `editor` OR `owner` relations. It also has the `can_write` permission, which is granted through either the `editor` OR `owner` relation, and the `can_delete` permission, which is only granted through the `owner` relation.
+* This manifest defines the `user` and `resource` types.
+* The `user` type is simply used as a subject (target) for relationships and defined no relations or permissions of its own.
+* The `resource` type has the `owner`, `editor`, and `viewer` relations, which can each take a `user` as a subject (target) of the relationship.
+* The `resource` type has the  `can_delete` permission, which is granted to anyone with the `owner` relation to the resource. It also has the `can_write` permission, which is granted to anyone who has the `can_delete` permission on the file OR the `editor` relation to it. Finally, it has the `can_read` permission, which is granted to anyone with the `can_edit` permission OR the `viewer` relation.
 
 ### Data
 
@@ -58,7 +58,7 @@ The Topaz Directory stores two types of entities - **objects** and **relations**
 
 * __Relations__: _labeled_ associations between a source object (resource) and a target object (subject), which may carry with it a set of _permissions_.
 
-Using these concepts, an authorization decision can be rephrased as *"Does subject __S__ have a relation to resource __R__, where the relation carries permission __P__ ?"* 
+Using these concepts, an authorization decision can be rephrased as *"Does subject __S__ have a relation to resource __R__, where the relation carries permission __P__ ?"*
 
 A relation between a subject and a resource can be defined explicitly, or be implied from a transitive relationship, such as group membership. For example, the subject __S__ may be a _member_ of group __G__, which in turn has a relation that carries permission __P__ with the resource __R__.
 

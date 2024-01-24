@@ -38,8 +38,8 @@ types:
     # Format: <relation_name>: <type> | <another_type> | <type#relation>
     relations:
       # The declaration below means that the target of the "member"
-      #   relation can be of type "user" OR the set of objects defined
-      #   by relation "group#member".
+      #   relation can be an individual "user" OR the set of all members
+      #   of another "group", resulting in nested groups.
       member: user | group#member
 
   # Declare the "folder" object type
@@ -50,18 +50,23 @@ types:
       parent: folder
       owner: user | group#member
       editor: user | group#member
-      viewer: user | group#member
+      # The "viewer" relation can be assigned to:
+      #   1. An individual "user".
+      #   2. All users (the wildcard id "*").
+      #   3. All members of a given group.
+      viewer: user | user:* | group#member
 
     # Declare permissions that are supported on "folder"
     permissions:
-      # Format: <permission_name>: relation1 | relation2 | type->permission
-      # The declaration below means that the "can_read_folder" permission
-      #   is granted by the viewer OR editor OR owner relation, OR through
-      #   a relation to the parent folder that carries the "can_read_folder"
-      #   permission.
-      can_read_folder: viewer | editor | owner | parent->can_read_folder
-      can_write_folder: editor | owner | parent->can_write_folder
       can_delete_folder: owner | parent->can_delete_folder
+      can_write_folder: can_delete_folder | parent->can_write_folder | editor
+      # Format: <permission_name>: relation_or_permission1 | relation_or_permission2 | relation->relation_or_permission2
+      # The declaration below means that the "can_read_folder" permission
+      #   is granted to:
+      #     1. anyone who can write to the folder (has the "can_write_folder" permission).
+      #     2. anyone who can read from the parent folder (parent->can_read_folder).
+      #     3. anyone with the "viewer" relation to the folder.
+      can_read_folder: can_write_folder | parent->can_read_folder | viewer
 
   # Declare the "document" object type
   document:
@@ -72,42 +77,113 @@ types:
       viewer: user | group#member
 
     permissions:
-      can_read_document: viewer | editor | owner | parent->can_read_folder
-      can_write_document: editor | owner | parent->can_write_folder
       can_delete_document: owner | parent->can_delete_folder
+      can_write_document:  can_delete_document | parent->can_write_document | editor
+      can_read_document:   can_write_document  | parent->can_read_document  | viewer
 ```
 
-## Operators
+## Relation definitions
 
-Topaz supports four operators for defining how permissions are granted through relations.
+A relation definition specifies the set of valid assignments for the relation. Relation names must be unique within an object type.
+The _object_ of the relation must be of the type in which the relation is defined and the subject must match one of the assignment
+terms in the relation definition.
+
+There are three kinds of assignment specifiers:
+
+### Direct assignment
+
+Direct assignment specifies an object type that can be used as the subject of the relation. For example, the `manager`
+relation below can be directly assigned to an object of type `user`:
+
+```yaml
+user:
+  relations:
+    manager: user  # direct assignment
+```
+
+That means that a `manager` relation can be created with a `user` object and a `user` subject.
+
+### Wildcard assignment
+
+In addition to a direct relation between two object, it is also possible to allow wildcard relations where the subject
+is the set of all objects of the given type. For example, the `viewer` relation below can be created between a `document`
+and a specific user (direct assignment) or between a document and _all_ users.
+
+```yaml
+document:
+  relations:
+    viewer: user | user:*
+```
+
+This definition allows the `viewer` relation to be created between a document and the user with ID `*`, which represents
+all users.
+
+### Subject Relations
+
+In addition to direct and wildcard assignments, it is also possible to create relations to dynamically computed sets of
+subjects. For example, the `editor` relation defined below on the `document` type can be directly assigned to a user OR
+to everyone with the `member` relation to a specified `group`.
+
+```yaml
+group:
+  relations:
+    member: user
+
+document:
+  relations:
+    editor: user | group#member
+```
+
+Unlike direct assignments, we not only specify the _type_ of subject (`group`) but also a _relation_ on that type
+(`member`). In other words, we create an `editor` relation between a document and all users that have a `member`
+relation with a given group.
+
+Subject relations can also be used to defined nested sets. For example, we can modify the definition of `group` to be:
+
+```yaml
+group:
+  relations:
+    member: user | group#member
+```
+
+This allows us to create `member` relations between groups to indicate that all members of one group are also members of
+another.
+
+
+## Permission definitions
+
+Permissions are similar to relations but instead of assigning them explicitly, they are defined by combining relations
+or other permissions using _operators_. They can be thought of as implicitly-assigneed relations.
+
+Topaz supports four operators for defining how permissions are granted through relations and/or other permissions.
 
 ### Union
 
-The Union operator (`|`) indicates that a permission is granted through ANY of the listed relations.
+The _union_ operator (`|`) indicates that a permission is granted through ANY of the listed relations or permissions.
 
 Example:
 
 ```yaml
-  can_read: viewer | editor | owner
+  can_read: can_write | viewer
 ```
 
-This means that the `can_read` permission is granted through the `viewer` OR `editor` OR `owner` relations.
+This means that the `can_read` permission is granted to anyone who has the `can_write` permission OR is the subject of the `viewer` relation.
 
 ### Intersection
 
-The Intersection operator (`&`) indicates that a permission is granted only if the target is part of ALL the listed relations.
+The _intersection_ operator (`&`) indicates that a permission is granted only if the target is part of ALL the listed relations/permissions.
 
 Example:
 
 ```yaml
-  can_comment: viewer & commenter
+  can_comment: can_view & commenter
 ```
 
-This means that the `can_comment` permission is granted only if the user is the subject of the `viewer` relation, AND is also the subject of the `commenter` relation.
+This means that the `can_comment` permission is granted only if the user has the `can_view` permission AND is also the subject of the `commenter` relation.
 
 ### Exclusion
 
-The Exclusion operator (`-`) indicates that a permission is granted only if the target is NOT part of the listed relation.
+The _exclusion_ operator (`-`) indicates that a permission is granted only if the target is NOT part of the specified relation/permission.
 
 Example:
 
@@ -119,7 +195,8 @@ This means that the `can_comment` permission is granted to subjects that are com
 
 ### Arrow
 
-The Arrow operator (`->`) allows specifying subjects of a permission or relation that is defined on another type.
+The _arrow_ operator (`->`) allows a permission to be granted to subjects who have a specified relation or permission with another object that is
+related to the object on which the permission is defined.
 
 Example:
 
@@ -131,6 +208,7 @@ Example:
         owner: user | group#member
       permissions:
         can_delete_folder: owner | parent->can_delete_folder
+
     document:
       relations:
         parent: folder
@@ -139,9 +217,9 @@ Example:
         can_delete_document: owner | parent->can_delete_folder
 ```
 
-In the above example, `document` and `folder` types both have a `parent` relation which is of type `folder`.
+In the above example, `document` and `folder` types both have a `parent` relation to a `folder`.
 
-The `can_delete_folder` permission can be granted by assigning a subject directly as the `owner` of a `folder`, OR if that subject is an `owner` of a `folder` in the `parent` relation chain.
+The `can_delete_folder` permission can be granted by assigning a subject directly as the `owner` of a `folder`, OR if that subject has the `can_delete_folder` permission on any `folder` in the `parent` relation chain.
 
 Likewise, the `can_delete_document` permission can be granted by assigning a subject directly as the `owner` of a `document`, OR if that subject has a `can_delete_folder` permission on a  `folder` in the `parent` relation chain.
 
