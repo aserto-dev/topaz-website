@@ -47,6 +47,15 @@
     },
     {
       "type": "identity",
+      "id": "6",
+      "properties": {
+        "kind": "IDENTITY_KIND_PID",
+        "provider": "local",
+        "verified": true
+      }
+    },
+    {
+      "type": "identity",
       "id": "luke@yavin4base.mil",
       "properties": {
         "kind": "IDENTITY_KIND_EMAIL",
@@ -132,7 +141,7 @@
     },
     {
       "type": "user",
-      "id": "c3po@droids.yavin4base.mil",
+      "id": "r2d2@droids.yavin4base.mil",
       "display_name": "C3PO",
       "properties": {
         "email": "c3po@droids.yavin4base.mil",
@@ -167,7 +176,7 @@
     {
       "type": "folder",
       "id": "death-star",
-      "display_name": "death-star-folder",
+      "display_name": "death-star",
       "properties": {}
     },
     {
@@ -180,6 +189,12 @@
       "type": "folder",
       "id": "general",
       "display_name": "general-folder",
+      "properties": {}
+    },
+    {
+      "type": "folder",
+      "id": "clone-wars",
+      "display_name": "clone-wars-folder",
       "properties": {}
     },
     {
