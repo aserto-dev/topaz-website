@@ -13,8 +13,9 @@ an S3 bucket before the `topaz` container starts up.
 The [topaz configure](command-line-interface/topaz-cli/configuration#generating-a-config-file) CLI command can be used to generate
 your configuration file, then it should be uploaded to a bucket location that is accessible by the `init-config` container.
 
-This example attaches an EBS volume to persist the configuration, certs, and directory database.  You may need to create
-the [IAM ECS Infrastructure Role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/infrastructure_IAM_role.html)
+This example attaches an EBS volume to persist the configuration, certs, and directory database.  If it does not already exist
+you may need to create
+an [IAM ECS Infrastructure Role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/infrastructure_IAM_role.html)
 to allow ECS to provision EBS volumes.
 
 ### Sample task definition for topaz on Amazon ECS
