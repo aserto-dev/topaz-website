@@ -23,6 +23,14 @@
         "topaz_url": "simple-rbac.json",
         "hosted_url": "hosted/simple-rbac.json"
     },
+    "gdrive": {
+        "title": "Google Drive",
+        "short_description": "Authorization template for nested folders and documents",
+        "description": "The Google Drive template defines folder and document types, with read, write, share, and delete permissions. Folders can contain documents or other folders and access to a parent folder grants access to its childre. You can evolve it to fit your needs.",
+        "docs_url": "",
+        "topaz_url": "gdrive.json",
+        "hosted_url": "hosted/gdrive.json"
+    },
     "slack": {
         "title": "Slack",
         "short_description": "Authorization template for workspaces and channels",
