@@ -80,6 +80,7 @@ const sidebars = {
         'deployment/microservice',
         'deployment/binary',
         'deployment/docker-compose',
+        'deployment/amazon-ecs',
       ]
     },
     {

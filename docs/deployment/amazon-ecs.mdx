@@ -1,0 +1,213 @@
+---
+sidebar_label: Amazon ECS
+title: Amazon ECS - Deployment
+description: Topaz Deployment - Amazon ECS
+---
+
+# Run on Amazon Elastic Container Service (ECS)
+
+The following is an example task definition for running topaz on Amazon ECS using either Fargate or EC2 as a capacity provider.
+This example includes an `init-config` container that is responsible for retrieving a topaz config file from
+an S3 bucket before the `topaz` container starts up.
+
+The [topaz configure](/docs/command-line-interface/topaz-cli/configuration) CLI command can be used to generate
+your configuration file, then it should be uploaded to a bucket location that is accessible by the `init-config` container.
+
+This example attaches an EBS volume to persist the configuration, certs, and directory database.  If it does not already exist
+you may need to create
+an [IAM ECS Infrastructure Role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/infrastructure_IAM_role.html)
+to allow ECS to provision EBS volumes.
+
+### Sample task definition for topaz on Amazon ECS
+Using the ECS console, create a task definition with existing JSON.  You will need to modify the init container
+environment variables in this task definition with credentials that can reach your configuration bucket as well as
+executionRoleArn with a value appropriate for your account.
+```
+{
+    "containerDefinitions": [
+        {
+            "name": "init-config",
+            "image": "amazonlinux:latest",
+            "cpu": 0,
+            "portMappings": [],
+            "essential": false,
+            "entryPoint": [
+                "sh",
+                "-ex",
+                "-c"
+            ],
+            "command": [
+                "dnf install awscli -yq; aws s3 cp s3://${TOPAZ_CONFIG_BUCKET}/config.yaml /data/config/config.yaml;"
+            ],
+            "environment": [
+                {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "value": "<YOUR ACCESS KEY ID>"
+                },
+                {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "value": "<YOUR SECRET ACCESS KEY>"
+                },
+                {
+                    "name": "TOPAZ_CONFIG_BUCKET",
+                    "value": "<YOUR BUCKET NAME>"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [
+                {
+                    "sourceVolume": "data",
+                    "containerPath": "/data",
+                    "readOnly": false
+                }
+            ],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/topaz",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            }
+        },
+        {
+            "name": "topaz",
+            "image": "ghcr.io/aserto-dev/topaz:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "console-http",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                },
+                {
+                    "name": "console-grpc",
+                    "containerPort": 8081,
+                    "hostPort": 8081,
+                    "protocol": "tcp",
+                    "appProtocol": "grpc"
+                },
+                {
+                    "name": "authorizer-grpc",
+                    "containerPort": 8282,
+                    "hostPort": 8282,
+                    "protocol": "tcp",
+                    "appProtocol": "grpc"
+                },
+                {
+                    "name": "authorizer-http",
+                    "containerPort": 8383,
+                    "hostPort": 8383,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                },
+                {
+                    "name": "directory-grpc",
+                    "containerPort": 9292,
+                    "hostPort": 9292,
+                    "protocol": "tcp",
+                    "appProtocol": "grpc"
+                },
+                {
+                    "name": "directory-http",
+                    "containerPort": 9393,
+                    "hostPort": 9393,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                },
+                {
+                    "name": "healthcheck",
+                    "containerPort": 9494,
+                    "hostPort": 9494,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                },
+                {
+                    "name": "metrics",
+                    "containerPort": 9696,
+                    "hostPort": 9696,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "entryPoint": [
+                "sh",
+                "-ex",
+                "-c"
+            ],
+            "command": [
+                "mkdir -p ${TOPAZ_CERTS_DIR}; ./topazd run -c ${TOPAZ_CONFIG_DIR}/config.yaml"
+            ],
+            "environment": [
+                {
+                    "name": "TOPAZ_CONFIG_DIR",
+                    "value": "/data/config"
+                },
+                {
+                    "name": "TOPAZ_CERTS_DIR",
+                    "value": "/data/certs"
+                },
+                {
+                    "name": "TOPAZ_DB_DIR",
+                    "value": "/data/db"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [
+                {
+                    "sourceVolume": "data",
+                    "containerPath": "/data",
+                    "readOnly": false
+                }
+            ],
+            "volumesFrom": [],
+            "dependsOn": [
+                {
+                    "containerName": "init-config",
+                    "condition": "SUCCESS"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/topaz",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            }
+        }
+    ],
+    "family": "topaz",
+    "executionRoleArn": "arn:aws:iam::xxx:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [
+        {
+            "name": "data",
+            "configuredAtLaunch": true
+        }
+    ],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "FARGATE",
+        "EC2"
+    ],
+    "cpu": "256",
+    "memory": "2048",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
+}
+```
+
+From here you can launch topaz by [creating a new service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-service-console-v2.html)
+in your ECS cluster.
+
