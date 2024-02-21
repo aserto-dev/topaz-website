@@ -6,7 +6,12 @@ description: Reference for the manifest DSL
 
 # Manifest language reference
 
-This topic documents v3 of the Topaz manifest language.
+The annotated manifest below describes an authorization model for an application
+that allows users to manage folders and documents. It demonstrates the building
+blocks of the modeling language and how they can be put together to provide a
+complete authorization solution.
+The annotated manifest is followd by more detailed discussion of its various parts.
+
 
 ## Annotated reference
 
@@ -22,53 +27,77 @@ model:
 ## Declare object types
 types:
 
-  # Declare the "user" object type
+  # Define the "user" object type
   # The annotation "display_name" acts as a hint to the Topaz UI for a display name for this type
+
   ### display_name: User ###
   user:
-    # Declare relations that are supported by the user object type
-    # The declaration below means that the target of the "manager" relation
-    #   can only be an instance of a "user".
+
+    # Define relations that can have a user as their object.
     relations:
+
+      # Define a "manager" relation that can only have a "user" as its subject.
+      # The object of the relation is also a user because it is defined within the "user:" block.
+      # That means that the "manager" relation can only occur between two users.
       manager: user
 
-  # Declare the "group" object type
+
+  # Define the "group" object type
+
+  ### display_name: Group ###
   group:
-    # Declare relations that are supported by this object type
-    # Format: <relation_name>: <type> | <another_type> | <type#relation>
+
+    # Define relations that can have a group as their object.
+
     relations:
-      # The declaration below means that the target of the "member"
-      #   relation can be an individual "user" OR the set of all members
-      #   of another "group", resulting in nested groups.
+      # Define a "member" relation that can take as its subject one of:
+      #   * an individual user
+      #   * the members of a group
       member: user | group#member
 
-  # Declare the "folder" object type
+
+  # Define the "folder" object type
+
+  ### display_name: Folder ###
   folder:
-    # Declare relations that are supported on "folder"
+
+    # Define relations that can have a folder as their object.
     relations:
-      # The "parent" relation defines a recursive parent relationship
+
+      # A folder can have another folder as its parent.
       parent: folder
+
+      # A folder may have individual users or groups as its owners and editors.
       owner: user | group#member
       editor: user | group#member
-      # The "viewer" relation can be assigned to:
+
+      # The subjects of a the "viewer" relation can be:
       #   1. An individual "user".
       #   2. All users (the wildcard id "*").
       #   3. All members of a given group.
       viewer: user | user:* | group#member
 
-    # Declare permissions that are supported on "folder"
+    # Define permissions on folder objects.
     permissions:
+
+      # The "can_delete_folder" permission is granted to:
+      #  * Anyone who is an owner of the folder (subject of the "owner" relation)
+      #  * Anyone with the "can_delete_folder" permission on the folder's parent.
+      #    This is a recursive definition that can be resolved anywhere up the folder's "parent" chain.
       can_delete_folder: owner | parent->can_delete_folder
+
+      # The "can_write_folder" permission is granted to:
+      #   * Anyone with the "can_delete_folder" permission.
+      #   * Anyone with the "can_write_folder" permission on the folder's parent.
+      #   * Anyone who has the "editor" relation with the folder.
       can_write_folder: can_delete_folder | parent->can_write_folder | editor
-      # Format: <permission_name>: relation_or_permission1 | relation_or_permission2 | relation->relation_or_permission2
-      # The declaration below means that the "can_read_folder" permission
-      #   is granted to:
-      #     1. anyone who can write to the folder (has the "can_write_folder" permission).
-      #     2. anyone who can read from the parent folder (parent->can_read_folder).
-      #     3. anyone with the "viewer" relation to the folder.
+
       can_read_folder: can_write_folder | parent->can_read_folder | viewer
 
-  # Declare the "document" object type
+
+  # Define the "document" object type
+
+  ### display_name: Document ###
   document:
     relations:
       parent: folder
@@ -77,10 +106,30 @@ types:
       viewer: user | group#member
 
     permissions:
-      can_delete_document: owner | parent->can_delete_folder
+
+      # The "can_delete_document" permission only granted if BOTH conditions are met.
+      can_delete_document: owner & parent->can_write_folder
+
       can_write_document:  can_delete_document | parent->can_write_document | editor
       can_read_document:   can_write_document  | parent->can_read_document  | viewer
 ```
+
+## Identifiers
+
+Object, relation, and permission names are treated as identifiers and must satisfy the conditions below.
+
+  * Be all lowercase.
+  * Start with a letter.
+  * Can contain letters, digits, dots (`.`), underscores (`_`), and dashes (`-`).
+  * Must end with a letter or digit.
+  * No longer than 64 characters.
+
+### Uniqueness
+
+* Object names must be unique. It is not possible to have two distinct object types with the same name.
+* Relation and permission names must be unique within an object type but relations or permissions with the same name
+  can be defined on _different_ object types. In the example above, both `folder` and `document` have relation
+  called `parent`, `owner`, etc
 
 ## Relation definitions
 
