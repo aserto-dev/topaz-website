@@ -38,8 +38,8 @@
         "Version": {
             "description": "config schema version",
             "type": "integer",
-            "minimum": 1,
-            "maximum": 1,
+            "minimum": 2,
+            "maximum": 2,
             "required": [
                 "version"
             ]
@@ -96,7 +96,12 @@
                 },
                 "seed_metadata": {
                     "type": "boolean",
-                    "description": "seed edge directory with the default metadata objects",
+                    "description": "seed edge directory with the default metadata objects (OBSOLETE)",
+                    "default": "false"
+                },
+                "enable_v2": {
+                    "type": "boolean",
+                    "description": "enable directory version 2 services for backward compatibility",
                     "default": "false"
                 }
             }

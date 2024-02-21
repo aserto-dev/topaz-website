@@ -8,27 +8,31 @@ description: Topaz Deployment - Binary
 
 Topaz releases are available on [github](https://github.com/aserto-dev/topaz/releases/latest). The tarball contains both the `topaz` CLI (which can be used to create a configuration file), as well as `topazd` (which can be run as a daemon, and provides the authorizer APIs).
 
-## Download the tarball
+## Download the tarball from your command line
 
 Downloads are available for Linux (amd64, arm64); MacOS (amd64, arm64); and Windows (zip, MSI).
 
-For example, for Linux amd64:
+For example, to get the latest release for Linux amd64:
 
 ```sh
-curl -L https://github.com/aserto-dev/topaz/releases/download/v0.20.30/topaz_linux_x86_64.zip >topaz.zip
+TOPAZ_PLATFORM=topaz_linux_x86
+TOPAZ_URL=$(curl -s https://api.github.com/repos/aserto-dev/topaz/releases/latest|grep browser_download_url|grep $TOPAZ_PLATFORM|cut -d\" -f4)
+curl -L $TOPAZ_URL > topaz.zip
 ```
 
 For Linux arm64:
 
 ```sh
-curl -L https://github.com/aserto-dev/topaz/releases/download/v0.20.30/topaz_linux_arm64.zip >topaz.zip
+TOPAZ_PLATFORM=topaz_linux_arm64
+TOPAZ_URL=$(curl -s https://api.github.com/repos/aserto-dev/topaz/releases/latest|grep browser_download_url|grep $TOPAZ_PLATFORM|cut -d\" -f4)
+curl -L $TOPAZ_URL > topaz.zip
 ```
 
 ## Unzip the tarball
 
 ```sh
-unzip topaz_darwin_arm64.zip
-Archive:  topaz_darwin_arm64.zip
+unzip topaz.zip
+Archive:  topaz.zip
   inflating: LICENSE
   inflating: README.md
   inflating: topazd
@@ -42,7 +46,7 @@ Topaz expects a configuration file  the `config.yaml` file to be in `$HOME/.conf
 For example, to use the sample policy, you can run the following:
 
 ```sh
-./topaz configure -d -s -r ghcr.io/aserto-policies/policy-todo-rebac:latest -n policy-todo
+./topaz configure -d -r ghcr.io/aserto-policies/policy-todo:latest -n policy-todo
 ```
 
 This will create a directory structure in `$HOME/.config/topaz` like this:

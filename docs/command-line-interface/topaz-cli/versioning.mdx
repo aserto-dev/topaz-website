@@ -1,0 +1,43 @@
+# Versioning
+
+The Topaz CLI provides four commands to manage the version of the `topazd` container image:
+
+```shell
+  install            install topaz container
+  update             update topaz container version
+  uninstall          uninstall topaz container
+  version            version information
+```
+
+## Install
+
+`topaz install` installs the Topazd container.
+
+To specify the container name and version that `topaz install` pulls, use the following command-line options:
+
+```shell
+      --container-name="topaz"        container name
+      --container-version="latest"    container version
+```
+
+## Update
+
+`topaz update` updates the Topazd container to the latest version.
+
+## Uninstall
+
+`topaz uninstall` removes the Topazd container image.
+
+## Version
+
+`topaz version` returns the version of the Topaz CLI. 
+
+`topaz version --container` also returns the version of the Topazd container.
+
+Example:
+
+```shell
+topaz version --container
+topaz 0.30.28 g314bbcd darwin-arm64 [2024-01-15T21:21:08Z]
+topazd 0.30.28
+```

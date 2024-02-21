@@ -1,0 +1,39 @@
+# Console
+
+Topaz offers a graphical console that can be used to view policies, and manage the manifest and data in the directory.
+
+## Opening the console
+
+`topaz console` opens a browser window to the [https://localhost:8080/ui/directory](https://localhost:8080/ui/directory) URL. This assumes that the `console` service has been enable in the `cfg/config.yaml` [configuration file](configuration#annotated-example), and that the REST gateway is configured to run on port 8080.
+
+## Authorizers tab
+
+The Authorizers tab contains a single card called "authorizer" that is configured to talk to the local Topazd container over port 8383. Clicking the "authorizer" card brings up the details of what's loaded in the authorizer.
+
+### Modules
+
+The Modules left-nav contains the Rego policy loaded into Topaz.
+
+<img src="/img/console/console-modules.png" />
+
+### Evaluator
+
+The Evaluator left-nav contains a graphical Evaluator which makes it easy to construct and execute Topaz API calls to it - `is`, `decisiontree`, and `query`.
+
+<img src="/img/console/console-evaluator.png" />
+
+## Directory tab
+
+The Directory tab allows you to view and set the manifest, as well as navigate objects and relationship. It also allows you to create and delete objects and relationships.
+
+### Manifest
+
+To edit the manifest, click the button in the top-right. You'll be able to see the graphical depiction of the model as you edit the manifest yaml.
+
+<img src="/img/console/console-manifest.png" />
+
+### Data
+
+To explore objects and relations, click the Objects left-nav. You can click on a user, and view the relationships with other objects. You can also edit an object's properties, and add or remove incoming or outgoing relationships.
+
+<img src="/img/console/console-objects.png" />

@@ -16,15 +16,22 @@ docker run \
 --rm \
 --name topaz \
 --platform=linux/amd64 \
+-p 8080-8081:8080-8081 \
 -p 8282:8282 \
 -p 8383:8383 \
--p 8484:8484 \
 -p 9292:9292 \
+-p 9393:9393 \
+-p 9494:9494 \
+-p 9696:9696 \
 -v $PWD/certs:/certs:rw \
 -v $PWD/cfg:/app/cfg:ro \
--v $PWD/eds:/app/db:rw \
+-v $PWD/db:/app/db:rw \
 ghcr.io/aserto-dev/topaz:latest run \
 --config-file /app/cfg/config.yaml
 ```
 
 Note that this command expects the `config.yaml` file to be in `$PWD/cfg/config.yaml`. The configuration file can be created using the `topaz configure` command, documented [here](/docs/command-line-interface/topaz-cli/configuration.mdx).
+
+# Browse to the console
+In a web browser, visit https://localhost:8080/ui/directory/model to access the web console.
+
