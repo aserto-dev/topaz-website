@@ -23,58 +23,58 @@ Copy this block into `./objects.json`:
 {
   "objects": [
     {
+      "type": "user",
+      "id": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
       "display_name": "Rick Sanchez",
-      "key": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
       "properties": {
         "email": "rick@the-citadel.com",
         "picture": "https://github.com/aserto-demo/contoso-ad-sample/raw/main/UserImages/Rick%20Sanchez.jpg",
         "status": "USER_STATUS_ACTIVE"
-      },
-      "type": "user"
+      }
     },
     {
+      "type": "user",
+      "id": "CiRmZDE2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
       "display_name": "Morty Smith",
-      "key": "CiRmZDE2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
       "properties": {
         "email": "morty@the-citadel.com",
         "picture": "https://github.com/aserto-demo/contoso-ad-sample/raw/main/UserImages/Morty%20Smith.jpg",
         "status": "USER_STATUS_ACTIVE"
-      },
-      "type": "user"
+      }
     },
     {
+      "type": "user",
+      "id": "CiRmZDQ2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
       "display_name": "Jerry Smith",
-      "key": "CiRmZDQ2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
       "properties": {
         "email": "jerry@the-smiths.com",
         "picture": "https://github.com/aserto-demo/contoso-ad-sample/raw/main/UserImages/Jerry%20Smith.jpg",
         "status": "USER_STATUS_ACTIVE"
-      },
-      "type": "user"
+      }
     },
     {
+      "type": "document",
+      "id": "doc1",
       "display_name": "Document 1",
-      "key": "doc1",
       "properties": {
         "path": "/docs/doc1"
-      },
-      "type": "document"
+      }
     },
     {
+      "type": "document",
+      "id": "doc2",
       "display_name": "Document 2",
-      "key": "doc2",
       "properties": {
         "path": "/docs/doc2"
-      },
-      "type": "document"
+      }
     },
     {
+      "type": "document",
+      "id": "doc3",
       "display_name": "Document 3",
-      "key": "doc3",
       "properties": {
         "path": "/docs/doc3"
-      },
-      "type": "document"
+      }
     }
   ]
 }
@@ -83,50 +83,29 @@ Copy this block into `./objects.json`:
 Copy this block into `./relations.json`:
 ```json
 {
-  "relations": [
-    {
-      "object": {
-        "key": "doc1",
-        "type": "document"
-      },
-      "relation": {
-        "object_type": "document",
-        "name": "owner"
-      },
-      "subject": {
-        "key": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
-        "type": "user"
-      }
-    },
-    {
-      "object": {
-        "key": "doc2",
-        "type": "document"
-      },
-      "relation": {
-        "object_type": "document",
-        "name": "editor"
-      },
-      "subject": {
-        "key": "CiRmZDE2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
-        "type": "user"
-      }
-    },
-    {
-      "object": {
-        "key": "doc3",
-        "type": "document"
-      },
-      "relation": {
-        "object_type": "document",
-        "name": "viewer"
-      },
-      "subject": {
-        "key": "CiRmZDQ2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
-        "type": "user"
-      }
-    }
-  ]
+    "relations": [
+        {
+            "object_type": "document",
+            "object_id": "doc1",
+            "relation": "owner",
+            "subject_type": "user",
+            "subject_id": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs"
+        },
+        {
+            "object_type": "document",
+            "object_id": "doc2",
+            "relation": "editor",
+            "subject_type": "user",
+            "subject_id": "CiRmZDE2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs"
+        },
+        {
+            "object_type": "document",
+            "object_id": "doc3",
+            "relation": "viewer",
+            "subject_type": "user",
+            "subject_id": "CiRmZDQ2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs"
+        }
+    ]
 }
 ```
 
