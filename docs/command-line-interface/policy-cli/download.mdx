@@ -14,7 +14,7 @@ description: How to download and install the policy CLI
 These are available as tarballs in the [release](https://github.com/opcr-io/policy/releases) page.
 :::
 
-## Homebrew
+## Homebrew (macOS & Linux)
 
 You can install `policy` via homebrew for macOS or LinuxBrew for Linux:
 
@@ -22,10 +22,17 @@ You can install `policy` via homebrew for macOS or LinuxBrew for Linux:
 brew install opcr-io/tap/policy
 ```
 
+## WinGet (Windows)
+
+You can install the `policy` via WinGet on Windows 10+:
+```shell
+winget install OpenPolicyContainers.Policy
+```
+
 ## Go
 
 You can get `policy` via a GO install
 
 ```shell
-go get -u github.com/opcr-io/policy
+go install github.com/opcr-io/policy/cmd/policy@latest
 ```
