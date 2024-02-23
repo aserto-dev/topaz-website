@@ -16,13 +16,30 @@ The Topaz CLI provides four commands to manage the version of the `topazd` conta
 To specify the container name and version that `topaz install` pulls, use the following command-line options:
 
 ```shell
-      --container-name="topaz"        container name
-      --container-version="latest"    container version
+      --container-registry="ghcr.io/aserto-dev"    container registry (host[:port]/repo) ($CONTAINER_REGISTRY)
+      --container-image="topaz"                    container image name ($CONTAINER_IMAGE)
+      --container-tag="latest"                     container tag ($CONTAINER_TAG)
+      --container-platform="linux/arm64"           container platform ($CONTAINER_PLATFORM)
 ```
+
+Note: the default values displayed in the help message, are automaticly adopted to the platform of the host machine.
+
+For example the container platform value
+
+| Host OS      | Host Process | Container Platform | 
+| ----------- | ------------- | ------------------ |
+| Linux       | Intel/AMD x64 | linux/amd64        |
+| Linux       | arm64         | linux/arm64        |
+| Mac         | Intel x64     | linux/amd64        |
+| Mac         | Apple silicon | linux/arm64        |
+| Windows     | Intel/AMD x64 | linux/amd64        | 
+| Windows     | arm64         | not supported      |
+
+Note: currently there exists no support for running Topaz/Topazd on Windows running on arm64 processors.
 
 ## Update
 
-`topaz update` updates the Topazd container to the latest version.
+`topaz update` updates the Topazd container to the latest version, unless the `--container-tag` command line argument or `$CONTAINER_TAG` environment variable specifies a different version.
 
 ## Uninstall
 
@@ -37,7 +54,6 @@ To specify the container name and version that `topaz install` pulls, use the fo
 Example:
 
 ```shell
-topaz version --container
-topaz 0.30.28 g314bbcd darwin-arm64 [2024-01-15T21:21:08Z]
-topazd 0.30.28
+topaz 0.31.0 g9e4ac65 darwin-arm64 [2024-02-23T19:50:14Z]
+topazd 0.31.0
 ```
