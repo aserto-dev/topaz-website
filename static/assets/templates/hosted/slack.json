@@ -9,10 +9,10 @@
     ],
     "domain_data": [
         {
-            "name": "GDrive",
-            "description": "Sample data for GDrive template",
-            "provider_id": "b621b22b-7340-11ee-9420-04bc608bef02",
-            "ds_load":"/assets/templates/gdrive/ds-load/gdrive.json"
+            "name": "Slack",
+            "description": "Sample data for slack template",
+            "provider_id": "478469d0-c422-11ee-908c-040d00fbb81f",
+            "ds_load":"/assets/templates/slack/ds-load/slack.json"
         }
     ]
 }
