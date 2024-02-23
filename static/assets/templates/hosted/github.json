@@ -9,10 +9,10 @@
     ],
     "domain_data": [
         {
-            "name": "GDrive",
-            "description": "Sample data for GDrive template",
-            "provider_id": "b621b22b-7340-11ee-9420-04bc608bef02",
-            "ds_load":"/assets/templates/gdrive/ds-load/gdrive.json"
+            "name": "Github data",
+            "description": "Sample data for github template",
+            "provider_id": "8eeeb772-c67e-11ee-9473-04406f1dc471",
+            "ds_load":"/assets/templates/github/ds-load/github.json"
         }
     ]
 }
