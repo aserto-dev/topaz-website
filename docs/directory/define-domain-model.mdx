@@ -19,11 +19,11 @@ For example:
 
 ## Relations
 
-Relations define the relationships between entities, such as `member`, `owner`, `manager`, etc. Relations are defined on object types. In the context of authorization, we can think of relations as roles that can be assigned to subjects. For example, a `user` can be assigned the `owner` role for a `document`. In our policy, we can check whether a relation exists for a `subject` and an `object` using the `ds.check_relation` built-in.
+Relations define the relationships between entities, such as `member`, `owner`, `manager`, etc. Relations are defined on object types. In the context of authorization, we can think of relations as roles that can be assigned to subjects. For example, a `user` can be assigned the `owner` role for a `document`. In our policy, we can check whether a relation exists for a `subject` and an `object` using the `ds.check` built-in.
 
 ## Permissions
 
-While relations are helpful to model roles, we can associate many permissions to a single role. In the directory, permissions are associated with relations. For example, we can declare that the `owner` relation confers the `can_read`, `can_write`, and `can_delete` _permissions_. In our policy, we can check whether a permission exists between a `subject` and an `object` using the `ds.check_permission` built-in.
+While relations are helpful to model roles, we can associate many permissions to a single role. In the directory, permissions are associated with relations. For example, we can declare that the `owner` relation confers the `can_read`, `can_write`, and `can_delete` _permissions_. In our policy, we can check whether a permission exists between a `subject` and an `object` using the `ds.check` built-in.
 
 ## Defining the domain model
 
@@ -60,10 +60,23 @@ types:
       viewer: user | group#member
 
     permissions:
-      can_read: viewer | editor | owner
-      can_write: editor | owner
       can_delete: owner
+      can_write: editor | can_delete
+      can_read: viewer | can_write
 ```
+
+In this manifest, we define four object types: `user`, `identity`, `group`, and `document`.
+
+* The `user` object type defines a `manager` relation, whose target can only be another user. This makes it easy to model management hierarchies using Topaz.
+* The `identity` object type allows creating (or importing from an IDP) multiple identities associated with a `user` object.
+* The `group` object type defines a `member` relation, whose target can be a `user`, or the set of users that have a `member` relationship from another `group` object.
+  This is designated by the notation `group#member`. For example, if you define a group with an ID of `editors`, you can add individual users to it, and you could also add the `member`'s of the `viewers` group by adding that group object to the `editors` group.
+* The `document` object type defines the `owner`, `editor`, and `viewer` relations, which can have subjects (targets) of either type `user` or `group`. In the case of a group, the set of instances in the `member` relation of that group become part of the set referred to by the relation.
+* The `document` object type also defines the `can_read`, `can_write`, and `can_delete` permissions. These permissions are granted through the relations we just defined. Note that permission definitions can use a few **operators**: union (`|`), intersection (`&`), exclusion (`-`), and the arrow operator (`->`).
+
+:::tip
+More information on operators can be found in the [Manifest Reference](./manifest-reference.mdx#operators).
+:::
 
 ## Loading the manifest
 
@@ -77,40 +90,3 @@ topaz manifest set ./manifest.yaml
 
 A full annotated example of the manifest can be found [here](./manifest-reference.mdx).
 
-## (Deprecated) v2 model syntax
-
-```yaml
-# object type (document)
-document:
-  # object relation (document:owner)
-  owner:
-    # include permissions of other object relations on the same object type
-    union:
-    - editor
-    - viewer
-    # permissions for relation on object type
-    permissions:
-    - sample.document.delete
-
-  # object relation (document:editor)
-  editor:
-    # include permissions of other object relations on the same object type
-    union:
-    - viewer
-    # permissions for relation on object type
-    permissions:
-    - sample.document.create
-    - sample.document.update
-
-  # object relation (document:viewer)
-  viewer:
-    # permissions for relation on object type
-    permissions:
-    - sample.document.read
-```
-
-Load the `manifest.yaml` file into Topaz by running:
-
-```
-topaz manifest set manifest.yaml
-```

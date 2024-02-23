@@ -7,84 +7,156 @@ description: The Topaz Directory - an Overview
 
 # Directory
 
-The Topaz Directory stores information required to make authorization decisions. It is flexible enough to support different access control strategies including Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), and Relationship-Based Access Control (ReBAC).
+The Topaz Directory stores the information required to make authorization decisions.
+It is flexible enough to support different access control strategies including Role-Based Access Control (RBAC),
+Attribute-Based Access Control (ABAC), and Relationship-Based Access Control (ReBAC).
 
-An authorization decision is an answer to the question *"Is subject __S__ allowed to perform action __A__ on resource __R__?"* In other words, authorization decisions determine whether a subject (e.g. user, group, service) has a given permission on a resource (e.g. document, folder, project).
+An authorization decision is an answer to the question *"Is subject __S__ allowed to perform action __A__ on resource __R__?"*
+In other words, authorization decisions determine whether a subject (e.g. user, group, service) has a given permission
+(e.g. read, write, delete) on a resource (e.g. document, folder, project, etc.).
+
 
 ## Concepts
 
-The Topaz Directory stores three types of entities:
-* __Object__: Objects represent the participants in authorization decisions. Some objects represent __subjects__&mdash;actors who _perform_
-  actions&mdash;and other may represent __resources__&mdash;the items that subjects can attempt to access in various ways.
+### Authorization Model
+The authorization model specifies the [_object types_](#objects) that can participate in authorization decisions.
+Each object type can have [_relations_](#relations) and [_permissions_](#permissions).
 
-* __Permission__: an action that subjects may attempt to perform on an object
+Relations can be thought of as the roles that an object type supports.
+Permissions are the actions that can be performed on the object type, and are granted through relations.
 
-* __Relation__: A _labeled_ association between a source object (resource) and a target object (subject), which may carry with it a set of _permissions_.
+For example, a `file` object type can define the `can_read`, `can_write`, and `can_delete` permissions,
+and have these granted through the `owner`, `editor`, and `viewer` relations.
 
-Using these concepts, an authorization decision can be rephrased as *"Does subject __S__ have a relation to resource __R__, where the relation carries permission __P__ ?"* 
+### Objects
+Objects represent the participants in authorization decisions. In the context of an authorization decision one object
+represents a _subject_&mdash;an actor who _performs_ an action&mdash;and another represents a _resource_&mdash;the
+item that subject attempts to access.
 
-A relation between a subject and a resource can be defined explicitly, or be implied from group membership. For example, the subject __S__ may be a _member_ of group __G__, which in turn has a relation that carries permission __P__ with the resource __R__.
+Each object has a _type_ and the set of all available types is defined in the directory's [_manifest_](#manifest).
+An object is uniquely identified by the combination of its type and a user-defined ID. For example, a `user` object
+may have an email address as its ID.
 
-### Directory as a Graph
+IDs must be unique within a type, but objects of different types are allowed to have the same ID.
 
-It is convenient to think of the Topaz Directory as a graph in which objects are the nodes and relations the edges. Under this model, the authorization question in the previous section can be rephrased again as *"Is there a path from the node __S__ to the node __R__ in which one or more edges have permission __P__?"*
+To support ABAC-style policies in which authorization decision are affected by attributes of the resource being accessed or the subject
+performing the action (e.g. credit limit, date of birth, region), objects may include JSON _properties_ that are stored in the directory
+and can be inspected by the authorizer when evaluating authorization requests.
 
-Indeed, the directory API provides methods such as `check_relation` and `check_permission` to query and traverse this graph of objects and relations.
+In other cases, authorization decisions can be made purely based on [_relations_](#relations) between objects (e.g. _Michael_ is the
+_owner_ of the _Sales_ folder) without any properties. Such objects don't need to be stored explicitly.
+They can simply appear as pairs of object type and ID in one or more relations.
 
-### Examples
+
+### Relations
+A relation is a _labeled_ association between a resource (source object) and a subject (target object).
+Each object type, defined in the directory's [manifest](#manifest), may specify the kinds of relations that can be
+created from objects of that type, and the definition of each relation type indicates the types of objects that can
+be used as the subjects of the relation.
+
+For example, a `file` object type my define an `owner` relation that can take a `user` as its subject.
+
+See the [Manifest Reference](directory/manifest-reference#relation-definitions) for more details about defining relations.
+
+
+### Permissions
+A permission represents a kind of action that a subject may perform on a resource.
+Similar to relations, each permission is defined in the [manifest](#manifest) as part of an object type definition.
+
+Unlike relations, permissions cannot be assigned explicitly. They are granted indirectly by combining relations and/or other
+permissions using [permission operators](directory/manifest-reference#permission-definitions).
+
+For example, if a `file` resource has `editor` and `viewer` relations, it can grant a `can_write` permission to anyone with
+the `editor` relation to the resource, and a `can_read` permission to anyone who `can_write` or has the `viewer`
+relation. The example [below](#manifest) illustrates this exact scenario.
+
+
+### Manifest
+The **manifest** is a yaml file that defines the authorization model. Here is a manifest for the example above:
+
+```yaml
+# yaml-language-server: $schema=https://www.topaz.sh/schema/manifest.json
+---
+model:
+  # version of the manifest file format.
+  version: 3
+
+types:
+  user: {}
+
+  file:
+    relations:
+      owner: user
+      editor: user
+      viewer: user
+    permissions:
+      can_delete: owner
+      can_write:  can_delete | editor
+      can_read:   can_edit   | viewer
+```
+
+* This manifest defines two types: `user` and `file`.
+* The `user` type as no relations or permissions and can only used as a subject (target) of relations.
+* The `file` type has three relations: `owner`, `editor`, and `viewer`. All three can only be assigned to subjects of type `user`.
+* The `file` type has three permissions: `can_delete`, `can_write`, and `can_read`.
+* The `can_delete` permission is granted to anyone who has the `owner` relation to the file.
+* The `can_write` permission is granted to anyone with the `can_delete` permission on the file OR the `editor` relation to it.
+* The `can_read` permission is granted to anyone with the `can_edit` permission OR the `viewer` relation to the file.
+
+
+### Checking Permissions and Relations
+
+The directory provides a convenient `Check` API to determine whether a subject has a given relation to or permission on a specified
+resource. It simply takes:
+* The type and ID of an object (the resource).
+* The relation or permission to check.
+* The type and ID of the subject.
+
+The result of the call is a boolean value that indicates whether or not the subject has the specified relation or
+permission on the resource.
+
+## Example
 
 With these building blocks, it's possible to construct expressions like:
-* *Euan* is a *member* of the *Sales-group*
-* *Sales-folder* is a *parent* of the *Sales-plan-document*
-* *Sales-group* is a *viewer* of the *Sales-folder*
-* The *viewer* relation includes the *read* permission
+* _Euan_ is a _member_ of the _Sales-group_
+* _Sales-folder_ is a _parent_ of the _Sales-plan-document_
+* _Sales-group_ is a _viewer_ of the _Sales-folder_
+* The _viewer_ relation includes the _read_ permission
 
 And answer queries like:
-* Does *Euan* have the *read* permission on the *Sales-plan-document* ?
+* Does _Euan_ have the _read_ permission on the _Sales-plan-document_ ?
 
-The Topaz directory is able to evaluate this graph query, traversing through these relationship and determining the outcome.
+The Topaz directory is able to evaluate this graph query, traversing through these relations and determining the outcome.
 
-## Types
+## Common Object Types
 
-To help define different kinds of objects and specify the relations that may exist between them, the Topaz Directory provides two extensible sets of types:
-* __Object Types__ define the kinds of objects (including subjects) that can be created in the directory.
-* __Relation Types__ define the kinds of relations that can be created between directory objects.
+While Topaz does not have any hard-coded types, it does come with a few templates, including `simple-rbac`, `gdrive`, and others.
+Each of these templates defines its own manifest, but these manifests share a set of common object types and relations:
 
-### Built-in Object Types
+* __User__: a principal (typically used as a subject)
+* __Group__: a collection of users and/or other groups (can be used as a subject or object)
+* __Identity__: a unique identifier for a user (e.g. email, PID)
 
-The Directory is pre-configured with a few types:
-* **User**: a principal (used as a subject)
-* **Group**: used to model a collection of users and/or other groups (can be used as a subject or object)
-* **Identity**: an identifier for a User (e.g. email, PID)
-* **Application**: an object that a User may have a relationship to
-* **Resource**: a generic resource
+These object types can be found in almost all identity providers.
+Topaz templates define these common types to make it easy to model a few universal patterns:
 
-### Built-in Relation Types
-The following relation types are also pre-configured:
+* Groups are used to model collections of users, and can be nested.
+  This makes it easy to model authorization rules that depend on (nested) group membership.
+* Identities are used to look up users. This makes it easy to look up a user by any of their unique identifiers,
+  including `email`, or the `sub` claim that an identity provider embeds in a JWT.
 
-| Relation type | Object type | Description                         |
-|---------------|-------------|-------------------------------------|
-| Member        | Group       | A subject is a member of a group    |
-| Identifier    | Identity    | A user is identified by an identity |
-| User          | Application | A user can have applications        |
-| Manager       | User        | A user has a manager                |
+## User Context and Identity objects
 
-### User-defined types
+Applications can provide an [identity context](/docs/authorizer-guide/identity-context) in an authorization request,
+which is used to look up the user object associated with that identity.
 
-Object and relation types are extensible. Topaz makes it easy to create your own types
-which model your resource hierarchy / domain model. For example, you may have Organizations, which may have Folders.
+For an identity context of type `IDENTITY_TYPE_JWT`, the Authorizer will load an `identity` object with the `id` that is found in the `sub` claim of the JWT.
+For an identity context of type `IDENTITY_TYPE_SUB`, the string passed in will be used as the `id` of the identity object to load.
 
-Topaz lets you create these object types in the directory, along with relation types (like Viewer, Editor, Admin, Owner) which model the relationship between these objects and subject types (such as User or Group).
+The Authorizer then looks up the `identifier` relation to the corresponding `user` object, and loads the user object,
+making it available to the Policy as `input.user`.
 
-## User Context
-
-Policies can reference [identity context](/docs/authorizer-guide/identity-context). A calling application can provide the [identity context](/docs/authorizer-guide/identity-context) which is used to load that identity context.
-
-The Authorizer will resolve the user identity in the Directory. It will then load the user context and make it available to the Policy as `input.user`.
-
-## Extensible properties
-
-Each object has a JSON property bag that allows storing additional information for that object.
+In this way, a Policy can reference properties of the user using the expression `input.user.properties.<property_name>`.
 
 ## Built-ins
 
