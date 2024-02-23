@@ -7,17 +7,10 @@ description: The Directory Writer APIs
 
 # Writer APIs
 
-The Directory Writer APIs are in the `aserto.directory.writer.v2.Writer` service.
+The Directory Writer APIs are in the `aserto.directory.writer.v3.Writer` service.
 
-- `DeleteObject` - delete an object by `id`, or by the combination of `type` and `key`
-- `DeleteObjectType` - delete an object type by `id` or by `name`
-- `DeletePermission` - delete a permission by `id` or by `name`
-- `DeleteRelation` - delete a relation by its object, relation, and subject
-- `DeleteRelationType` - delete a relation type by `id` or by `object_type` and `name`
+- `SetObject` - create or update an object by `type` and `identifier`
+- `DeleteObject` - delete an object by `type` and `identifier`
 
-
-- `SetObject` - create or update an object by `id`, or by the combination of `type` and `key`
-- `SetObjectType` - create or update an object type by `id` or by `name`
-- `SetPermission` - create or update a permission by `id` or by `name`
 - `SetRelation` - create or update a relation by its object, relation, and subject
-- `SetRelationType` - create or update a relation type by `id` or by `object_type` and `name`
+- `DeleteRelation` - delete a relation by its object, relation, and subject

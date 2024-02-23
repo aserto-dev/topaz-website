@@ -46,7 +46,7 @@ allowed {
 }
 ```
 
-This is known as _attribute-based accesc control_, or ABAC, because the `department` property is an _attribute_ of the user.
+This is known as _attribute-based access control_, or ABAC, because the `department` property is an _attribute_ of the user.
 
 ## User context
 
@@ -60,12 +60,12 @@ In addition, you can add properties on your objects in an extensible JSON proper
 ## Resource context
 
 Policies can also use resource context in their evaluation process. If we added the allowed clause
-below to our policy, and the caller included a resource context that contains `{ "user_key": "<the-user-key>" }`,
-the policy would evaluate `allowed` to `true` if the user key and the resource `user_key` match.
+below to our policy, and the caller included a resource context that contains `{ "user_id": "<the-user-id>" }`,
+the policy would evaluate `allowed` to `true` if the user key and the resource `user_id` match.
 
 ```rego
 allowed {
-  input.user.key == input.resource.user_key
+  input.user.id == input.resource.user_id
 }
 ```
 
@@ -73,12 +73,12 @@ allowed {
 
 The directory can store any object, and if you pass in a key in your resource context, you may want to load the object (with its properties) based on this key.
 
-To do this you can use the `ds.object` built-in. Objects are resolved based on their `type` and `key` value.
+To do this you can use the `ds.object` built-in. Objects are resolved based on their `object_type` and `object_id` value.
 
 You don't need to do this for the user, since Topaz automatically does it for you. But if you wanted to load a `department` resource based on a key passed in the resource context, you would do it as follows:
 
 ```rego
-user = ds.object({ "type": "department", "key": input.resource.key })
+user = ds.object({ "object_type": "department", "object_id": input.resource.id })
 ```
 
 ## Check Relation built-in
@@ -88,18 +88,11 @@ The `ds.check_relation` built-in allows you to query the Topaz directory for a r
 ```rego
 allowed {
   ds.check_relation({
-    "subject": {
-      "key": input.user.key,
-      "type": "user"
-    },
-    "object": {
-      "key": input.resource.key,
-      "type": "department"
-    },
-    "relation": {
-      "object_type": "department",
-      "name": "owner"
-    }
+    "object_type": "department",
+    "object_id": input.resource.id,
+    "relation": "owner",
+    "subject_type": "user",
+    "subject_id": input.user.id
   })
 }
 ```
@@ -113,17 +106,11 @@ Similar to the `ds.check_relation` built-in, the `ds.check_permission` built-in 
 ```rego
 allowed {
   ds.check_permission({
-    "subject": {
-      "key": input.user.key,
-      "type": "user"
-    },
-    "object": {
-      "key": input.resource.key,
-      "type": "department"
-    },
-    "permission": {
-      "name": "can-read"
-    }
+    "object_type": "department",
+    "object_id": input.resource.id,
+    "permission": "can-read",
+    "subject_type": "user",
+    "subject_id": input.user.id
   })
 }
 ```
@@ -145,17 +132,11 @@ allowed {
 ## allow if the user has the "can-delete" permission on the department identified by "key"
 allowed {
   ds.check_permission({
-    "subject": {
-      "key": input.user.key,
-      "type": "user"
-    },
-    "object": {
-      "key": input.resource.key,
-      "type": "department"
-    },
-    "permission": {
-      "name": "can-delete"
-    }
+    "object_type": "department",
+    "object_id": input.resource.id,
+    "permission": "can-delete",
+    "subject_type": "user",
+    "subject_id": input.user.key
   })
 }
 ```
@@ -167,17 +148,11 @@ To combine the rules so that BOTH must be true for the `allowed` decision to eva
 allowed {
   input.user.properties.department == "IT"
   ds.check_permission({
-    "subject": {
-      "key": input.user.key,
-      "type": "user"
-    },
-    "object": {
-      "key": input.resource.key,
-      "type": "department"
-    },
-    "permission": {
-      "name": "can-delete"
-    }
+    "object_type": "department",
+    "object_id": input.resource.id,
+    "permission": "can-delete",
+    "subject_type": "user",
+    "subject_id": input.user.key
   })
 }
 ```

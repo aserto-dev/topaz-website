@@ -47,8 +47,10 @@ Topaz makes it easy to store user and resource information close to the authoriz
 * Loading identities (users and/or machines), groups, and relationships
 
 At runtime, the authorizer can query data stored in the directory using a set of built-ins, such as:
+* `ds.identity`
 * `ds.user`
 * `ds.object`
+* `ds.check`
 * `ds.check_relation`
 * `ds.check_permission`
 
