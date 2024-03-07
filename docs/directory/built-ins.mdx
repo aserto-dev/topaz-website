@@ -14,7 +14,7 @@ ds.identity({
   "id": "<value>"
 })
 ```
-Looks up a user identity by one of the keys (e.g. email address or PID), and returns the `identifier` of the user object associated to the identity instance.
+Looks up a user identity by one of the ids (e.g. email address or PID), and returns the `identifier` of the user object associated to the identity instance.
 
 For example: `ds.identity({ "id": "euang@acmecorp.com" })` will return `dfdadc39-7335-404d-af66-c77cf13a15f8`.
 
@@ -22,12 +22,16 @@ For example: `ds.identity({ "id": "euang@acmecorp.com" })` will return `dfdadc39
 ```js
 ds.object({
   "object_type": "<object type>",
-  "object_id": "<object identifier>"
+  "object_id": "<object identifier>",
+  "with_relation": <boolean>
 })
 ```
-Returns an object instance of `<object type>`, looked up by the identifier supplied as `<object identifier>`.
+Returns an object instance looked up by the combination of `<type>` and `<id>`.
 
-For example: `ds.object({ "object_type": "identity", "object_id": "euang@acmecorp.com" })` will return the identity object associated with Euan.
+For example: `ds.object({ "type": "identity", "id": "euang@acmecorp.com" })` will return the identity object associated with Euan.
+
+If `with_relation` is included and set to `true`, the response includes all the relation instances.
+
 
 ### `ds.relation`
 
@@ -43,7 +47,7 @@ ds.relation({
 })
 ```
 Returns the relation instance that connects the subject with the object through the relation identified by `<object type>` and `<relation name>`.
-If `with_objects` is included and set to `true`, the response includes the full subject and object instances.
+If `with_objects` is included and set to `true`, the response includes all the subject and object instances.
 
 ### `ds.check`
 
@@ -94,7 +98,7 @@ ds.check_permission({
 ```
 An object is identified by the combination of its `<object type>` and `<object identifier>`. The same is true for a subject.
 
-`ds.check_permission` returns`true` if the subject has the permission `permission name` referenced through one or more relations to the object.
+`ds.check_permission` returns`true` if the subject has the permission `<permission name>` referenced through one or more relations to the object.
 
 ### `ds.graph`
 
@@ -106,6 +110,7 @@ ds.graph({
     "subject_type": "<subject type>",
     "subject_id": "<subject identifier>",
     "subject_relation": "<subject relation>",
+    "explain": <boolean>
 })
 ```
 
