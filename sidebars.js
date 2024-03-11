@@ -141,6 +141,7 @@ const sidebars = {
           'command-line-interface/topaz-cli/manifest',
           'command-line-interface/topaz-cli/data',
           'command-line-interface/topaz-cli/configuration',
+          'command-line-interface/topaz-cli/certs',
           'command-line-interface/topaz-cli/test',
           'command-line-interface/topaz-cli/versioning',
         ],
