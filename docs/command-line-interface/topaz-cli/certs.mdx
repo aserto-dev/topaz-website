@@ -1,0 +1,85 @@
+# Managing development certificates
+
+Topaz CLI offers a couple of commands to manage the local development certificates:
+
+```
+Commands:
+  certs list        list dev certs
+  certs generate    generate dev certs
+  certs trust       trust/untrust dev certs
+  certs remove      remove dev certs
+```
+
+## Certs list 
+
+The certs list command will list the certificate files, their validity, common name and set dns names from your topaz certs configuration directory. 
+
+Example:
+```
+topaz certs list
+
+certs directory: /home/<user>/.config/topaz/certs
+
+  FILE            NOT BEFORE            NOT AFTER             VALID  CN                DNS NAMES                  
+  gateway-ca.crt  2024-03-11T11:30:19Z  2025-03-11T11:30:19Z  true   topaz-gateway-ca                             
+  gateway.crt     2024-03-11T11:30:26Z  2025-03-11T11:30:26Z  true   topaz-gateway-ca  localhost,<hostname>
+  grpc-ca.crt     2024-03-11T11:30:29Z  2025-03-11T11:30:29Z  true   topaz-grpc-ca                                
+  grpc.crt        2024-03-11T11:30:29Z  2025-03-11T11:30:29Z  true   topaz-grpc-ca     localhost,<hostname>
+```
+
+## Certs trust
+
+Allows adding/removing the generated development certs to the list of OS trusted certs. 
+
+```
+Usage: topaz certs trust --certs-dir="/home/<user>/.config/topaz/certs"
+
+trust/untrust dev certs
+
+Flags:
+  -h, --help                                          Show context-sensitive help.
+  -N, --no-check                                      disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log=0                                         log level
+
+      --certs-dir="/home/<user>/.config/topaz/certs"  path to dev certs folder
+      --remove                                        remove dev cert from trust store
+```
+
+## Certs generate
+
+The generate command allows you to generate a new set of development certificates.
+
+```
+Usage: topaz certs generate
+generate dev certs
+
+Flags:
+  -h, --help                                          Show context-sensitive help.
+  -N, --no-check                                      disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log=0                                         log level
+
+      --certs-dir="/home/<user>/.config/topaz/certs"    path to dev certs folder
+      --force                                         force generation of dev certs, overwriting existing cert files
+      --trust                                         add generated certs to trust store
+      --dns-names=localhost,...                       list of DNS names used to generate dev certs
+```
+
+You can easily specify a different certs directory and specific custom dns-names if desired. 
+If you use the `--trust` flag it will execute the `certs trust` command after generation.
+
+## Certs remove
+
+Remove the development certs from the specified cert directory.
+
+```
+Usage: topaz certs remove --certs-dir="/home/<user>/.config/topaz/certs"
+
+remove dev certs
+
+Flags:
+  -h, --help                                          Show context-sensitive help.
+  -N, --no-check                                      disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log=0                                         log level
+
+      --certs-dir="/home/<user>/.config/topaz/certs"  path to dev certs folder
+```
