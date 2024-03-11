@@ -61,7 +61,7 @@ In addition, you can add properties on your objects in an extensible JSON proper
 
 Policies can also use resource context in their evaluation process. If we added the allowed clause
 below to our policy, and the caller included a resource context that contains `{ "user_id": "<the-user-id>" }`,
-the policy would evaluate `allowed` to `true` if the user key and the resource `user_id` match.
+the policy would evaluate `allowed` to `true` if the user id and the resource `user_id` match.
 
 ```rego
 allowed {
@@ -71,23 +71,23 @@ allowed {
 
 ## Objects
 
-The directory can store any object, and if you pass in a key in your resource context, you may want to load the object (with its properties) based on this key.
+The directory can store any object, and if you pass in an id in your resource context, you may want to load the object (with its properties) based on this id.
 
 To do this you can use the `ds.object` built-in. Objects are resolved based on their `object_type` and `object_id` value.
 
-You don't need to do this for the user, since Topaz automatically does it for you. But if you wanted to load a `department` resource based on a key passed in the resource context, you would do it as follows:
+You don't need to do this for the user, since Topaz automatically does it for you. But if you wanted to load a `department` resource based on an id passed in the resource context, you would do it as follows:
 
 ```rego
 user = ds.object({ "object_type": "department", "object_id": input.resource.id })
 ```
 
-## Check Relation built-in
+## Check built-in
 
-The `ds.check_relation` built-in allows you to query the Topaz directory for a relationship between an object an a subject. Once we resolve the object and the subject, we can use the `ds.check_relation` built-in to check if the object has a relationship with the subject.
+The `ds.check` built-in allows you to query the Topaz directory for a relation or permission between an object an a subject.
 
 ```rego
 allowed {
-  ds.check_relation({
+  ds.check({
     "object_type": "department",
     "object_id": input.resource.id,
     "relation": "owner",
@@ -97,18 +97,16 @@ allowed {
 }
 ```
 
-The example above will check whether the user represented in the identity context is a `department owner` of the `department` object with the key passed in as `input.resource.key`.
+The example above will check whether the user represented in the identity context is a `department owner` of the `department` object with the id passed in as `input.resource.id`.
 
-## Check Permission built-in
-
-Similar to the `ds.check_relation` built-in, the `ds.check_permission` built-in allows you to query the Topaz directory for a permission that is associated with a relationship between an object and a subject. Once we resolve the object and the subject, we can use the `ds.check_permission` built-in to check if the object has a permission with the subject.
+We can also use the `ds.check` built-in to check if the object has a permission with the subject.
 
 ```rego
 allowed {
-  ds.check_permission({
+  ds.check({
     "object_type": "department",
     "object_id": input.resource.id,
-    "permission": "can-read",
+    "relation": "can-read",
     "subject_type": "user",
     "subject_id": input.user.id
   })
@@ -117,7 +115,7 @@ allowed {
 
 ## Example policy
 
-The policy below is a sample policy that will take advantage of the relation and permission built-ins to check if a user has permission to delete a department. It will also combine an ABAC rule with that will check if the user is a member of the "IT" department. The resulting policy will be true if either of these conditions is met.
+The policy below is a sample policy that will take advantage of the relation and permission built-ins to check if a user has permission to delete a department. It will also combine an ABAC rule to check if the user is a member of the "IT" department. The resulting policy will be true if either of these conditions is met.
 
 ```rego
 package sample.DELETE.api.departments
@@ -129,14 +127,14 @@ allowed {
   input.user.properties.department == "IT"
 }
 
-## allow if the user has the "can-delete" permission on the department identified by "key"
+## allow if the user has the "can-delete" permission on the department identified by "id"
 allowed {
-  ds.check_permission({
+  ds.check({
     "object_type": "department",
     "object_id": input.resource.id,
-    "permission": "can-delete",
+    "relation": "can-delete",
     "subject_type": "user",
-    "subject_id": input.user.key
+    "subject_id": input.user.id
   })
 }
 ```
@@ -147,12 +145,12 @@ To combine the rules so that BOTH must be true for the `allowed` decision to eva
 ## allow if BOTH conditions are true
 allowed {
   input.user.properties.department == "IT"
-  ds.check_permission({
+  ds.check({
     "object_type": "department",
     "object_id": input.resource.id,
-    "permission": "can-delete",
+    "relation": "can-delete",
     "subject_type": "user",
-    "subject_id": input.user.key
+    "subject_id": input.user.id
   })
 }
 ```
