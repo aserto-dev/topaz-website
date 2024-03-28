@@ -6,9 +6,7 @@ description: Topaz SDKs - Node.js / Express.js - Installing and using the Node.j
 
 # Node.js / Express.js SDK
 
-Topaz authorization middleware for the node Express server, based on
-Auth0's [express-jwt-authz](https://github.com/auth0/express-jwt-authz)
-package.
+Topaz authorization SDK for Node.js, as well as Express.js-compatible middleware.
 
 ## GitHub
 
@@ -718,15 +716,14 @@ await directoryClient.deleteManifest();
 ### Import
 
 ```ts
-const objectCase = "object" as const;
-const relationCase = "relation" as const;
 
 const importRequest = createAsyncIterable([
   {
+    opCode: 1,
     msg: {
-      case: objectCase,
+      case: "object",
       value: {
-        id: "import-user",
+        id: "id1",
         type: "user",
         properties: {},
         displayName: "name1",
@@ -734,25 +731,27 @@ const importRequest = createAsyncIterable([
     },
   },
   {
+    opCode: 1,
     msg: {
-      case: objectCase,
+      case: "object",
       value: {
-        id: "import-group",
-        type: "group",
+        id: "id2",
+        type: "user",
         properties: {},
         displayName: "name2",
       },
     },
   },
   {
+    opCode: 1,
     msg: {
-      case: relationCase,
+      case: "relation",
       value: {
-        subjectId: "import-user",
+        objectId: "id1",
+        objectType: "user",
+        subjectId: "id2",
         subjectType: "user",
-        objectId: "import-group",
-        objectType: "group",
-        relation: "member",
+        relation: "manager",
       },
     },
   },
