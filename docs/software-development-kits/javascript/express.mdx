@@ -6,9 +6,7 @@ description: Topaz SDKs - Node.js / Express.js - Installing and using the Node.j
 
 # Node.js / Express.js SDK
 
-Topaz authorization middleware for the node Express server, based on
-Auth0's [express-jwt-authz](https://github.com/auth0/express-jwt-authz)
-package.
+Topaz authorization SDK for Node.js, as well as Express.js-compatible middleware.
 
 ## GitHub
 
@@ -718,24 +716,24 @@ await directoryClient.deleteManifest();
 ### Import
 
 ```ts
-const objectCase = "object" as const;
-const relationCase = "relation" as const;
-
+import { ImportMsgCase, ImportOpCode, objectPropertiesAsStruct } from "@aserto/aserto-node"
 const importRequest = createAsyncIterable([
   {
+    opCode: ImportOpCode.SET,
     msg: {
-      case: objectCase,
+      case: ImportMsgCase.OBJECT,
       value: {
         id: "import-user",
         type: "user",
-        properties: {},
+        properties: objectPropertiesAsStruct({ foo: "bar" }),
         displayName: "name1",
       },
     },
   },
   {
+    opCode: ImportOpCode.SET,
     msg: {
-      case: objectCase,
+      case: ImportMsgCase.OBJECT,
       value: {
         id: "import-group",
         type: "group",
@@ -745,8 +743,9 @@ const importRequest = createAsyncIterable([
     },
   },
   {
+    opCode: ImportOpCode.SET,
     msg: {
-      case: relationCase,
+      case: ImportMsgCase.RELATION,
       value: {
         subjectId: "import-user",
         subjectType: "user",
@@ -761,6 +760,7 @@ const importRequest = createAsyncIterable([
 const resp = await directoryClient.import(importRequest);
 await (readAsyncIterable(resp))
 ```
+
 
 ### Export
 
