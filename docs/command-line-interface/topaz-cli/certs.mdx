@@ -45,6 +45,15 @@ Flags:
       --remove                                        remove dev cert from trust store
 ```
 
+Note: On Linux the automatic dev-cert trusting mechanism is disabled as although most other applications in Linux use the system's trust store, the way that a system handles trusting certificates varies depending on the Linux distribution.
+
+Example:
+- Debian-based distribution: we need to copy the certificate to `/usr/local/share/ca-certificates/grpc-ca.crt`. If we want to remove a certificate from the trusted list, we just have to take it out of this directory. 
+- Arch and Fedora distributions: we can add the dev-certificates using the `trust` command - `trust anchor --store grpc-ca.crt`. To remove a certificate you can use `trust anchor --remove grpc-ca.crt`. 
+- Alpine Linux: we need to copy the certificate file to `/etc/ssl/certs/grpc-ca.crt`. If we want to remove the certificate from the trusted list, we just remove the file from this directory.
+
+To make these changes take effect we'll need to run the `update-ca-certificates` command.
+
 ## Certs generate
 
 The generate command allows you to generate a new set of development certificates.
