@@ -3,24 +3,52 @@ sidebar_position: 2
 ---
 # Configuration
 
-Topaz requires a configuration file to run. By default, the location of the config file is `$HOME/.config/topaz/cfg/config.yaml`. 
+Topaz requires a configuration file to run. By default, the location of the config file is `$XDG_CONFIG_HOME/topaz/cfg/config.yaml`, if the $XDG_CONFIG_HOME environment variable is not set it will be set in `$HOME/.config/topaz/cfg/config.yaml`. 
 
-The [templates install](templates#installing-a-template) command automatically creates the right configuration file. To obtain more control over the generated configuration file, use `topaz configure`.
+The [templates install](templates#installing-a-template) command automatically creates the right configuration file. To obtain more control over the generated configuration file, use `topaz config` subcommands.
+
+## Managing topaz configurations
+
+The `topaz config` set of subcommands allows users to:
+- select a topaz configuration file that will be used in the future Topaz CLI interactions
+- generate new configuration files
+- list existing Topaz configuration files
+- rename configuration files
+- delete a Topaz configuration file
+```
+Usage: topaz config <command> [flags]
+
+configure topaz service
+
+Commands:
+  config use       set active configuration
+  config new       create new configuration
+  config list      list configurations
+  config rename    rename configuration
+  config delete    delete configuration
+  
+Flags:
+  -h, --help        Show context-sensitive help.
+  -N, --no-check    disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log         log level
+```
 
 ## Generating a config file
 
-`topaz configure` generates a configuration file with the most common options.
+`topaz config new` generates a configuration file with the most common options.
 
 ```
 Flags:
   -h, --help                         Show context-sensitive help.
-      --no-check                     disable local container running check ($TOPAZ_NO_CHECK)
+  -N, --no-check                     disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log=0                        log level
 
-  -n, --policy-name=STRING           policy name
+  -n, --name=STRING                  config name
   -l, --local-policy-image=STRING    local policy image name
   -r, --resource=STRING              resource url
-  -p, --stdout                       generated configuration is printed to stdout but not saved
+  -p, --stdout                       print to stdout
   -d, --edge-directory               enable edge directory
+  -f, --force                        skip confirmation prompt
 ```
 
 Example:
@@ -28,14 +56,77 @@ Example:
 To generate a configuration file for the demo "todo" policy using the public OCI image for that policy (from GHCR), use the following command:
 
 ```shell
-topaz configure -d -r ghcr.io/aserto-policies/policy-todo:latest -n todo
+topaz config new -d -r ghcr.io/aserto-policies/policy-todo:latest -n todo
 ```
 
 To generate a configuration file for a local OCI image, use the following command:
 
 ```shell
-topaz configure -d -l my-image:latest -n todo
+topaz config new -d -l my-image:latest -n todo
 ```
+
+## Named configurations
+
+Topaz CLI allows the user to have multiple configuration files and easily switch between them when running the topaz container. 
+
+When using templates the generated configuration file uses the name of the template (ex. for `todo` template it will generate a `$XDG_CONFIG_HOME/topaz/cfg/todo.yaml`).
+
+To see available configuration files you can use the `topaz list` command, this will also highlight the current active configuration file. 
+
+If you want to start topaz with a different configuration file, you can just specify the name of the configuration you want to use in the `topaz start/run -n=<name_of_configuration>` command. This will automatically switch you active configuration file to the one you used.
+
+Note: The default `config.yaml` file will keep the container name as `topaz`. Any named configurations (ex. any installed template) will use the `topaz-<config_name>` as the container name.
+
+## Topaz CLI paths and environment variables
+
+By default the Topaz CLI uses XDG_CONFIG_HOME and XDG_DATA_HOME to store the topaz configuration files, local directory files and cert files.
+These values can be easily overwritten using the Topaz specific environment variables TOPAZ_CERTS_DIR and TOPAZ_DB_DIR (used in newly generated configuration files).
+
+Depending on the OS if these are not set the default paths used are:
+
+1. Linux
+```
+- $HOME/.local/share/topaz/db - directory files
+- $HOME/.local/share/topaz/certs - cert files
+- $HOME/.config/topaz/cfg - config files
+```
+
+2. Darwin
+```
+- $HOME/Library/Application Support/topaz/db - directory files
+- $HOME/Library/Application Support/topaz/certs - cert files
+- $HOME/Library/Application Support/topaz/cfg - config files
+```
+
+3. Windows
+```
+- $HOME\AppData\Local\topaz\certs - cert files
+- $HOME\AppData\Local\topaz\db - directory files
+- $HOME\AppData\Local\topaz\cfg - config files
+```
+
+If you used previous versions of topaz your configuration, database and cert files were stored in $HOME/.config/topaz
+If you want to keep using the same location to store your files with any newly generated configuration you can export
+``` 
+export TOPAZ_CERTS_DIR=$HOME/.config/topaz/certs
+export TOPAZ_DB_DIR=$HOME/.config/topaz/db
+```
+
+The topaz CLI could display the following warnings if you had older configuration setup:
+```
+You still have old db files in /home/<user>/.config/topaz/db ! 
+Please see documentation on how to update your configuration: https://www.topaz.sh/docs/command-line-interface/topaz-cli/configuration
+```
+
+In this scenario you still have database files in the location used by the previous versions of Topaz CLI. 
+To resolve this warning please move the files to the new location and update the matching configuration file or set the TOPAZ_DB_DIR environment variable as shown above.
+
+```
+This configuration file still uses TOPAZ_DIR environment variable. Please change to using the new TOPAZ_DB_DIR and TOPAZ_CERTS_DIR environment variables.
+```
+In this scenario you will need to update the configuration file to use the new TOPAZ_DB_DIR and TOPAZ_CERTS_DIR environment variables. 
+The easiest method is to re-run the `configure` command to generate a new configuration file.
+
 
 ## Config file documentation
 
@@ -63,7 +154,7 @@ logging:
   log_level: info
 
 directory:
-  db_path: ${TOPAZ_DIR}/db/directory.db
+  db_path: ${TOPAZ_DB_DIR}/directory.db
   request_timeout: 5s # set as default, 5 secs.
   seed_metadata: false # deprecated in v3, with the introduction of manifest files, this always defaults to false.
 
@@ -96,24 +187,24 @@ api:
         - https://*.aserto.com
         - https://*aserto-console.netlify.app
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/gateway.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/gateway.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/gateway-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/gateway.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/gateway.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/gateway-ca.crt"
       grpc:
         listen_address: "0.0.0.0:8081"
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/grpc.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/grpc.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/grpc-ca.crt"
-    # configure the reader interface    
+          tls_key_path: "${TOPAZ_CERTS_DIR}/grpc.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/grpc.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/grpc-ca.crt"
+    # configure the reader interface
     reader:
       grpc:
         listen_address: "0.0.0.0:9292"
         # if certs are not specified default certs will be generate with the format reader_grpc.*
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/grpc.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/grpc.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/grpc-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/grpc.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/grpc.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/grpc-ca.crt"
       gateway:
         listen_address: "0.0.0.0:9393"
         # if not specified, the allowed_origins includes localhost by default
@@ -127,9 +218,9 @@ api:
         - https://*aserto-console.netlify.app
         # if no certs are specified, the gateway will have the http flag enabled (http: true)
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/gateway.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/gateway.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/gateway-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/gateway.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/gateway.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/gateway-ca.crt"
         http: false
         read_timeout: 2s # default 2 seconds
         read_header_timeout: 2s
@@ -140,9 +231,9 @@ api:
       grpc:
         listen_address: "0.0.0.0:9292"
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/grpc.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/grpc.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/grpc-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/grpc.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/grpc.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/grpc-ca.crt"
       gateway:
         listen_address: "0.0.0.0:9393"
         allowed_origins:
@@ -153,9 +244,9 @@ api:
         - https://*.aserto.com
         - https://*aserto-console.netlify.app
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/gateway.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/gateway.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/gateway-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/gateway.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/gateway.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/gateway-ca.crt"
         http: false
         read_timeout: 2s
         read_header_timeout: 2s
@@ -166,9 +257,9 @@ api:
       grpc:
         listen_address: "0.0.0.0:9292"
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/grpc.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/grpc.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/grpc-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/grpc.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/grpc.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/grpc-ca.crt"
       gateway:
         listen_address: "0.0.0.0:9393"
         allowed_origins:
@@ -179,9 +270,9 @@ api:
         - https://*.aserto.com
         - https://*aserto-console.netlify.app
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/gateway.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/gateway.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/gateway-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/gateway.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/gateway.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/gateway-ca.crt"
         http: false
         read_timeout: 2s
         read_header_timeout: 2s
@@ -192,9 +283,9 @@ api:
       grpc:
         listen_address: "0.0.0.0:9292"
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/grpc.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/grpc.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/grpc-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/grpc.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/grpc.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/grpc-ca.crt"
       gateway:
         listen_address: "0.0.0.0:9393"
         allowed_origins:
@@ -205,9 +296,9 @@ api:
         - https://*.aserto.com
         - https://*aserto-console.netlify.app
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/gateway.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/gateway.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/gateway-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/gateway.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/gateway.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/gateway-ca.crt"
         http: false
         read_timeout: 2s
         read_header_timeout: 2s
@@ -218,9 +309,9 @@ api:
       grpc:
         listen_address: "0.0.0.0:9292"
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/grpc.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/grpc.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/grpc-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/grpc.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/grpc.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/grpc-ca.crt"
       gateway:
         listen_address: "0.0.0.0:9393"
         allowed_origins:
@@ -231,9 +322,9 @@ api:
         - https://*.aserto.com
         - https://*aserto-console.netlify.app
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/gateway.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/gateway.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/gateway-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/gateway.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/gateway.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/gateway-ca.crt"
         http: false
         read_timeout: 2s
         read_header_timeout: 2s
@@ -248,9 +339,9 @@ api:
         connection_timeout_seconds: 2
         listen_address: "0.0.0.0:8282"
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/grpc.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/grpc.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/grpc-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/grpc.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/grpc.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/grpc-ca.crt"
       gateway:
         listen_address: "0.0.0.0:8383"
         allowed_origins:
@@ -262,9 +353,9 @@ api:
         - https://*.aserto.com
         - https://*aserto-console.netlify.app
         certs:
-          tls_key_path: "${TOPAZ_DIR}/certs/gateway.key"
-          tls_cert_path: "${TOPAZ_DIR}/certs/gateway.crt"
-          tls_ca_cert_path: "${TOPAZ_DIR}/certs/gateway-ca.crt"
+          tls_key_path: "${TOPAZ_CERTS_DIR}/gateway.key"
+          tls_cert_path: "${TOPAZ_CERTS_DIR}/gateway.crt"
+          tls_ca_cert_path: "${TOPAZ_CERTS_DIR}/gateway-ca.crt"
         http: false
         read_timeout: 2s
         read_header_timeout: 2s
