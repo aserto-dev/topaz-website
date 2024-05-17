@@ -133,6 +133,10 @@ To start Topaz as a daemon:
 topaz start 
 ```
 
+#### Configuration
+
+The configuration file contains an `opa` section that defines the container registry service from where the policy image is obtained. This may need to be changed to match your registry service. Refer to the [configuration](./configuration.mdx) section to learn how to match the configuration to your specific container registry service.
+
 ### Consume
 
 An application that wants to authorize a user's access to a resource based on the policy can call the policy instance, passing it the policy, decision(s), user context, and resource context, and the policy instance will evaluate the policy with the provided inputs and returns the boolean value(s) of the requested decision(s), allowing the application to definitively check whether the user has access to the resource based on the given policy.
