@@ -56,7 +56,7 @@ You can change the resource to the custom policy image that you've created using
 
 The configuration snippet above refers to the `ghcr.io` registry, and provides unauthenticated access. Below you'll find instructions on how to configure OPA to obtain a policy image from a private / authenticated registry.
 
-### Google Container Registry (GHCR)
+### GitHub Container Registry (GHCR)
 
 To access a private image from GHCR, you'll need to create a Personal Access Token (PAT) [here](https://github.com/settings/tokens), with at least the scopes `read:org` and `repo`. If you want to be able to use `policy push`, you'll also need `write:packages`.
 
