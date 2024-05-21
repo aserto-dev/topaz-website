@@ -4,10 +4,10 @@ sidebar_position: 3
 
 # Creating instances
 
-To populate the database with some data from a JSON file, make sure `topaz` is running and then use the `topaz import` command:
+To populate the database with some data from a JSON file, make sure `topaz` is running and then use the `topaz directory import` command:
 
-```
-topaz import -i -d <directory containing JSON file>
+```sh
+topaz directory import -i -d <directory containing JSON file>
 ```
 
 The two JSON files should contain
@@ -111,6 +111,6 @@ Copy this block into `./relations.json`:
 
 Now run the following command to import the data:
 
-```
-topaz import -i -d .
+```sh
+topaz directory import -i -d .
 ```

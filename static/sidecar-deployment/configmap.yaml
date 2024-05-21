@@ -12,6 +12,6 @@ data:
     
     # This configuration targets a Topaz instance running locally.
     ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
-    ASERTO_AUTHORIZER_CERT_PATH='/root/.config/topaz/certs/grpc-ca.crt'
+    ASERTO_AUTHORIZER_CERT_PATH='/root/.local/share/topaz/certs/grpc-ca.crt'
     ASERTO_DIRECTORY_SERVICE_URL=localhost:9292
-    ASERTO_DIRECTORY_GRPC_CERT_PATH='/root/.config/topaz/certs/grpc-ca.crt'
+    ASERTO_DIRECTORY_GRPC_CERT_PATH='/root/.local/share/topaz/certs/grpc-ca.crt'

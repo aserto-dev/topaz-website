@@ -41,32 +41,18 @@ Archive:  topaz.zip
 
 ## Create a configuration file
 
-Topaz expects a configuration file  the `config.yaml` file to be in `$HOME/.config/topaz/cfg/config.yaml`. The configuration file can be created using the `topaz configure` command, documented [here](/docs/command-line-interface/topaz-cli/configuration.mdx).
+Topaz requires a configuration file in order to run. The configuration file can be created using the `topaz config new` command, documented [here](/docs/command-line-interface/topaz-cli/configuration.mdx). A configuration file is automatically created when you install a template, documented [here](/docs/command-line-interface/topaz-cli/templates.mdx).
 
-For example, to use the sample policy, you can run the following:
-
-```sh
-./topaz configure -d -r ghcr.io/aserto-policies/policy-todo:latest -n policy-todo
-```
-
-This will create a directory structure in `$HOME/.config/topaz` like this:
+For example, to use the sample todo policy, you can run the following:
 
 ```sh
-├──  certs
-│   ├──  gateway-ca.crt
-│   ├──  gateway.crt
-│   ├──  gateway.key
-│   ├──  grpc-ca.crt
-│   ├──  grpc.crt
-│   └──  grpc.key
-├──  cfg
-│   └──  config.yaml
-└──  db
-    └──  directory.db
+./topaz config new -d -r ghcr.io/aserto-policies/policy-todo:latest -n todo
 ```
+
+This will create a config file in `$HOME/.config/topaz/cfg/todo.yaml`.
 
 ## Run the topaz daemon
 
 ```sh
-TOPAZ_DIR=$HOME/.config/topaz ./topazd run -c $HOME/.config/topaz/cfg/config.yaml
+TOPAZ_DIR=$HOME/.config/topaz ./topazd run -c $HOME/.config/topaz/cfg/todo.yaml
 ```

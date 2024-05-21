@@ -45,9 +45,9 @@ All endpoints of the Topaz [Authorizer](/docs/authorizer-guide/overview) use TLS
 with the authorizer, certificates must be verified.
 
 In a development environment, Topaz automatically creates a set of self-signed certificates and certificates of the CA
-(certificate authority) that signed them. It places them in a well-known location on the filesystem, defaulting to `$HOME/.config/topaz/certs/`.
+(certificate authority) that signed them. It places them in a well-known location on the filesystem, defaulting to `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows.
 
 In order for the authorizer client to perform the TLS handshake, it needs to verify the TLS certificate of the one-box
 using the certificate of the CA that signed it.
-The certificate for the authorizer's REST endpoints is placed in `$HOME/.config/topaz/certs/gateway-ca.crt`.
-The certificate for the authorizer's gRPC services is placed in `$HOME/.config/topaz/certs/grpc-ca.crt`.
+The certificate for the authorizer's REST endpoints is named `gateway-ca.crt`.
+The certificate for the authorizer's gRPC services is named `grpc-ca.crt`.
