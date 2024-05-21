@@ -10,7 +10,7 @@ The following is an example task definition for running topaz on Amazon ECS usin
 This example includes an `init-config` container that is responsible for retrieving a topaz config file from
 an S3 bucket before the `topaz` container starts up.
 
-The [topaz configure](/docs/command-line-interface/topaz-cli/configuration) CLI command can be used to generate
+The [topaz config new](/docs/command-line-interface/topaz-cli/configuration) CLI command can be used to generate
 your configuration file, then it should be uploaded to a bucket location that is accessible by the `init-config` container.
 
 This example attaches an EBS volume to persist the configuration, certs, and directory database.  If it does not already exist

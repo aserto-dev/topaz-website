@@ -71,7 +71,7 @@ Topaz CLI allows the user to have multiple configuration files and easily switch
 
 When using templates the generated configuration file uses the name of the template (ex. for `todo` template it will generate a `$XDG_CONFIG_HOME/topaz/cfg/todo.yaml`).
 
-To see available configuration files you can use the `topaz list` command, this will also highlight the current active configuration file. 
+To see available configuration files you can use the `topaz config list` command, this will also highlight the current active configuration file. 
 
 If you want to start topaz with a different configuration file, you can just specify the name of the configuration you want to use in the `topaz start/run -n=<name_of_configuration>` command. This will automatically switch you active configuration file to the one you used.
 
@@ -79,41 +79,34 @@ Note: The default `config.yaml` file will keep the container name as `topaz`. An
 
 ## Topaz CLI paths and environment variables
 
-By default the Topaz CLI uses XDG_CONFIG_HOME and XDG_DATA_HOME to store the topaz configuration files, local directory files and cert files.
+By default the Topaz CLI uses `XDG_CONFIG_HOME` and `XDG_DATA_HOME` to store the topaz configuration files, local directory files and cert files.
 These values can be easily overwritten using the Topaz specific environment variables TOPAZ_CERTS_DIR and TOPAZ_DB_DIR (used in newly generated configuration files).
 
 Depending on the OS if these are not set the default paths used are:
 
-1. Linux
-```
+1. Linux and Darwin/MacOS
+```sh
 - $HOME/.local/share/topaz/db - directory files
 - $HOME/.local/share/topaz/certs - cert files
 - $HOME/.config/topaz/cfg - config files
 ```
 
-2. Darwin
-```
-- $HOME/Library/Application Support/topaz/db - directory files
-- $HOME/Library/Application Support/topaz/certs - cert files
-- $HOME/Library/Application Support/topaz/cfg - config files
-```
-
-3. Windows
-```
+2. Windows
+```sh
 - $HOME\AppData\Local\topaz\certs - cert files
 - $HOME\AppData\Local\topaz\db - directory files
-- $HOME\AppData\Local\topaz\cfg - config files
+- $HOME\.config\topaz\cfg - config files
 ```
 
-If you used previous versions of topaz your configuration, database and cert files were stored in $HOME/.config/topaz
+If you used previous versions of Topaz, your configuration, database and cert files were stored in $HOME/.config/topaz
 If you want to keep using the same location to store your files with any newly generated configuration you can export
-``` 
+```sh
 export TOPAZ_CERTS_DIR=$HOME/.config/topaz/certs
 export TOPAZ_DB_DIR=$HOME/.config/topaz/db
 ```
 
 The topaz CLI could display the following warnings if you had older configuration setup:
-```
+```sh
 You still have old db files in /home/<user>/.config/topaz/db ! 
 Please see documentation on how to update your configuration: https://www.topaz.sh/docs/command-line-interface/topaz-cli/configuration
 ```
@@ -121,7 +114,7 @@ Please see documentation on how to update your configuration: https://www.topaz.
 In this scenario you still have database files in the location used by the previous versions of Topaz CLI. 
 To resolve this warning please move the files to the new location and update the matching configuration file or set the TOPAZ_DB_DIR environment variable as shown above.
 
-```
+```sh
 This configuration file still uses TOPAZ_DIR environment variable. Please change to using the new TOPAZ_DB_DIR and TOPAZ_CERTS_DIR environment variables.
 ```
 In this scenario you will need to update the configuration file to use the new TOPAZ_DB_DIR and TOPAZ_CERTS_DIR environment variables. 

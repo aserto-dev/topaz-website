@@ -11,13 +11,13 @@ Topaz offers four commands to manage data (objects and relations):
 
 ## Importing objects and relations
 
-`topaz import` imports objects and relations in JSON format into the Topaz directory. It takes a directory argument and attempts to import all JSON files in that directory.
+`topaz directory import` imports objects and relations in JSON format into the Topaz directory. It takes a directory argument and attempts to import all JSON files in that directory.
 
 Example:
 
 ```shell
-topaz import -d .
->>> importing data from /Users/ogazitt/.config/topaz/data
+topaz directory import -d .
+>>> importing data from /Users/ogazitt/.local/share/topaz/todo/data
    object types skipped
     permissions skipped
  relation types skipped
@@ -44,6 +44,7 @@ Each file is a JSON object with an `objects` key or a `relations` key, which in 
     },
     ...
   ]
+}
 ```
 
 Note that each object must have a `type` key, and the value must be defined as one of the `types` in the manifest.  Each object also must have a unique `id` key (within the scope of that type). Finally, an object may have an optional `display_name` and an optional `properties` bag.
@@ -62,6 +63,7 @@ Note that each object must have a `type` key, and the value must be defined as o
     },
     ...
   ]
+}
 ```
 
 Note that each relation has at least five fields:
@@ -74,12 +76,12 @@ Note that each relation has at least five fields:
 
 ## Exporting objects and relations
 
-`topaz export` dumps the objects and relations into two files called `objects.json` and `relations.json`, in the directory specified with the `-d` option.
+`topaz directory export` dumps the objects and relations into two files called `objects.json` and `relations.json`, in the directory specified with the `-d` option.
 
 Example:
 
 ```shell
-topaz export -d . -i
+topaz directory export -d . -i
 >>> exporting data to .
    object types skipped
     permissions skipped
@@ -90,12 +92,12 @@ topaz export -d . -i
 
 ## Backing up a directory
 
-`topaz backup` creates a tarball with the objects.json and relations.json files. The file is named `backup.tar.gz` by default. To choose a different name, pass in the filename argument.
+`topaz directory backup` creates a tarball with the objects.json and relations.json files. The file is named `backup.tar.gz` by default. To choose a different name, pass in the filename argument.
 
 Example:
 
 ```shell
-topaz backup -i b.tar.gz
+topaz directory backup -i b.tar.gz
 >>> backup to b.tar.gz
    object types skipped
     permissions skipped
@@ -106,12 +108,12 @@ topaz backup -i b.tar.gz
 
 ## Restoring a directory from a backup
 
-`topaz restore` restores the directory data from a tarball named `backup.tar.gz` by default. To choose a different name, pass in the filename argument.
+`topaz directory restore` restores the directory data from a tarball named `backup.tar.gz` by default. To choose a different name, pass in the filename argument.
 
 Example:
 
 ```shell
-topaz restore  -i backup.tar.gz
+topaz directory restore  -i backup.tar.gz
 >>> restore from /tmp/new/backup.tar.gz
    object types skipped
     permissions skipped

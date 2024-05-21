@@ -2,20 +2,18 @@
 
 Topaz offers three commands to manage the manifest:
 
-```shell
-  manifest get       get manifest
-  manifest set       set manifest
-  manifest delete    delete manifest
-```
+* `topaz directory get manifest`
+* `topaz directory set manifest`
+* `topaz directory delete manifest`
 
 ## Getting the manifest
 
-`topaz manifest get` retrieves the current manifest and prints it to stdout.
+`topaz directory get manifest` retrieves the current manifest and prints it to stdout.
 
 Example:
 
 ```shell
-topaz manifest get -i
+topaz directory get manifest -i
 >>> get manifest to
 # yaml-language-server: $schema=https://www.topaz.sh/schema/manifest.json
 ---
@@ -51,19 +49,19 @@ types:
 
 ## Setting a manifest
 
-`topaz manifest set` set the manifest from stdin. You can also specify a filename as an argument.
+`topaz directory set manifest` set the manifest from stdin. You can also specify a filename as an argument.
 
 Example:
 
 ```shell
-topaz manifest set -i ./manifest.yaml
->>> set manifest from /Users/ogazitt/.config/topaz/model/manifest.yaml
+topaz directory set manifest -i ./manifest.yaml
+>>> set manifest from /Users/ogazitt/.local/share/topaz/tmpl/todo/model/manifest.yaml
 ```
 
 ## Deleting the manifest
 
-`topaz manifest delete` removes the manifest and **deletes all data**. After deleting a manifest, you must set a new manifest before you can use the Topaz directory.
+`topaz directory delete manifest` removes the manifest and **deletes all data**. After deleting a manifest, you must set a new manifest before you can use the Topaz directory.
 
 :::note
-`topaz load` and `topaz save` have been deprecated in favor of `manifest set` and `manifest get`, respectively.
+`topaz directory load` and `topaz directory save` have been deprecated in favor of `topaz directory set manifest` and `topaz directory get manifest`, respectively.
 :::

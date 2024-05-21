@@ -59,8 +59,8 @@ While topaz is running, from another terminal invoke the topaz CLI inside the ru
 
 ```sh
 cd topaz/docs/deployments/docker-compose
-docker compose exec topaz ./topaz manifest set --no-check -i /data/manifest.yaml
-docker compose exec topaz ./topaz import --no-check -i -H localhost:9292 -d /data
+docker compose exec topaz ./topaz directory set manifest --no-check -i /data/manifest.yaml
+docker compose exec topaz ./topaz directory import --no-check -i -H localhost:9292 -d /data
 ```
 
 A successful directory import should produce this output:

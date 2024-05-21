@@ -16,7 +16,7 @@ bundle install
 ```
 
 ## Set up an `.env` file
-Copy the `.env.example` file to `.env` and update the `ASERTO_AUTHORIZER_CERT_PATH` and `ASERTO_DIRECTORY_GRPC_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.config/topaz/certs/grpc-ca.crt`).
+Copy the `.env.example` file to `.env` and update the `ASERTO_AUTHORIZER_CERT_PATH` and `ASERTO_DIRECTORY_GRPC_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
 
 ```bash
 cp .env.example .env
@@ -32,9 +32,9 @@ AUDIENCE=citadel-app
 ASERTO_POLICY_ROOT="todoApp"
 
 ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
-ASERTO_AUTHORIZER_CERT_PATH=$HOME/.config/topaz/certs/grpc-ca.crt
+ASERTO_AUTHORIZER_CERT_PATH=$HOME/.local/share/topaz/certs/grpc-ca.crt
 ASERTO_DIRECTORY_SERVICE_URL=localhost:9292
-ASERTO_DIRECTORY_GRPC_CERT_PATH=$HOME/.config/topaz/certs/grpc-ca.crt
+ASERTO_DIRECTORY_GRPC_CERT_PATH=$HOME/.local/share/topaz/certs/grpc-ca.crt
 ```
 
 ### Run the DB migration
