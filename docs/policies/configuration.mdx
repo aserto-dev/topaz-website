@@ -1,0 +1,107 @@
+---
+sidebar_label: Configuration
+title: Topaz Policy Configuration Options
+description: Topaz policy configuration options
+---
+
+Once you've created a policy image, you'll need to configure Topaz to properly obtain it from your policy registry.
+
+## Config file location
+
+The location of the Topaz configuration and data files created using `topaz templates install` or `topaz config new` can be found by issuing the command `topaz config info config`.
+
+```sh
+% topaz config info config
+{
+  "topaz_certs_dir": "/Users/ogazitt/.local/share/topaz/certs",
+  "topaz_cfg_dir": "/Users/ogazitt/.config/topaz/cfg",
+  "topaz_db_dir": "/Users/ogazitt/.local/share/topaz/db",
+  "topaz_dir": "/Users/ogazitt/.config/topaz",
+  "topaz_tmpl_dir": "/Users/ogazitt/.local/share/topaz/tmpl"
+}
+```
+
+:::tip
+Unless you've set the `$XDG_CONFIG_HOME` or `$XDG_DATA_HOME` variables, the `topaz_cfg_dir` should be set to `$HOME/.config/topaz/cfg` on all OS's. The data and template files default to `$HOME/.local/share/topaz/{db,tmpl}` on Linux and Mac, and to `$HOME\AppData\Local\{db,tmpl}` on Windows.
+:::
+
+By default, the config file will be named after your configuration name - e.g. `todo.yaml` for the Todo template.
+
+When you edit this file, you'll find a section called `opa`:
+
+```yaml
+opa:
+  instance_id: "-"
+  graceful_shutdown_period_seconds: 2
+  # max_plugin_wait_time_seconds: 30 set as default
+  local_bundles:
+    paths: []
+    skip_verification: true
+  config:
+    services:
+      ghcr:
+        url: https://ghcr.io
+        type: "oci"
+        response_header_timeout_seconds: 5
+    bundles:
+      todo:
+        service: ghcr
+        resource: "ghcr.io/aserto-policies/policy-todo:3.0.0"
+        persist: false
+        config:
+          polling:
+            min_delay_seconds: 60
+            max_delay_seconds: 120
+```
+
+You can change the resource to the custom policy image that you've created using the `policy build` / `policy push` lifecycle commands described [here](./lifecycle.mdx).
+
+## Configuring private registries
+
+The configuration snippet above refers to the `ghcr.io` registry, and provides unauthenticated access. Below you'll find instructions on how to configure OPA to obtain a policy image from a private / authenticated registry.
+
+### GitHub Container Registry (GHCR)
+
+To access a private image from GHCR, you'll need to create a Personal Access Token (PAT) [here](https://github.com/settings/tokens), with at least the scopes `read:org` and `repo`. If you want to be able to use `policy push`, you'll also need `write:packages`.
+
+You'll use the PAT in the `<TOKEN>` placeholder below:
+
+```yaml
+opa:
+  config:
+    services:
+      ghcr:
+        url: https://ghcr.io
+        type: oci
+        credentials:
+          bearer:
+            scheme: "Bearer"
+            token: "<TOKEN>"
+```
+
+### Aserto Policy Container Registry (APCR)
+
+To access a private image from APCR, you'll need to obtain your Aserto Policy Registry username and API key [here](https://docs.aserto.com/docs/overview/policy-lifecycle#policy-cli).
+
+You'll use these in the `<username:APIkey>` placeholder below. Note that the `bundle` should reference the `service` you created (`apcr`), and that the `resource` should have the prefix `apcr.io`.
+
+```yaml
+opa:
+  config:
+    services:
+      apcr:
+        url: https://registry.prod.aserto.com
+        type: oci
+        credentials:
+          bearer:
+            scheme: "basic"
+            token: "<username:APIkey>"
+      bundles:
+        todo:
+          service: apcr
+          resource: registry.prod.aserto.com/<username>/<policy-image>:<policy-tag>
+```
+
+### Other examples
+
+For other examples, see the [examples](https://github.com/aserto-dev/topaz/tree/main/docs/examples) directory in the Topaz repo.
