@@ -54,6 +54,13 @@ Note: currently there exists no support for running Topaz/Topazd on Windows runn
 Example:
 
 ```shell
-topaz 0.31.0 g9e4ac65 darwin-arm64 [2024-02-23T19:50:14Z]
-topazd 0.31.0
+topaz 0.32.5 g66b9f1a darwin-arm64 [2024-05-20T18:35:18Z]
+topazd 0.32.5
+```
+NOTE: when the matching container image version is not download yet, the following message will be returned:
+
+```shell
+topaz 0.32.5 g66b9f1a darwin-arm64 [2024-05-20T18:35:18Z]
+!!! container image "ghcr.io/aserto-dev/topaz:0.32.5" does not exist locally
+!!! run 'topaz install' to download
 ```
