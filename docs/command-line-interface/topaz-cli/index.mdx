@@ -27,33 +27,31 @@
 
 ## Usage
 ```shell
-Usage: topaz <command>
+Usage: topaz <command> [flags]
 
 Topaz CLI
 
 Commands:
-  start        start topaz in daemon mode
-  stop         stop topaz instance
-  status       status of topaz daemon process
-  run          run topaz in console mode
-  manifest     manifest commands
-  test         test assertions commands
-  templates    template commands
-  console      open console in the browser
-  import       import directory objects
-  export       export directory objects
-  backup       backup directory data
-  restore      restore directory data
-  install      install topaz container
-  configure    configure topaz service
-  certs        cert commands
-  update       update topaz container version
-  uninstall    uninstall topaz container
-  version      version information
+  start              start topaz instance (daemon mode)
+  stop               stop topaz instance
+  restart            restart topaz instance
+  status             status of topaz daemon process
+  config             configure topaz instance
+  run                start topaz instance (console mode)
+  templates          template commands
+  console            open topaz console in the browser
+  directory (ds)     directory commands
+  authorizer (az)    authorizer commands
+  certs              certificate management
+  install            install topaz container
+  uninstall          uninstall topaz container
+  update             update topaz container version
+  version            version information
 
 Flags:
   -h, --help        Show context-sensitive help.
   -N, --no-check    disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log         log level
 
 Run "topaz <command> --help" for more information on a command.
 ```
