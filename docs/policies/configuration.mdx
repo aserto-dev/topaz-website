@@ -8,20 +8,24 @@ Once you've created a policy image, you'll need to configure Topaz to properly o
 
 ## Config file location
 
-The location of the Topaz configuration file created using `topaz templates install` or `topaz config new` can be found by issuing the command `topaz config info config`.
-
-For example, on a Mac, the config directory is `$HOME/Library/Application Support/topaz/cfg`:
+The location of the Topaz configuration and data files created using `topaz templates install` or `topaz config new` can be found by issuing the command `topaz config info config`.
 
 ```sh
 % topaz config info config
-  "topaz_certs_dir": "/Users/ogazitt/Library/Application Support/topaz/certs",
-  "topaz_cfg_dir": "/Users/ogazitt/Library/Application Support/topaz/cfg",
-  "topaz_db_dir": "/Users/ogazitt/Library/Application Support/topaz/db",
-  "topaz_dir": "/Users/ogazitt/Library/Application Support/topaz",
-  "topaz_tmpl_dir": "/Users/ogazitt/Library/Application Support/topaz/tmpl"
+{
+  "topaz_certs_dir": "/Users/ogazitt/.local/share/topaz/certs",
+  "topaz_cfg_dir": "/Users/ogazitt/.config/topaz/cfg",
+  "topaz_db_dir": "/Users/ogazitt/.local/share/topaz/db",
+  "topaz_dir": "/Users/ogazitt/.config/topaz",
+  "topaz_tmpl_dir": "/Users/ogazitt/.local/share/topaz/tmpl"
+}
 ```
 
-The config file will be named after your configuration name - e.g. `todo.yaml` for the Todo template.
+:::tip
+Unless you've set the `$XDG_CONFIG_HOME` or `$XDG_DATA_HOME` variables, the `topaz_cfg_dir` should be set to `$HOME/.config/topaz/cfg` on all OS's. The data and template files default to `$HOME/.local/share/topaz/{db,tmpl}` on Linux and Mac, and to `$HOME\AppData\Local\{db,tmpl}` on Windows.
+:::
+
+By default, the config file will be named after your configuration name - e.g. `todo.yaml` for the Todo template.
 
 When you edit this file, you'll find a section called `opa`:
 

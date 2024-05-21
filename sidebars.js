@@ -65,7 +65,8 @@ const sidebars = {
     {
       'Policies': [
         'policies/index',
-        'policies/lifecycle'
+        'policies/lifecycle',
+        'policies/configuration',
       ]
     },
     {
