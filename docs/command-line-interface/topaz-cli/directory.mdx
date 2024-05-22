@@ -418,7 +418,7 @@ topaz directory set object '{
 }
 ```
 
-You can use the exact same syntax to update an object. Note that Topaz assigned an `etag` property to the newly created object. Topaz utilizes an optimistic concurrency model for updates. In order to update an object, you need to specify the `etag` to ensure that the version you are modifying is the same object version you've retrieved. The `topaz directory set object` command does this automatically for you!
+You can use the exact same syntax to update the state of an existing object. Note that while Topaz supports the `etag` protocol for optimistic concurrency control using the directory `SetObject` gRPC and REST APIs, the `topaz directory set` commands do not use the protocol, and simply overwrite the entire object regardless of whether an `etag` is sent with the request.
 
 ### Setting relations
 
