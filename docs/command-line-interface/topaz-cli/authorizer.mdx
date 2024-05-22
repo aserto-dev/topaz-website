@@ -1,0 +1,259 @@
+# Authorizer commands
+
+Topaz provides a few commands to interact with the authorizer:
+
+```sh
+Usage: topaz authorizer (az) <command> [flags]
+
+authorizer commands
+
+Commands:
+  authorizer (az) eval             evaluate policy decision
+  authorizer (az) query            execute query
+  authorizer (az) decisiontree     get decision tree
+  authorizer (az) get-policy       get policy
+  authorizer (az) list-policies    list policies
+  authorizer (az) test             execute authorizer assertions
+
+Flags:
+  -h, --help        Show context-sensitive help.
+  -N, --no-check    disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log         log level
+```
+
+## Listing policies
+
+To list the policies that are loaded into the authorizer, use the `list-policies` subcommand:
+
+```sh
+topaz authorizer list-policies '{ "field_mask": "id" }' --insecure
+{
+  "result": [
+    {
+      "id": "todo/github/workspace/content/src/policies/rebac.check.rego"
+    },
+    {
+      "id": "todo/github/workspace/content/src/policies/todoApp.DELETE.todos.__id.rego"
+    },
+    {
+      "id": "todo/github/workspace/content/src/policies/todoApp.GET.todos.rego"
+    },
+    {
+      "id": "todo/github/workspace/content/src/policies/todoApp.GET.users.__userID.rego"
+    },
+    {
+      "id": "todo/github/workspace/content/src/policies/todoApp.POST.todos.rego"
+    },
+    {
+      "id": "todo/github/workspace/content/src/policies/todoApp.PUT.todos.__id.rego"
+    },
+    {
+      "id": "todo/github/workspace/content/src/policies/todoApp.common.rego"
+    }
+  ]
+}
+```
+
+## Getting a policy
+
+To get the raw policy output for one of the modules, use the get-policy subcommand:
+
+```sh
+topaz az get-policy '{ "id": "todo/github/workspace/content/src/policies/todoApp.GET.todos.rego", "field_mask": "id,raw" }' --insecure
+{
+  "result": {
+    "id": "todo/github/workspace/content/src/policies/todoApp.GET.todos.rego",
+    "raw": "package todoApp.GET.todos\n\n# This policy determines whether the user can view all todos\n\ndefault allowed = true\n"
+  }
+}
+```
+
+## Evaluating a decision (`is` API call)
+
+To evaluate a decision using the `is` API call, use the `topaz authorizer eval` command. Note that the request requires an [identity context](/docs/authorizer-guide/identity-context.mdx) and a [policy context](/docs/authorizer-guide/policy-context.mdx). It may also contain an optional resource context.
+
+The policy context requires both an array of decisions to evaluate, as well as the path of the policy module to execute:
+
+```sh
+topaz authorizer eval '{
+  "identity_context": {
+    "type": "IDENTITY_TYPE_SUB",
+    "identity": "rick@the-citadel.com"
+  },
+  "policy_context": {
+    "decisions": [
+      "allowed"
+    ],
+    "path": "todoApp.GET.todos"
+  }
+}' --insecure
+{
+  "decisions":  [
+    {
+      "decision":  "allowed",
+      "is":  true
+    }
+  ]
+}
+```
+
+To print out a template for the `eval` command parameter, use the following command:
+
+```sh
+topaz authorizer eval -t
+{
+  "policy_context": {
+    "path": "",
+    "decisions": [
+      "allowed"
+    ]
+  },
+  "identity_context": {
+    "identity": "",
+    "type": "IDENTITY_TYPE_NONE"
+  },
+  "resource_context": {},
+  "policy_instance": {
+    "name": "",
+    "instance_label": ""
+  }
+}
+```
+
+## Getting a decision tree (`decisiontree` API call)
+
+The `decisiontree` API allows evaluating multiple decisions under the same API in a single call.
+
+The format is the same as the `eval` call, but the `path` is the root of the decision tree you want to evaluate. For the Todo policy, using `todoApp` will evaluate all 5 modules defined in the Todo policy.
+
+```sh
+topaz authorizer decisiontree '{
+  "identity_context": {
+    "type": "IDENTITY_TYPE_SUB",
+    "identity": "rick@the-citadel.com"
+  },
+  "policy_context": {
+    "decisions": [
+      "allowed"
+    ],
+    "path": "todoApp"
+  }
+}' --insecure
+{
+  "path_root": "todoApp",
+  "path": {
+    "todoApp.DELETE.todos.__id": {
+      "allowed": true
+    },
+    "todoApp.GET.todos": {
+      "allowed": true
+    },
+    "todoApp.GET.users.__userID": {
+      "allowed": true
+    },
+    "todoApp.POST.todos": {
+      "allowed": false
+    },
+    "todoApp.PUT.todos.__id": {
+      "allowed": true
+    }
+  }
+}
+```
+
+You can get the template for the command by using the `-t` flag.
+
+## Executing a query (`query` API call)
+
+You can issue a general query into the OPA engine using the `topaz authorizer query` command.
+
+Note in the example below we pass in the identity, which Topaz will look up and inject into `input.user`. The query we issue, `x = input; y = data.todoApp.GET` returns two variable bindings:
+* `x` is bound to the `input` document, which shows what the policy can expect to see as input.
+* `y` is bound to the evaluation of the `data.todoApp.GET` path, which will evaluate both of the `GET` rules in the policy.
+
+```sh
+topaz authorizer query '{
+  "identity_context": {
+    "type": "IDENTITY_TYPE_SUB",
+    "identity": "rick@the-citadel.com"
+  },
+  "query": "x = input; y = data.todoApp.GET"
+}' --insecure
+{
+  "response": {
+    "result": [
+      {
+        "bindings": {
+          "x": {
+            "identity": {
+              "identity": "rick@the-citadel.com",
+              "type": "IDENTITY_TYPE_SUB"
+            },
+            "user": {
+              "created_at": "2024-05-21T01:02:11.619098467Z",
+              "display_name": "Rick Sanchez",
+              "etag": "948604866316391264",
+              "id": "rick@the-citadel.com",
+              "key": "rick@the-citadel.com",
+              "properties": {
+                "email": "rick@the-citadel.com",
+                "picture": "https://www.topaz.sh/assets/templates/citadel/img/Rick%20Sanchez.jpg",
+                "roles": [
+                  "admin",
+                  "evil_genius"
+                ],
+                "status": "USER_STATUS_ACTIVE"
+              },
+              "type": "user",
+              "updated_at": "2024-05-21T01:02:11.619098467Z"
+            }
+          },
+          "y": {
+            "todos": {
+              "allowed": true
+            },
+            "users": {
+              "__userID": {
+                "allowed": true
+              }
+            }
+          }
+        },
+        "expressions": [
+          {
+            "location": {
+              "col": 1,
+              "row": 1
+            },
+            "text": "x = input",
+            "value": true
+          },
+          {
+            "location": {
+              "col": 12,
+              "row": 1
+            },
+            "text": "y = data.todoApp.GET",
+            "value": true
+          }
+        ]
+      }
+    ]
+  },
+  "metrics": {},
+  "trace": [],
+  "trace_summary": []
+}
+```
+
+You can get the template for the command by using the `-t` flag.
+
+## Creating and executing tests
+
+In Topaz, you can create a set of assertions, which are test cases, and execute those assertions to ensure that your policy is evaluating decisions correctly.
+
+You can use the `topaz authorizer test template` command to print a JSON template for what these assertions should look like.
+
+You can then use the `topaz authorizer test exec` command to execute the assertions file.
+
+To learn more, refer to the [test](./test.mdx) topic.
