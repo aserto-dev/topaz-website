@@ -141,10 +141,10 @@ To return all objects, simply pass in an empty object as the argument: `'{}'`.
 
 ### Listing relations
 
-To return relations, use the `topaz directory list relations <options>` command. Note that the relations returned can be filtered by many different fields. To examine the format of the `options` parameter, you can print a template:
+To return relations, use the `topaz directory list relations <options>` command. Note that the relations returned can be filtered by many different fields. To examine the format of the `options` parameter, you can omit it, and instead print a template using the `--template` or `-t` flag:
 
 ```sh
-topaz directory list relations -t
+topaz directory list relations --template
 {
   "object_type": "",
   "object_id": "",
@@ -249,7 +249,7 @@ topaz directory list relations '{"subject_type": "user", "object_type":"group"}'
 
 ### Getting an object
 
-To get a specific object by type and ID, you can use the `topaz directory get object <options>` command, the template for which is given below:
+To get a specific object by type and ID, you can use the `topaz directory get object <options>` command. To view a template for the options, use the `--template` or `-t` flag, as shown below:
 
 ```sh
 topaz directory get object -t
@@ -298,6 +298,8 @@ topaz directory get object '{ "object_type": "user", "object_id": "rick@the-cita
 ### Getting a relation
 
 Getting a specific relation is useful when you want to retrieve all the objects associated with it, or if you need to retrieve the `etag` of the current version of the object (more on this when we discuss updating an object).
+
+To get a relation, use the `topaz directory get relation <options>` command. To view a template for the options, use the `--template` or `-t` flag, as shown below:
 
 ```sh
 topaz directory get relation -t
@@ -375,7 +377,7 @@ You can create or update objects or relations using the following commands:
 
 ### Setting objects
 
-To create a new object, you must minimally specify its `type` and `id`:
+To create a new object, you must minimally specify its `type` and `id`. To view a template for the options, use the `--template` or `-t` flag, as shown below:
 
 ```sh
 topaz directory set object -t
@@ -422,7 +424,7 @@ You can use the exact same syntax to update the state of an existing object. Not
 
 ### Setting relations
 
-To create or update a relation:
+To create or update a relation, use the `topaz directory set relation <options>` command. To view a template for the options, use the `--template` or `-t` flag, as shown below:
 
 ```sh
 topaz directory set relation -t
@@ -475,7 +477,7 @@ You must fully specify the object (`type` and `id`), or the relation (`object_ty
 
 ### Deleting objects
 
-Template:
+To view a template for the options for this command, use the `--template` or `-t` flag, as shown below::
 
 ```sh
 topaz directory delete object -t
@@ -502,7 +504,7 @@ topaz directory delete object '
 
 ### Deleting relations
 
-You must fully specify the relation:
+To view a template for the options, use the `--template` or `-t` flag, as shown below. Note that you must fully specify the relation:
 
 ```sh
 topaz directory delete relation -t

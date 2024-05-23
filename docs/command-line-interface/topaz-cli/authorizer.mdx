@@ -100,7 +100,7 @@ topaz authorizer eval '{
 To print out a template for the `eval` command parameter, use the following command:
 
 ```sh
-topaz authorizer eval -t
+topaz authorizer eval --template
 {
   "policy_context": {
     "path": "",
@@ -161,7 +161,7 @@ topaz authorizer decisiontree '{
 }
 ```
 
-You can get the template for the command by using the `-t` flag.
+You can get the template for the command by using the `--template` or `-t` flag.
 
 ## Executing a query (`query` API call)
 
@@ -246,7 +246,7 @@ topaz authorizer query '{
 }
 ```
 
-You can get the template for the command by using the `-t` flag.
+You can get the template for the command by using the `--template` or `-t` flag.
 
 ## Creating and executing tests
 
