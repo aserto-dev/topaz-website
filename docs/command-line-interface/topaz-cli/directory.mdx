@@ -1,0 +1,658 @@
+# Directory commands
+
+Topaz offers a number of commands to interact with the directory:
+
+```shell
+Usage: topaz directory (ds) <command> [flags]
+
+directory commands
+
+Commands:
+  directory (ds) check      check permission
+  directory (ds) search     search relation graph
+  directory (ds) get        get object|relation|manifest
+  directory (ds) set        set object|relation|manifest
+  directory (ds) delete     delete object|relation|manifest
+  directory (ds) list       list objects|relations
+  directory (ds) import     import directory data
+  directory (ds) export     export directory data
+  directory (ds) backup     backup directory data
+  directory (ds) restore    restore directory data
+  directory (ds) test       execute directory assertions
+
+Flags:
+  -h, --help        Show context-sensitive help.
+  -N, --no-check    disable local container status check ($TOPAZ_NO_CHECK)
+  -L, --log         log level
+```
+
+## Command categories
+
+These fall into four categories. The first category of commands is documented on this page, and the other categories are split into their own pages.
+
+1. Getting, setting, deleting, and listing objects and relations, and executing `check` and `search` calls. This page focuses on these commands.
+2. Getting, setting, and deleting the manifest, documented [here](./manifest.mdx).
+3. Bulk directory operations - `import`, `export`, `backup`, and `restore`, documented [here](./data.mdx).
+4. Defining and executing tests, documented [here](./test.mdx).
+
+## Listing objects and relations
+
+`topaz directory list objects <options>` and `topaz directory list relations <options>` can be used to retrieve objects and relations, respectively.
+
+The `<options>` parameter is a string containing a JSON object, which can be specified minimally as an empty object - `'{}'`. 
+
+### Listing objects
+
+You can specify the `object_type` as a filter to return only objects of this type, as in the example below.
+
+```shell
+topaz directory list objects '{"object_type":"user"}' --insecure
+{
+  "results": [
+    {
+      "type": "user",
+      "id": "beth@the-smiths.com",
+      "display_name": "Beth Smith",
+      "properties": {
+        "email": "beth@the-smiths.com",
+        "picture": "https://www.topaz.sh/assets/templates/citadel/img/Beth%20Smith.jpg",
+        "roles": [
+          "viewer"
+        ],
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "created_at": "2024-05-21T01:02:11.619050926Z",
+      "updated_at": "2024-05-21T01:02:11.619050926Z",
+      "etag": "512654990579550493"
+    },
+    {
+      "type": "user",
+      "id": "jerry@the-smiths.com",
+      "display_name": "Jerry Smith",
+      "properties": {
+        "email": "jerry@the-smiths.com",
+        "picture": "https://www.topaz.sh/assets/templates/citadel/img/Jerry%20Smith.jpg",
+        "roles": [
+          "viewer"
+        ],
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "created_at": "2024-05-21T01:02:11.619019634Z",
+      "updated_at": "2024-05-21T01:02:11.619019634Z",
+      "etag": "15557840156269755274"
+    },
+    {
+      "type": "user",
+      "id": "morty@the-citadel.com",
+      "display_name": "Morty Smith",
+      "properties": {
+        "email": "morty@the-citadel.com",
+        "picture": "https://www.topaz.sh/assets/templates/citadel/img/Morty%20Smith.jpg",
+        "roles": [
+          "editor"
+        ],
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "created_at": "2024-05-21T01:02:11.619123092Z",
+      "updated_at": "2024-05-21T01:02:11.619123092Z",
+      "etag": "14932635147313973396"
+    },
+    {
+      "type": "user",
+      "id": "rick@the-citadel.com",
+      "display_name": "Rick Sanchez",
+      "properties": {
+        "email": "rick@the-citadel.com",
+        "picture": "https://www.topaz.sh/assets/templates/citadel/img/Rick%20Sanchez.jpg",
+        "roles": [
+          "admin",
+          "evil_genius"
+        ],
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "created_at": "2024-05-21T01:02:11.619098467Z",
+      "updated_at": "2024-05-21T01:02:11.619098467Z",
+      "etag": "948604866316391264"
+    },
+    {
+      "type": "user",
+      "id": "summer@the-smiths.com",
+      "display_name": "Summer Smith",
+      "properties": {
+        "email": "summer@the-smiths.com",
+        "picture": "https://www.topaz.sh/assets/templates/citadel/img/Summer%20Smith.jpg",
+        "roles": [
+          "editor"
+        ],
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "created_at": "2024-05-21T01:02:11.619145676Z",
+      "updated_at": "2024-05-21T01:02:11.619145676Z",
+      "etag": "17144384861342240382"
+    }
+  ],
+  "page": {
+    "next_token": ""
+  }
+}
+```
+
+To return all objects, simply pass in an empty object as the argument: `'{}'`.
+
+### Listing relations
+
+To return relations, use the `topaz directory list relations <options>` command. Note that the relations returned can be filtered by many different fields. To examine the format of the `options` parameter, you can omit it, and instead print a template using the `--template` or `-t` flag:
+
+```sh
+topaz directory list relations --template
+{
+  "object_type": "",
+  "object_id": "",
+  "relation": "",
+  "subject_type": "",
+  "subject_id": "",
+  "subject_relation": "",
+  "with_objects": false,
+  "with_empty_subject_relation": false,
+  "page": {
+    "size": 100,
+    "token": ""
+  }
+}
+```
+
+You can specify the `"with_objects": true` flag to return all the objects associated with the returned relations, and you can use the returned `page` token to page through results that are larger than the requested number of items.
+
+The other fields represent various filters that you can apply to scope down the set of returned relations.
+
+For example, to list all relations between groups and users (i.e. group membership), you can use this command:
+
+```sh
+topaz directory list relations '{"subject_type": "user", "object_type":"group"}' --insecure
+{
+  "results": [
+    {
+      "object_type": "group",
+      "object_id": "admin",
+      "relation": "member",
+      "subject_type": "user",
+      "subject_id": "rick@the-citadel.com",
+      "subject_relation": "",
+      "created_at": "2024-05-21T01:02:11.619572676Z",
+      "updated_at": "2024-05-21T01:02:11.619572676Z",
+      "etag": "7520381670766297568"
+    },
+    {
+      "object_type": "group",
+      "object_id": "editor",
+      "relation": "member",
+      "subject_type": "user",
+      "subject_id": "morty@the-citadel.com",
+      "subject_relation": "",
+      "created_at": "2024-05-21T01:02:11.619593092Z",
+      "updated_at": "2024-05-21T01:02:11.619593092Z",
+      "etag": "15157237189428420024"
+    },
+    {
+      "object_type": "group",
+      "object_id": "editor",
+      "relation": "member",
+      "subject_type": "user",
+      "subject_id": "summer@the-smiths.com",
+      "subject_relation": "",
+      "created_at": "2024-05-21T01:02:11.619613301Z",
+      "updated_at": "2024-05-21T01:02:11.619613301Z",
+      "etag": "439012067560497190"
+    },
+    {
+      "object_type": "group",
+      "object_id": "evil_genius",
+      "relation": "member",
+      "subject_type": "user",
+      "subject_id": "rick@the-citadel.com",
+      "subject_relation": "",
+      "created_at": "2024-05-21T01:02:11.619663009Z",
+      "updated_at": "2024-05-21T01:02:11.619663009Z",
+      "etag": "15435570770464182199"
+    },
+    {
+      "object_type": "group",
+      "object_id": "viewer",
+      "relation": "member",
+      "subject_type": "user",
+      "subject_id": "beth@the-smiths.com",
+      "subject_relation": "",
+      "created_at": "2024-05-21T01:02:11.619683342Z",
+      "updated_at": "2024-05-21T01:02:11.619683342Z",
+      "etag": "2091913623852294601"
+    },
+    {
+      "object_type": "group",
+      "object_id": "viewer",
+      "relation": "member",
+      "subject_type": "user",
+      "subject_id": "jerry@the-smiths.com",
+      "subject_relation": "",
+      "created_at": "2024-05-21T01:02:11.619703759Z",
+      "updated_at": "2024-05-21T01:02:11.619703759Z",
+      "etag": "14562633183270406358"
+    }
+  ],
+  "objects": {},
+  "page": {
+    "next_token": ""
+  }
+}
+```
+
+## Getting objects and relations
+
+### Getting an object
+
+To get a specific object by type and ID, you can use the `topaz directory get object <options>` command. To view a template for the options, use the `--template` or `-t` flag, as shown below:
+
+```sh
+topaz directory get object -t
+{
+  "object_type": "",
+  "object_id": "",
+  "with_relations": false,
+  "page": {
+    "size": 100,
+    "token": ""
+  }
+}
+```
+
+You must minimally specify the `object_type` and `object_id` fields, and you can use the `with_relations` flag to return all relations associated with the object.
+
+For example, to return the object associated with the `user` identified by `rick@the-citadel.com`:
+
+```shell
+topaz directory get object '{ "object_type": "user", "object_id": "rick@the-citadel.com" }' --insecure
+{
+  "result": {
+    "type": "user",
+    "id": "rick@the-citadel.com",
+    "display_name": "Rick Sanchez",
+    "properties": {
+      "email": "rick@the-citadel.com",
+      "picture": "https://www.topaz.sh/assets/templates/citadel/img/Rick%20Sanchez.jpg",
+      "roles": [
+        "admin",
+        "evil_genius"
+      ],
+      "status": "USER_STATUS_ACTIVE"
+    },
+    "created_at": "2024-05-21T01:02:11.619098467Z",
+    "updated_at": "2024-05-21T01:02:11.619098467Z",
+    "etag": "948604866316391264"
+  },
+  "relations": [],
+  "page": {
+    "next_token": ""
+  }
+}
+```
+
+### Getting a relation
+
+Getting a specific relation is useful when you want to retrieve all the objects associated with it, or if you need to retrieve the `etag` of the current version of the object (more on this when we discuss updating an object).
+
+To get a relation, use the `topaz directory get relation <options>` command. To view a template for the options, use the `--template` or `-t` flag, as shown below:
+
+```sh
+topaz directory get relation -t
+{
+  "object_type": "",
+  "object_id": "",
+  "relation": "",
+  "subject_type": "",
+  "subject_id": "",
+  "subject_relation": "",
+  "with_objects": true
+}
+```
+
+The first five fields are required to identify the specific relation, and if the relation contains a `subject_relation`, this field is also required.
+
+Setting the `with_objects` flag to `true` will return the objects on either side of the relation (i.e. both the subject and the object).
+
+```sh
+topaz directory get relation '{
+"object_type": "group",
+"object_id": "viewer",
+"relation": "member",
+"subject_type": "user",
+"subject_id": "jerry@the-smiths.com",
+"with_objects": true
+}' -i
+{
+  "result": {
+    "object_type": "group",
+    "object_id": "viewer",
+    "relation": "member",
+    "subject_type": "user",
+    "subject_id": "jerry@the-smiths.com",
+    "subject_relation": "",
+    "created_at": "2024-05-21T01:02:11.619703759Z",
+    "updated_at": "2024-05-21T01:02:11.619703759Z",
+    "etag": "14562633183270406358"
+  },
+  "objects": {
+    "group:viewer": {
+      "type": "group",
+      "id": "viewer",
+      "display_name": "viewer-group",
+      "properties": {},
+      "created_at": "2024-05-21T01:02:11.618941134Z",
+      "updated_at": "2024-05-21T01:02:11.618941134Z",
+      "etag": "2381165995612044426"
+    },
+    "user:jerry@the-smiths.com": {
+      "type": "user",
+      "id": "jerry@the-smiths.com",
+      "display_name": "Jerry Smith",
+      "properties": {
+        "email": "jerry@the-smiths.com",
+        "picture": "https://www.topaz.sh/assets/templates/citadel/img/Jerry%20Smith.jpg",
+        "roles": [
+          "viewer"
+        ],
+        "status": "USER_STATUS_ACTIVE"
+      },
+      "created_at": "2024-05-21T01:02:11.619019634Z",
+      "updated_at": "2024-05-21T01:02:11.619019634Z",
+      "etag": "15557840156269755274"
+    }
+  }
+}
+```
+
+## Setting objects and relations
+
+You can create or update objects or relations using the following commands:
+* `topaz directory set object <options>`
+* `topaz directory set relation <options>`
+
+### Setting objects
+
+To create a new object, you must minimally specify its `type` and `id`. To view a template for the options, use the `--template` or `-t` flag, as shown below:
+
+```sh
+topaz directory set object -t
+{
+  "object": {
+    "type": "",
+    "id": "",
+    "display_name": "",
+    "properties": {},
+    "created_at": "2024-05-21T23:44:27.803675Z",
+    "updated_at": "2024-05-21T23:44:27.803675Z",
+    "etag": ""
+  }
+}
+```
+
+For example, to create a new user with the `enabled` property set to `true`:
+
+```sh
+topaz directory set object '{
+"object": {
+  "type": "user",
+  "id": "newuser@the-citadel.com",
+  "display_name": "New User",
+  "properties": { "enabled": true }
+  }
+}' -i
+{
+  "result": {
+    "type": "user",
+    "id": "newuser@the-citadel.com",
+    "display_name": "New User",
+    "properties": {
+      "enabled": true
+    },
+    "created_at": "2024-05-21T23:47:26.162265134Z",
+    "updated_at": "2024-05-21T23:47:26.162265134Z",
+    "etag": "17174959649333040925"
+  }
+}
+```
+
+You can use the exact same syntax to update the state of an existing object. Note that while Topaz supports the `etag` protocol for optimistic concurrency control using the directory `SetObject` gRPC and REST APIs, the `topaz directory set` commands do not use the protocol, and simply overwrite the entire object regardless of whether an `etag` is sent with the request.
+
+### Setting relations
+
+To create or update a relation, use the `topaz directory set relation <options>` command. To view a template for the options, use the `--template` or `-t` flag, as shown below:
+
+```sh
+topaz directory set relation -t
+{
+  "relation": {
+    "object_type": "",
+    "object_id": "",
+    "relation": "",
+    "subject_type": "",
+    "subject_id": "",
+    "subject_relation": "",
+    "created_at": "2024-05-21T23:56:33.876467Z",
+    "updated_at": "2024-05-21T23:56:33.876467Z",
+    "etag": ""
+  }
+}
+```
+
+For example:
+
+```sh
+topaz directory set relation '
+{
+  "relation": {
+    "object_type": "group",
+    "object_id": "admin",
+    "relation": "member",
+    "subject_type": "user",
+    "subject_id": "newuser@the-citadel.com"
+  }
+}' --insecure
+{
+  "result": {
+    "object_type": "group",
+    "object_id": "admin",
+    "relation": "member",
+    "subject_type": "user",
+    "subject_id": "newuser@the-citadel.com",
+    "subject_relation": "",
+    "created_at": "2024-05-21T23:58:30.747420386Z",
+    "updated_at": "2024-05-21T23:58:30.747420386Z",
+    "etag": "3727662736522093748"
+  }
+}
+```
+
+## Deleting objects and relations
+
+You must fully specify the object (`type` and `id`), or the relation (`object_type`, `object_id`, `relation`, `subject_type`, `subject_id`, and if it exists, `subject_relation`).
+
+### Deleting objects
+
+To view a template for the options for this command, use the `--template` or `-t` flag, as shown below::
+
+```sh
+topaz directory delete object -t
+{
+  "object_type": "",
+  "object_id": "",
+  "with_relations": false
+}
+```
+
+For example, to delete the object we just created, along with its relation:
+
+```sh
+topaz directory delete object '
+{
+  "object_type": "user",
+  "object_id": "newuser@the-citadel.com",
+  "with_relations": true
+}' --insecure
+{
+  "result": {}
+}
+```
+
+### Deleting relations
+
+To view a template for the options, use the `--template` or `-t` flag, as shown below. Note that you must fully specify the relation:
+
+```sh
+topaz directory delete relation -t
+{
+  "object_type": "",
+  "object_id": "",
+  "relation": "",
+  "subject_type": "",
+  "subject_id": "",
+  "subject_relation": ""
+}
+```
+
+## Check command
+
+The `topaz directory check` command determines whether an object has a relation to (or permission on) a subject.
+
+For example, to check whether the user `rick@the-citadel.com`com is a member of the `viewer` group, issue the following command:
+
+```sh
+topaz ds check '
+{
+  "object_type": "group",
+  "object_id": "viewer",
+  "relation": "member",
+  "subject_type": "user",
+  "subject_id":
+  "rick@the-citadel.com"
+}' --insecure
+{
+  "check": true,
+  "trace": []
+}
+```
+
+## Search command
+
+The `topaz directory search` command is a powerful way to walk the graph and find all the subjects that have a relation to a certain object, or vice versa.
+
+### Objects search
+
+For example, to determine which groups the user `rick@the-citadel.com` is a member of, we can use a `search` command. The format is exactly the same as the `check` command, but you can omit the `object_id` field to return all the objects of type `group` that have a `member` relation to this `user`:
+
+```sh
+topaz ds search '
+{
+  "object_type": "group",
+  "relation": "member",
+  "subject_type": "user",
+  "subject_id":
+  "rick@the-citadel.com"
+}' --insecure
+{
+  "results": [
+    {
+      "object_type": "group",
+      "object_id": "editor"
+    },
+    {
+      "object_type": "group",
+      "object_id": "viewer"
+    },
+    {
+      "object_type": "group",
+      "object_id": "admin"
+    },
+    {
+      "object_type": "group",
+      "object_id": "evil_genius"
+    }
+  ],
+  "explanation": null,
+  "trace": []
+}
+```
+
+### Subjects search
+
+We can also search the other way. To determine which users are members of the `admin` group, issue the following search command, this time omitting the `subject_id` field to return all the subjects that fit the search:
+
+```sh
+topaz ds search '
+{
+  "object_type": "group",
+  "object_id": "admin",
+  "relation": "member",
+  "subject_type": "user"
+}' --insecure
+{
+  "results": [
+    {
+      "object_type": "user",
+      "object_id": "rick@the-citadel.com"
+    }
+  ],
+  "explanation": null,
+  "trace": []
+}
+```
+
+### Explain
+
+To explain the graph traversals for the `check` and `search` commands, use the `explain` flag. 
+
+For example, to learn why the user `rick@the-citadel.com` is a member of the `editor` group, you can see that Rick is a member of the `admin` group, and the `admin#members` subject-relation is a member of the `editors` group, while the other two members are assigned directly to the `editor` group:
+
+```sh
+topaz ds search '
+{
+  "object_type": "group",
+  "object_id": "admin",
+  "relation": "member",
+  "subject_type": "user"
+  "explain": true
+}' --insecure
+{
+  "results": [
+    {
+      "object_type": "user",
+      "object_id": "rick@the-citadel.com"
+    },
+    {
+      "object_type": "user",
+      "object_id": "morty@the-citadel.com"
+    },
+    {
+      "object_type": "user",
+      "object_id": "summer@the-smiths.com"
+    }
+  ],
+  "explanation": {
+    "user:morty@the-citadel.com": [
+      [
+        "group:editor#member@user:morty@the-citadel.com"
+      ]
+    ],
+    "user:rick@the-citadel.com": [
+      [
+        "group:editor#member@group:admin#member",
+        "group:admin#member@user:rick@the-citadel.com"
+      ]
+    ],
+    "user:summer@the-smiths.com": [
+      [
+        "group:editor#member@user:summer@the-smiths.com"
+      ]
+    ]
+  },
+  "trace": []
+}
+```

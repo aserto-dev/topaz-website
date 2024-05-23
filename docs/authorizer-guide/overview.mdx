@@ -7,14 +7,14 @@ description: How to use the Topaz Authorizer
 
 # Overview
 
-The Authorizer uses the
-[Open Policy Agent](https://www.openpolicyagent.org) (OPA) to
-compute a [**decision**](/docs/policies/index.mdx#decision) based on a [**policy**](/docs/policies/index.mdx),
-[**user context**](/docs/policies/index.mdx#user-context), and **data**.
+Topaz is meant to be [deployed as a sidecar (or as a local service)](/docs/deployment/index.mdx), right next to your application. The application can use Topaz to externalize its authorization decisions.
+
+The Topaz authorizer uses the [Open Policy Agent](https://www.openpolicyagent.org) (OPA) to compute a [**decision**](/docs/policies/index.mdx#decision) based on a [**policy**](/docs/policies/index.mdx),
+[**user context**](/docs/policies/index.mdx#user-context), and **data** stored in the Topaz [directory](/docs/directory/index.mdx).
 
 An application can interact with the Authorizer through a set of gRPC or HTTPS REST APIs.
 
-The Topaz authorizer is [deployed as a sidecar (or as a local service)](/docs/deployment/index.mdx), right next to your application.
+A Topaz user can also interact with the authorizer through the [topaz authorizer](/docs/command-line-interface/topaz-cli/authorizer.mdx) commands.
 
 ## Authorizer API categories
 
@@ -24,12 +24,17 @@ The Authorizer provides the following APIs to calling applications.
 - [Policies](/docs/authorizer-guide/policies) (`policies`) - return information about loaded policies
 - Information (`info`) - return build information
 
+### REST APIs
+
 The REST APIs are all exposed with the `/api/v2` URL prefix. By default, the Topaz REST APIs are hosted on `https://localhost:8383`. For example, the `policies` REST API can be called in the following way:
 
 ```shell
 curl -k https://localhost:8383/api/v2/policies
 ```
 
+The Authorizer REST APIs are documented [here](https://aserto.readme.io/reference/authorizeris-1).
+
+### gRPC APIs
 By default, the gRPC APIs are hosted on `localhost:8282`. `grpcui` represents a convenient way to browse the gRPC APIs:
 
 ```shell
@@ -37,3 +42,5 @@ brew install grpcui
 
 grpcui --insecure localhost:8282
 ```
+
+The Authorizer gRPC APIs are documented [here](https://buf.build/aserto-dev/authorizer/docs/main:aserto.authorizer.v2#aserto.authorizer.v2.Authorizer).

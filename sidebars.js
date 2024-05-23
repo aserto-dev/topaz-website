@@ -139,6 +139,8 @@ const sidebars = {
           'command-line-interface/topaz-cli/start',
           'command-line-interface/topaz-cli/templates',
           'command-line-interface/topaz-cli/console',
+          'command-line-interface/topaz-cli/authorizer',
+          'command-line-interface/topaz-cli/directory',
           'command-line-interface/topaz-cli/manifest',
           'command-line-interface/topaz-cli/data',
           'command-line-interface/topaz-cli/configuration',
