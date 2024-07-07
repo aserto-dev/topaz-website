@@ -15,7 +15,7 @@ yarn
 ```
 
 ## Set up an `.env` file
-Copy the `.env.example` file to `.env` and update the `ASERTO_AUTHORIZER_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
+Copy the `.env.example` file to `.env` and update the `ASERTO_GRPC_CA_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
 `ASERTO_DIRECTORY_REJECT_UNAUTHORIZED=false` will let you connect to a local directory without passing the certificate.
 
 ```bash
@@ -32,9 +32,11 @@ AUDIENCE=citadel-app
 ASERTO_POLICY_ROOT=todoApp
 
 ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
-ASERTO_AUTHORIZER_CERT_PATH=$HOME/.local/share/topaz/certs/grpc-ca.crt
 ASERTO_DIRECTORY_SERVICE_URL=localhost:9292
 ASERTO_DIRECTORY_REJECT_UNAUTHORIZED=false
+
+# On Windows, change this to $HOMEPATH\AppData\Local\topaz\certs\grpc-ca.crt
+ASERTO_GRPC_CA_CERT_PATH=${HOME}/.local/share/topaz/certs/grpc-ca.crt
 ```
 
 ## Start the server
