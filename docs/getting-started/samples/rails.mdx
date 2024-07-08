@@ -16,7 +16,8 @@ bundle install
 ```
 
 ## Set up an `.env` file
-Copy the `.env.example` file to `.env` and update the `ASERTO_AUTHORIZER_CERT_PATH` and `ASERTO_DIRECTORY_GRPC_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
+Copy the `.env.example` file to `.env` and update the `ASERTO_GRPC_CA_CERT_PATH` to correspond to the path in which Topaz generated your certificates
+(by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
 
 ```bash
 cp .env.example .env

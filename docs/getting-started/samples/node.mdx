@@ -15,7 +15,8 @@ yarn
 ```
 
 ## Set up an `.env` file
-Copy the `.env.example` file to `.env` and update the `ASERTO_GRPC_CA_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
+Copy the `.env.example` file to `.env` and update the `ASERTO_GRPC_CA_CERT_PATH` to correspond to the path in which Topaz generated your certificates
+(by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
 `ASERTO_DIRECTORY_REJECT_UNAUTHORIZED=false` will let you connect to a local directory without passing the certificate.
 
 ```bash
