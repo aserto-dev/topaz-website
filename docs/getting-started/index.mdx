@@ -73,7 +73,7 @@ topaz templates install todo
 
 This command installs configuration artifacts in the Topaz configuration directory. To find out where this is, see [configuration](/docs/command-line-interface/topaz-cli/configuration.mdx). Unless you've set `$XDG_CONFIG_HOME`, this should be `$HOME/.config/topaz/`.
 
-```sh
+```shell
 tree $HOME/.config/topaz
 /Users/ogazitt/.config/topaz
 ├── cfg
@@ -111,6 +111,7 @@ tree $HOME/.local/share/topaz
         │   └── todo_relations.json
         └── model
             └── manifest.yaml
+```
 
 * `certs/` contains a set of generated self-signed certificates for Topaz.
 that are based on the "Rick & Morty" cartoon.
