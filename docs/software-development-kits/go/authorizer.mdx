@@ -12,16 +12,15 @@ description: Aserto SDKs - Go - Creating a client and making authorization calls
 
 ```go
 import (
-    "github.com/aserto-dev/go-aserto/authorizer/grpc"
-    "github.com/aserto-dev/go-aserto/client"
+    "github.com/aserto-dev/go-aserto"
+    "github.com/aserto-dev/go-aserto/az"
 )
 
 ...
 
-authClient, err := grpc.New(
-  context.Background(),
-	client.WithAddr("localhost:8282"),
-	client.WithInsecure(true),
+azClient, err := az.New(
+    aserto.WithAddr("localhost:8282"),
+    aserto.WithInsecure(true),
 )
 ```
 
@@ -32,34 +31,35 @@ to perform an operation.
 
 ```go
 import (
+    "context"
     "fmt"
+    "log"
 
-    "github.com/aserto-dev/go-aserto/authorizer/grpc"
-  	"github.com/aserto-dev/go-aserto/authorizer/http"
-  	"github.com/aserto-dev/go-aserto/client"
-  	authz "github.com/aserto-dev/go-authorizer/aserto/authorizer/v2"
-  	"github.com/aserto-dev/go-authorizer/aserto/authorizer/v2/api"
+    "github.com/aserto-dev/go-aserto"
+    "github.com/aserto-dev/go-aserto/az"
+    "github.com/aserto-dev/go-authorizer/aserto/authorizer/v2"
+    "github.com/aserto-dev/go-authorizer/aserto/authorizer/v2/api"
 )
 
 ...
-clientAuthz, err := grpc.New(
-	context.Background(),
-	client.WithAddr("localhost:8282"),
-	client.WithInsecure(true),
+azClient, err := az.New(
+    aserto.WithAddr("localhost:8282"),
+    aserto.WithInsecure(true),
 )
 if err != nil {
-	panic(err)
+    log.Fatalf("failed to create authorizer client: %v", err)
 }
+defer azClient.Close()
 
-result, err := clientAuthz.Is(context.Background(), &authz.IsRequest{
-	PolicyContext: &api.PolicyContext{
-		Path:      "peoplefinder.GET.api.users.__id",
-		Decisions: []string{"allowed"},
-	},
-	IdentityContext: &api.IdentityContext{
-		Identity: "euang@acmecorp.com",
-		Type:     api.IdentityType_IDENTITY_TYPE_SUB,
-	},
+result, err := azClient.Is(context.Background(), &authorizer.IsRequest{
+    PolicyContext: &api.PolicyContext{
+        Path:      "peoplefinder.GET.api.users.__id",
+        Decisions: []string{"allowed"},
+    },
+    IdentityContext: &api.IdentityContext{
+        Identity: "euang@acmecorp.com",
+        Type:     api.IdentityType_IDENTITY_TYPE_SUB,
+    },
 })
 
 // Check the authorizer's decision.

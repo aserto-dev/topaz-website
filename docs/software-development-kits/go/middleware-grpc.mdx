@@ -1,5 +1,5 @@
 ---
-sidebar_label: gRPC
+sidebar_label: gRPC Middleware
 title: Aserto SDKs - Go - gRPC Middleware
 description: Aserto SDKs - Go - Creating and using the gRPC middleware
 ---
@@ -16,16 +16,17 @@ Creating middleware requires two arguments: an [authorizer client](/docs/softwar
 
 ```go
 import (
-    middleware "github.com/aserto-dev/go-aserto/middleware/grpc"
+    "github.com/aserto-dev/go-aserto/middleware"
+    "github.com/aserto-dev/go-aserto/middleware/grpcz"
 )
 
 ...
 
 // Create gRPC middleware.
-mw := middleware.New(
-    authClient,
-    mw.Policy{
-        Decision: "allowed",             // Name of the policy rule to evaluate.
+mw := grpcz.New(
+    azClient,
+    middleware.Policy{
+        Decision: "allowed",  // policy rule to evaluate.
     },
 )
 ```
