@@ -30,6 +30,28 @@ sidebar_position: 1
   go install github.com/aserto-dev/topaz/cmd/topaz@latest
   ```
 
+## Certificates
+
+The Topaz console is a web UI that can be used to explore and interact with authorization policies and data.
+Topaz generates self-signed SSL certificates for development purposes but those aren't trusted by most operating systems and browsers,
+preventing the UI from loading successfully.
+
+To trust the topaz development certificates run:
+
+```shell
+topaz certs trust
+```
+
+The commands adds two certificates to your system's trust store:
+* `topaz-gateway-ca.crt` is the certificate authority that signed the certificate used by the Topaz REST and web endpoints.
+* `topaz-grpc-ca.crt` is the certificate authority that signed the certificate used by the Topaz gRPC services.
+
+You can remove them from your trust store at any time by running:
+
+```shell
+topaz certs trust --remove
+```
+
 ## Quickstart
 
 These instructions help you get Topaz up and running as the authorizer for a sample Todo app.
