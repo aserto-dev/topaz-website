@@ -21,7 +21,6 @@ types:
       ### display_name: user#in_management_chain ###
       in_management_chain: manager | manager->in_management_chain
 
-
   ### display_name: Identity ###
   identity:
     relations:
