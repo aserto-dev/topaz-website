@@ -11,6 +11,10 @@ on:
 env:
   VAULT_ADDR: https://vault.eng.aserto.com/
   PR_BRANCH: topaz_templates_${{ inputs.branch }}
+  # If the source topaz branch isn't 'main', add a '[DO NOT MERGE]' prefix to the PR title
+  PR_TITLE: ${{ inputs.branch != 'main' && '[DO NOT MERGE] ' || '' }} Update topaz templates from ${{ inputs.branch }}
+  # If the source branch isn't 'main', create the PR as a draft
+  PR_DRAFT_FLAG: ${{ inputs.branch != 'main' && '--draft' || '' }}
 
 jobs:
   update:
@@ -61,6 +65,6 @@ jobs:
           message: Update static topaz template assets
 
       - name: Prepare PR
-        run: gh pr create -H ${{ env.PR_BRANCH }} -B main --title 'Update topaz templates [${{ inputs.branch }}]' --body 'Created by Github action'
+        run: gh pr create ${{ env.PR_DRAFT_FLAG }} -H ${{ env.PR_BRANCH }} -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ steps.vault.outputs.READ_WRITE_TOKEN }}
