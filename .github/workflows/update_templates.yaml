@@ -2,14 +2,15 @@ name: update_templates
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'topaz version'
+      branch:
+        description: 'topaz branch to update from'
         type: string
         default: "main"
         required: false
 
 env:
   VAULT_ADDR: https://vault.eng.aserto.com/
+  PR_BRANCH: topaz_templates_${{ inputs.branch }}
 
 jobs:
   update:
@@ -42,7 +43,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: "aserto-dev/topaz"
-          ref: ${{ inputs.version }}
+          ref: ${{ inputs.branch }}
           path: "./topaz"
           token: ${READ_WRITE_TOKEN}
 
@@ -56,10 +57,10 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          new_branch: update_topaz_templates
+          new_branch: ${{ env.PR_BRANCH }}
           message: Update static topaz template assets
 
       - name: Prepare PR
-        run: gh pr create -H update_topaz_templates -B main --title 'Update topaz templates' --body 'Created by Github action'
+        run: gh pr create -H ${{ env.PR_BRANCH }} -B main --title 'Update topaz templates [${{ inputs.branch }}]' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ steps.vault.outputs.READ_WRITE_TOKEN }}
