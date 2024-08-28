@@ -2,14 +2,19 @@ name: update_templates
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'topaz version'
+      branch:
+        description: 'topaz branch to update from'
         type: string
         default: "main"
         required: false
 
 env:
   VAULT_ADDR: https://vault.eng.aserto.com/
+  PR_BRANCH: topaz_templates_${{ inputs.branch }}
+  # If the source topaz branch isn't 'main', add a '[DO NOT MERGE]' prefix to the PR title
+  PR_TITLE: ${{ inputs.branch != 'main' && '[DO NOT MERGE] ' || '' }} Update topaz templates from ${{ inputs.branch }}
+  # If the source branch isn't 'main', create the PR as a draft
+  PR_DRAFT_FLAG: ${{ inputs.branch != 'main' && '--draft' || '' }}
 
 jobs:
   update:
@@ -20,7 +25,7 @@ jobs:
 
       -
         name: Read Configuration
-        uses: hashicorp/vault-action@v2
+        uses: hashicorp/vault-action@v3
         id: vault
         with:
           url: https://vault.eng.aserto.com/
@@ -42,7 +47,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: "aserto-dev/topaz"
-          ref: ${{ inputs.version }}
+          ref: ${{ inputs.branch }}
           path: "./topaz"
           token: ${READ_WRITE_TOKEN}
 
@@ -56,10 +61,10 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          new_branch: update_topaz_templates
+          new_branch: ${{ env.PR_BRANCH }}
           message: Update static topaz template assets
 
       - name: Prepare PR
-        run: gh pr create -H update_topaz_templates -B main --title 'Update topaz templates' --body 'Created by Github action'
+        run: gh pr create ${{ env.PR_DRAFT_FLAG }} -H ${{ env.PR_BRANCH }} -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
         env:
           GITHUB_TOKEN: ${{ steps.vault.outputs.READ_WRITE_TOKEN }}
