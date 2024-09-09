@@ -9,7 +9,7 @@ git clone https://github.com/aserto-demo/todo-java-v2
 ```
 
 ## Set up an `.env` file
-Copy the `application.properties.example` file to `application.properties` and update the `aserto.authorizer.grpc.caCertPath` and `aserto.directory.grpc.caCertPath` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
+Copy the `application.properties.example` file to `application.properties` and update the `aserto.authorizer.grpc.caCertPath` and `aserto.directory.grpc.caCertPath` to correspond to the path in which Topaz generated your certificates (by default this path will be `${user.home}/.local/share/topaz/certs/grpc-ca.crt`, or `${user.home}\AppData\Local\topaz\certs` on Windows).
 
 ```bash
 cp src/main/resources/application.properties.example src/main/resources/application.properties
