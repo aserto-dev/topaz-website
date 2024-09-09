@@ -9,25 +9,39 @@ git clone https://github.com/aserto-demo/todo-java-v2
 ```
 
 ## Set up an `.env` file
-Copy the `.env.example` file to `.env` and update the `ASERTO_AUTHORIZER_CERT_PATH` and `ASERTO_DIRECTORY_GRPC_CERT_PATH` to correspond to the path in which Topaz generated your certificates (by default this path will be `$HOME/.local/share/topaz/certs/grpc-ca.crt`, or `$HOME\AppData\Local\topaz\certs` on Windows).
+Copy the `application.properties.example` file to `application.properties` and update the `aserto.authorizer.grpc.caCertPath` and `aserto.directory.grpc.caCertPath` to correspond to the path in which Topaz generated your certificates (by default this path will be `${user.home}/.local/share/topaz/certs/grpc-ca.crt`, or `${user.home}\AppData\Local\topaz\certs` on Windows).
 
 ```bash
-cp .env.example .env
+cp src/main/resources/application.properties.example src/main/resources/application.properties
 ```
 
-Your `.env` file should look like:
+Your `application.properties` file should look like:
 
 ```
-JWKS_URI=https://citadel.demo.aserto.com/dex/keys
-ISSUER=https://citadel.demo.aserto.com/dex
-AUDIENCE=citadel-app
+# --- Authorizer configuration
+aserto.authorizer.serviceUrl=localhost:8282
+aserto.authorization.enabled=true
+aserto.authorizer.policyRoot=todoApp
+aserto.authorizer.decision=allowed
 
-ASERTO_POLICY_ROOT="todoApp"
+## Topaz
+##  This configuration targets a Topaz instance running locally.
+aserto.authorizer.insecure=false
+aserto.authorizer.grpc.caCertPath=${user.home}/.local/share/topaz/certs/grpc-ca.crt
 
-ASERTO_AUTHORIZER_SERVICE_URL=localhost:8282
-ASERTO_AUTHORIZER_CERT_PATH='$HOME/.local/share/topaz/certs/grpc-ca.crt'
-ASERTO_DIRECTORY_SERVICE_URL=localhost:9292
-ASERTO_DIRECTORY_GRPC_CERT_PATH='$HOME/.local/share/topaz/certs/grpc-ca.crt'
+# --- Directory configuration
+aserto.directory.serviceUrl=localhost:9292
+aserto.directory.insecure=false
+
+# Topaz directory
+aserto.directory.grpc.caCertPath=${user.home}/.local/share/topaz/certs/grpc-ca.crt
+
+# App configuration
+logging.level.com.aserto=DEBUG
+server.port=3001
+
+# Create the schema on startup
+spring.jpa.hibernate.ddl-auto=update
 ```
 
 ### Install dependencies
