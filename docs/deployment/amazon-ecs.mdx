@@ -13,10 +13,59 @@ an S3 bucket before the `topaz` container starts up.
 The [topaz config new](/docs/command-line-interface/topaz-cli/configuration) CLI command can be used to generate
 your configuration file, then it should be uploaded to a bucket location that is accessible by the `init-config` container.
 
+:::caution Note
+If you intend to access the topaz console from a browser, you need to edit the generated configuration file and set the
+`fqdn` (fully-qualified domain name) field in all services to the DNS name of the topaz instance.
+For example, if you are running the topaz container with the `topaz.example.com` DNS name, you would set the `fqdn`
+field to `topaz.example.com:<port>`. Replace `<port>` with the port number that the service is running on. By default those are 8383 for
+the authorizer and 9393 for the directory services (reader, writer, model, importer, exporter).
+:::
+
 This example attaches an EBS volume to persist the configuration, certs, and directory database.  If it does not already exist
 you may need to create
 an [IAM ECS Infrastructure Role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/infrastructure_IAM_role.html)
 to allow ECS to provision EBS volumes.
+
+## Certificates
+
+By default, topaz generates its own self-signed TLS certificates if none are provided. Those certificates are not
+trusted by browsers and prevent the topaz console from communicating with the service.
+There are two ways around it:
+
+### Trust the self-signed certificates
+
+You can download the generated certificate from the topaz instance using a browser or from the terminal using `openssl`:
+
+```shell
+openssl s_client -showcerts -connect <topaz_hostname>:8383 </dev/null 2>/dev/null | \
+	openssl x509 -text > topaz-gateway.crt
+```
+
+This downloads the certificate from the specified topaz instance address and saves it to a local file
+named `topaz-gateway.crt`. You can then add the certificate to your system's trust store.
+
+To download the gRPC certificate, replace the port number with 8282:
+
+```shell
+openssl s_client -showcerts -connect <topaz_hostname>:8282 </dev/null 2>/dev/null | \
+	openssl x509 -text > topaz-grpc.crt
+```
+
+### Use your own certificates
+
+You can issue your own certificates and mount them into the `/data/certs` directory in the topaz container.
+There should be two certificates, one used for by the gRPC services and the other for REST.
+
+You should have six files in total:
+
+* `grpc.key`: private key for the gRPC services
+* `grpc.crt`: public certificate for the gRPC services
+* `grpc-ca.crt`: CA certificate for the gRPC services
+* `gateway.key`: private key for the REST services
+* `gateway.crt`: public certificate for the REST services
+* `gateway-ca.crt`: CA certificate for the REST services
+
+
 
 ### Sample task definition for topaz on Amazon ECS
 Using the ECS console, create a task definition with existing JSON.  You will need to modify the init container
