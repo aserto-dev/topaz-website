@@ -13,12 +13,26 @@ an S3 bucket before the `topaz` container starts up.
 The [topaz config new](/docs/command-line-interface/topaz-cli/configuration) CLI command can be used to generate
 your configuration file, then it should be uploaded to a bucket location that is accessible by the `init-config` container.
 
-:::caution Note
-If you intend to access the topaz console from a browser, you need to edit the generated configuration file and set the
-`fqdn` (fully-qualified domain name) field in all services to the DNS name of the topaz instance.
+:::note Note
+If you intend to access the topaz console from a browser, you need to edit the generated configuration file and:
+1. Set the `fqdn` (fully-qualified domain name) field in all services to the DNS name of the topaz instance.
+2. Add your domain to the list of `allowed_origins` for all services.
+
+The `fqdn` fields should looks similar to their corresponding `listen_address` but with your domain name instead of
+`0.0.0.0`.
+
 For example, if you are running the topaz container with the `topaz.example.com` DNS name, you would set the `fqdn`
-field to `topaz.example.com:<port>`. Replace `<port>` with the port number that the service is running on. By default those are 8383 for
-the authorizer and 9393 for the directory services (reader, writer, model, importer, exporter).
+field of the `model.gateway` service to `topaz.example.com:8383`. The default ports are 8080 for the console,
+8383 for the authorizer, and 9393 for the directory services (reader, writer, model, importer, exporter).
+
+In addition, you would add your domain the `allowed_origins` list:
+```yaml
+allowed_origins:
+- https://localhost
+- https://localhost:*
+- https://topaz.example.com
+- https://topaz.example.com:*
+```
 :::
 
 This example attaches an EBS volume to persist the configuration, certs, and directory database.  If it does not already exist
