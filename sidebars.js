@@ -118,10 +118,11 @@ const sidebars = {
           ],
         },
         {
-          'ASP.NET Core':[
-            'software-development-kits/dotnet/install',
-            'software-development-kits/dotnet/options',
-            'software-development-kits/dotnet/asp-core-mvc',
+          'ASP.NET':[
+            'software-development-kits/dotnet/clients',
+            'software-development-kits/dotnet/dotnetcore',
+            'software-development-kits/dotnet/dotnetcorecheck',
+            'software-development-kits/dotnet/middleware',
           ]
         },
         {
