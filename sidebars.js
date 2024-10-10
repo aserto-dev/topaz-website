@@ -77,6 +77,7 @@ const sidebars = {
     {
       'Deployment': [
         'deployment/index',
+        'deployment/helm',
         'deployment/sidecar',
         'deployment/microservice',
         'deployment/binary',
