@@ -1,0 +1,61 @@
+---
+sidebar_label: Helm
+title: Helm Chart - Deployment
+description: Topaz Deployment - Kubernetes Helm Chart
+---
+
+# Deploy to Kubernetes using Helm
+
+The Topaz [Helm chart](https://github.com/aserto-dev/helm/blob/main/charts/topaz/README.md) is a convenient way to
+deploy Topaz to a Kubernetes cluster.
+
+The chart can be deployed standalone with configuration provided in a `values.yaml` file, or as a subchart within
+a parent chart that deploys other components of an application.
+
+## Standalone Deployment
+
+Create a `values.yaml` file with your configuration. The [default values](https://github.com/aserto-dev/helm/blob/main/charts/topaz/values.yaml)
+provide a good starting point. A minimal configuration that deploys a Topaz instance using a policy from a publicly
+accessible OCI repository is shown below:
+
+```yaml
+opa:
+  policy:
+    oci:
+      registry: https://ghcr.io
+      image: ghcr.io/aserto-policies/policy-rebac:latest
+```
+
+To deploy the chart to a `topaz` namespace in your Kubernetes cluster creating the namespace if it doesn't exist, run:
+
+```shell
+helm install topaz oci://ghcr.io/aserto-dev/helm/topaz -f values.yaml --namespace topaz --create-namespace
+```
+
+## As a subchart
+
+In the parent chart's `Chart.yaml`, add Topaz as a dependency:
+
+```yaml
+dependencies:
+  - name: topaz
+    version: ~0.1.0
+    repository: oci://ghcr.io/aserto-dev/helm
+```
+
+Configuring Topaz in the parent chart's `values.yaml` is similar to standalone configuration with one difference:
+all configuration elements are nested under the `topaz` key:
+
+```yaml
+topaz:
+  opa:
+    policy:
+      oci:
+        registry: https://ghcr.io
+        image: ghcr.io/aserto-policies/policy-rebac:latest
+```
+
+## Configration
+
+Consult the chart's [README](https://github.com/aserto-dev/helm/blob/main/charts/topaz/README.md) for a full description
+of the configuration options available.

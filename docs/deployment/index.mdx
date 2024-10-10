@@ -6,7 +6,9 @@ description: Topaz Deployment - Overview
 
 # Deployment Overview
 
-Topaz is most easily deployed as a container, either as a [sidecar](sidecar.mdx) or as a [microservice](microservice.mdx) in the same region / AZ as the application it supports.
+Topaz is most easily deployed as a container. In Kubernetes it can be deployed as a service using a [Helm chart](helm.mdx)
+or as a [sidecar](sidecar.mdx) within application pods.
+It can run in [AWS ECS](amazon-ecs.mdx) or as a [microservice](microservice.mdx) in the same region / AZ as the application it supports.
 
 For environments that don't support running container images, Topaz can be run as a [binary](binary.mdx).
 
