@@ -9,9 +9,11 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Read Configuration
-        uses: hashicorp/vault-action@v2.5.0
+      - 
+        uses: actions/checkout@v4
+      - 
+        name: Read Configuration
+        uses: hashicorp/vault-action@v3
         id: vault
         with:
           url: https://vault.eng.aserto.com/
@@ -19,7 +21,7 @@ jobs:
           secrets: |
             kv/data/algolia  "API_KEY"          | API_KEY;
             kv/data/algolia  "APPLICATION_ID"   | APPLICATION_ID;
-
-      - name: Run Algolia Scrape
+      - 
+        name: Run Algolia Scrape
         run: |
           docker run --rm -e "APPLICATION_ID=${APPLICATION_ID}" -e API_KEY="${API_KEY}" -e "CONFIG=$(cat ./scripts/algolia-config.json)" algolia/docsearch-scraper
