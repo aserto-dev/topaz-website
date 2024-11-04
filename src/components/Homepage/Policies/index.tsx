@@ -52,7 +52,7 @@ const PolicyExample = ({ title, content }: PolicyItem) => {
     <div className={styles.policyExample}>
       <div className={styles.policyExampleTitle}>{title}</div>
       <div className={styles.policyExampleContent}>
-        <Highlight language="rego">{content}</Highlight>
+        {content}
       </div>
     </div>
   );
