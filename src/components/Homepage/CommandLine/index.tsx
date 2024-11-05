@@ -35,7 +35,7 @@ const CommandLineExample = ({ title, content }: CommandLineItem) => {
     <div className={styles.cliExample}>
       <div className={styles.cliExampleTitle}>{title}</div>
       <div className={styles.cliExampleContent}>
-        {content}
+        <Highlight language="bash">{content}</Highlight>
       </div>
     </div>
   );
