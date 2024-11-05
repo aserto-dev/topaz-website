@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "@algolia/client-search": "<6",
-    "@docusaurus/core": "^3.5.2",
-    "@docusaurus/plugin-google-tag-manager": "^3.5.2",
-    "@docusaurus/preset-classic": "^3.5.2",
-    "@docusaurus/theme-search-algolia": "^3.5.2",
+    "@docusaurus/core": "^3.6.0",
+    "@docusaurus/plugin-google-tag-manager": "^3.6.0",
+    "@docusaurus/preset-classic": "^3.6.0",
+    "@docusaurus/theme-search-algolia": "^3.6.0",
     "@mdx-js/react": "^3.1.0",
     "@types/react": "^18.3.12",
     "acorn": "^8.14.0",
@@ -40,8 +40,8 @@
     "webpack": "^4"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.5.2",
-    "@docusaurus/tsconfig": "^3.0.0",
+    "@docusaurus/module-type-aliases": "^3.6.0",
+    "@docusaurus/tsconfig": "^3.6.0",
     "postcss": "^8.4.17",
     "postcss-reporter": "^7.0.5",
     "prettier": "^2.7.1",

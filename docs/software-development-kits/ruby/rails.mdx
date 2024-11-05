@@ -164,7 +164,7 @@ end
 
 The current user's permissions can then be checked using the `allowed?`, `visible?` and `enabled?` methods in views and controllers.
 
-```erb
+```ruby
 <% if allowed? :get, "/posts/:id", @post %>
   <%= link_to "View", @post %>
 <% end %>

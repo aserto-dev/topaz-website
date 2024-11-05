@@ -160,7 +160,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['powershell', 'csharp', 'rego', 'ruby', 'erb', 'java', 'properties'],
+        additionalLanguages: ['powershell', 'csharp', 'rego', 'ruby', 'java', 'properties'],
       },
       /*
       hubspot: {
