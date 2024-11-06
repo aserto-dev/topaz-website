@@ -14,10 +14,10 @@ const PolicyList: PolicyItem[] = [
 allowed {
   ds.check({
     "object_type": "tenant",
-    "object_key": input.resource.tenant,
-    "relation": "member",
+    "object_id": input.resource.tenant_id,
+    "relation": "viewer",
     "subject_type": "user",
-    "subject_key": input.user.key,
+    "subject_id": input.user.id,
   })
 }`,
   },
@@ -28,7 +28,7 @@ allowed {
   ns := time.now_ns()
   day := time.weekday(ns)
   day == data.workdays[_]
-  input.user.department == "Sales"
+  input.user.properties.department == "Sales"
 }
     `,
   },
@@ -38,10 +38,10 @@ allowed {
 allowed {
   ds.check({
     "object_type": "document",
-    "object_key": input.resource.doc,
-    "relation": "read",
+    "object_id": input.resource.doc_id,
+    "relation": "can_read",
     "subject_type": "user",
-    "subject_key": input.user.key,
+    "subject_id": input.user.id,
   })
 }`,
   },
