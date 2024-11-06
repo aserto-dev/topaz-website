@@ -33,7 +33,7 @@ const LanguageList: LanguageItem[] = [
   {
     Svg: require("@site/static/img/icons/languages/dotnet-logo.svg").default,
     title: <>ASP.NET</>,
-    link: "/docs/software-development-kits/dotnet/install",
+    link: "/docs/software-development-kits/dotnet/dotnetcore",
   },
   {
     Svg: require("@site/static/img/icons/languages/ruby-logo.svg").default,
