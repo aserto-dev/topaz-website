@@ -12,15 +12,15 @@ description: Aserto SDKs - Go - Creating a client and making authorization calls
 
 ```go
 import (
-    "github.com/aserto-dev/go-aserto"
-    "github.com/aserto-dev/go-aserto/az"
+	"github.com/aserto-dev/go-aserto"
+	"github.com/aserto-dev/go-aserto/az"
 )
 
 ...
 
 azClient, err := az.New(
-    aserto.WithAddr("localhost:8282"),
-    aserto.WithInsecure(true),
+	aserto.WithAddr("localhost:8282"),
+	aserto.WithInsecure(true),
 )
 ```
 
@@ -31,46 +31,58 @@ to perform an operation.
 
 ```go
 import (
-    "context"
-    "fmt"
-    "log"
+	"context"
+	"fmt"
+	"log"
 
-    "github.com/aserto-dev/go-aserto"
-    "github.com/aserto-dev/go-aserto/az"
-    "github.com/aserto-dev/go-authorizer/aserto/authorizer/v2"
-    "github.com/aserto-dev/go-authorizer/aserto/authorizer/v2/api"
+	"google.golang.org/protobuf/types/known/structpb"
+
+	"github.com/aserto-dev/go-aserto"
+	"github.com/aserto-dev/go-aserto/az"
+	"github.com/aserto-dev/go-authorizer/aserto/authorizer/v2"
+	"github.com/aserto-dev/go-authorizer/aserto/authorizer/v2/api"
 )
 
 ...
 azClient, err := az.New(
-    aserto.WithAddr("localhost:8282"),
-    aserto.WithInsecure(true),
+	aserto.WithAddr("localhost:8282"),
+	aserto.WithInsecure(true),
 )
 if err != nil {
-    log.Fatalf("failed to create authorizer client: %v", err)
+	log.Fatalf("failed to create authorizer client: %v", err)
 }
 defer azClient.Close()
 
+// Information about the resource being accessed can be sent
+// to the authorizer as a JSON object.
+resource, err := structpb.NewStruct(map[string]any{
+	"id": "aprils@acmecorp.com",
+})
+if err != nil {
+	log.Fatalf("failed to create resource: %v", err)
+}
+
 result, err := azClient.Is(context.Background(), &authorizer.IsRequest{
-    PolicyContext: &api.PolicyContext{
-        Path:      "peoplefinder.GET.api.users.__id",
-        Decisions: []string{"allowed"},
-    },
-    IdentityContext: &api.IdentityContext{
-        Identity: "euang@acmecorp.com",
-        Type:     api.IdentityType_IDENTITY_TYPE_SUB,
-    },
+	PolicyContext: &api.PolicyContext{
+		Path:      "peoplefinder.PUT.api.users.__id",
+		Decisions: []string{"allowed"},
+	},
+	IdentityContext: &api.IdentityContext{
+		Identity: "euang@acmecorp.com",
+		Type:	 api.IdentityType_IDENTITY_TYPE_SUB,
+	},
+	ResourceContext: resource,
 })
 
 // Check the authorizer's decision.
 for _, decision := range result.Decisions {
-    if decision.Decision == "allowed" {
-        if decision.Is {
-            fmt.Println("Access granted")
-        } else {
-            fmt.Println("Access denied")
-        }
-    }
+	if decision.Decision == "allowed" {
+		if decision.Is {
+			fmt.Println("Access granted")
+		} else {
+			fmt.Println("Access denied")
+		}
+	}
 }
 ```
 
