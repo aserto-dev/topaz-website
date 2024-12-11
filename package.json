@@ -47,6 +47,9 @@
     "prettier": "^2.7.1",
     "typescript": "^5.6.3"
   },
+  "resolutions": {
+    "cookie": "0.7.1"
+  },
   "browserslist": {
     "production": [
       ">0.5%",
