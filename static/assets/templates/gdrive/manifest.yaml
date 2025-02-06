@@ -11,9 +11,14 @@ model:
 
 # object type definitions
 types:
+  ### display_name: Identity ###
+  identity: {}
+
   ### display_name: User ###
   user:
     relations:
+      ### display_name: identifier ###
+      identifier: identity
       ### display_name: user#manager ###
       manager: user
 
@@ -21,21 +26,13 @@ types:
       ### display_name: user#in_management_chain ###
       in_management_chain: manager | manager->in_management_chain
 
-
-  ### display_name: Identity ###
-  identity:
-    relations:
-      ### display_name: identity#identifier ###
-      identifier: user
-
-
   ### display_name: Group ###
   group:
     relations:
       ### display_name: group#member ###
       member: user | group#member
 
-
+  ### display_name: Folder ###
   # folder represents a collection of documents and/or other folders
   folder:
     relations:
@@ -46,11 +43,11 @@ types:
       viewer: user | group#member
 
     permissions:
-      can_share: owner  | parent->can_share
-      can_write: editor | can_share | parent->can_write
-      can_read:  viewer | can_write | parent->can_read
+      can_share: owner  | owner->identifier  | parent->can_share
+      can_write: editor | editor->identifier | can_share | parent->can_write 
+      can_read:  viewer | viewer->identifier | can_write | parent->can_read
 
-
+  ### display_name: Document ###
   # doc represents a document within a folder
   doc:
     relations:
@@ -61,7 +58,7 @@ types:
       viewer: user | user:* | group#member
 
     permissions:
-      can_share:  owner     | parent->can_share
+      can_share:  owner     | owner->identifier  | parent->can_share
       can_delete: can_share | parent->can_write
-      can_write:  editor | can_delete | parent->can_write
-      can_read:   viewer | can_write  | parent->can_read
+      can_write:  editor    | editor->identifier | can_delete | parent->can_write
+      can_read:   viewer    | viewer->identifier | can_write  | parent->can_read
