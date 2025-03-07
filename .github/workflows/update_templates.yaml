@@ -78,7 +78,7 @@ jobs:
         run: |
           PR_URL="$(gh pr list --head "${{ env.PR_BRANCH }}" --state open --json url --jq .[].url)"
           if [[ -n "${PR_URL}" ]]; then
-            gh pr edit ${{ env.PR_DRAFT_FLAG }} -H ${{ env.PR_BRANCH }} -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
+            gh pr edit -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
           else
             gh pr create ${{ env.PR_DRAFT_FLAG }} -H ${{ env.PR_BRANCH }} -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
           fi
