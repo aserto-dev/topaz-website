@@ -21,7 +21,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        name: Try checkout ${{ env.PR_BRANCH }}
         uses: actions/checkout@v4
+        id: existing-branch
+        continue-on-error: true
+        with:
+          ref: ${{ env.PR_BRANCH }}
+      -
+        name: Fallback to main branch
+        if: steps.existing-branch.outcome == 'failure'
+        uses: actions/checkout@v4
+        with:
+          ref: main
       -
         name: Read Configuration
         uses: hashicorp/vault-action@v3
@@ -32,7 +43,7 @@ jobs:
           secrets: |
             kv/data/github  "SSH_PRIVATE_KEY"     | SSH_PRIVATE_KEY;
             kv/data/github  "READ_WRITE_TOKEN"    | READ_WRITE_TOKEN;
-      - 
+      -
         name: Setup git
         run: |
           mkdir -p $HOME/.ssh
@@ -41,7 +52,7 @@ jobs:
           git config --global url."git@github.com:".insteadOf https://github.com/
           git config --global user.email "github-bot@aserto.com"
           git config --global user.name "Aserto Bot"
-      - 
+      -
         name: Get topaz
         uses: actions/checkout@v4
         with:
@@ -49,21 +60,27 @@ jobs:
           ref: ${{ inputs.branch }}
           path: "./topaz"
           token: ${READ_WRITE_TOKEN}
-      - 
+      -
         name: Copy assets
         run: |
           cp -r ./topaz/assets/* static/assets/templates/
           rm static/assets/templates/*.gif
           rm -rf ./topaz
-      - 
+      -
         name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
           new_branch: ${{ env.PR_BRANCH }}
           message: Update static topaz template assets
-      - 
+      -
         name: Prepare PR
-        run: gh pr create ${{ env.PR_DRAFT_FLAG }} -H ${{ env.PR_BRANCH }} -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
+        run: |
+          PR_URL="$(gh pr list --head "${{ env.PR_BRANCH }}" --state open --json url --jq .[].url)"
+          if [[ -n "${PR_URL}" ]]; then
+            gh pr edit -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
+          else
+            gh pr create ${{ env.PR_DRAFT_FLAG }} -H ${{ env.PR_BRANCH }} -B main --title '${{ env.PR_TITLE }}' --body 'Created by Github action'
+          fi
         env:
           GITHUB_TOKEN: ${{ steps.vault.outputs.READ_WRITE_TOKEN }}
