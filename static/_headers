@@ -4,3 +4,7 @@
 /assets/templates/*
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Headers: *
+
+/assets/templates/**/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Headers: *
