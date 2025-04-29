@@ -148,6 +148,15 @@ const config = {
               },
             ],
           },
+          {
+            title: 'Contact',
+            items: [
+              {
+                label: 'Email',
+                href: 'mailto:maintainers@topaz.sh',
+              },
+            ],
+          },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} - built with <span role="img" aria-label="heart">❤️</span> by <a href="https://www.aserto.com/" target="_blank">Aserto</a>.`,
       },
