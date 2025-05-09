@@ -163,9 +163,26 @@ const sidebars = {
           'command-line-interface/policy-cli/export',
           'command-line-interface/policy-cli/repl',
           'command-line-interface/policy-cli/sign',
-        ]
-      }
-    }
+        ],
+        'ds-load CLI': [
+          'command-line-interface/ds-load-cli/installation',
+          'command-line-interface/ds-load-cli/usage',
+          'command-line-interface/ds-load-cli/transform',
+          {
+            'Plugins': [
+              'command-line-interface/ds-load-cli/plugins/overview',
+              'command-line-interface/ds-load-cli/plugins/auth0',
+              'command-line-interface/ds-load-cli/plugins/azuread',
+              'command-line-interface/ds-load-cli/plugins/cognito',
+              'command-line-interface/ds-load-cli/plugins/google',
+              'command-line-interface/ds-load-cli/plugins/ldap',
+              'command-line-interface/ds-load-cli/plugins/okta',
+              'command-line-interface/ds-load-cli/plugins/custom',
+            ]
+          },
+        ],
+      },
+    },
   ]
 
   // But you can create a sidebar manually
