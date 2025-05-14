@@ -11,7 +11,7 @@ data:
     
     directory_service:
       edge:
-        db_path: /db/eds-citadel.db
+        db_path: /db/citadel.db
         seed_metadata: false
       remote:
         address: "localhost:9292"
