@@ -9,7 +9,6 @@ on:
         required: false
 
 env:
-  VAULT_ADDR: https://vault.eng.aserto.com/
   PR_BRANCH: topaz_templates_${{ inputs.branch }}
   # If the source topaz branch isn't 'main', add a '[DO NOT MERGE]' prefix to the PR title
   PR_TITLE: ${{ inputs.branch != 'main' && '[DO NOT MERGE] ' || '' }} Update topaz templates from ${{ inputs.branch }}
@@ -38,7 +37,7 @@ jobs:
         uses: hashicorp/vault-action@v3
         id: vault
         with:
-          url: https://vault.eng.aserto.com/
+          url: https://vault.aserto.com/
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             kv/data/github  "SSH_PRIVATE_KEY"     | SSH_PRIVATE_KEY;
