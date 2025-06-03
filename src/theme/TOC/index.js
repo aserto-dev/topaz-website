@@ -19,15 +19,6 @@ const EnhancedTOC = ({ toc, ...props }) =>
               Community Slack
             </a>
           </div>
-          <div className="toc-links">
-            <img src="/icons/google-meet.svg" height="20" alt="google-meet" />
-            <a
-              href="https://www.aserto.com/contact-engineer"
-              target="_blank"
-            >
-              Speak to an engineer
-            </a>
-          </div>
         </div>
       )}
     </BrowserOnly>
