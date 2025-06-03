@@ -38,7 +38,7 @@ jobs:
         uses: hashicorp/vault-action@v3
         id: vault
         with:
-          url: https://vault.eng.aserto.com/
+          url: ${{ env.VAULT_ADDR }}
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             kv/data/github  "SSH_PRIVATE_KEY"     | SSH_PRIVATE_KEY;
