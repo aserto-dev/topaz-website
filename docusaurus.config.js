@@ -101,7 +101,7 @@ const config = {
           {
             html: '<img height="18" src="/img/slack-logo.svg" alt="community slack" />',
             position: 'right',
-            href: 'https://aserto.com/slack'
+            href: 'https://topaz-authz.slack.com'
           },
           {
             html: '<img width="150px" src="https://img.shields.io/github/stars/aserto-dev/topaz?style=for-the-badge&logo=github&logoColor=%23e7e7e7&logoSize=auto&label=Topaz&labelColor=rgb(36%2C37%2C38)&color=rgb(100%2C100%2C100)&link=https%3A%2F%2Fgithub.com%2Faserto-dev%2Ftopaz" alt="github topaz" />',
