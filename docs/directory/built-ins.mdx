@@ -6,19 +6,15 @@ description: Built-in Functions that can be used in your policy
 
 # Built-in Functions
 
-Topaz provides a set of built-in functions that can be used in your policy. These functions make it easier to leverage information found the Topaz directory.
+Topaz provides a set of built-in functions that can be used in your policy. These functions make it easier to leverage information from the Topaz directory.
 
-### `ds.identity`
-```js
-ds.identity({
-  "id": "<value>"
-})
-```
-Looks up a user identity by one of the ids (e.g. email address or PID), and returns the `identifier` of the user object associated to the identity instance.
 
-For example: `ds.identity({ "id": "euang@acmecorp.com" })` will return `dfdadc39-7335-404d-af66-c77cf13a15f8`.
 
 ### `ds.object`
+
+> `ds.object` is an OPA built-in function, wrapping the gRPC directory reader [GetObject](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.Reader.GetObject) function, 
+taking in a [GetObjectRequest](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetObjectRequest) as input, returning a [GetObjectResponse](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetObjectResponse).
+
 ```js
 ds.object({
   "object_type": "<object type>",
@@ -35,6 +31,8 @@ If `with_relation` is included and set to `true`, the response includes all the 
 
 ### `ds.relation`
 
+> `ds.relation` is an OPA built-in function, wrapping the gRPC directory reader [GetRelation](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.Reader.GetRelation) function, taking in a [GetRelationRequest](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetRelationRequest) as input, returning a [GetRelationResponse](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetRelationResponse).
+
 ```js
 ds.relation({
   "object_type": "<object type>",
@@ -49,7 +47,26 @@ ds.relation({
 Returns the relation instance that connects the subject with the object through the relation identified by `<object type>` and `<relation name>`.
 If `with_objects` is included and set to `true`, the response includes all the subject and object instances.
 
+### `ds.relations`
+
+> `ds.relations` is an OPA built-in function, wrapping the gRPC directory reader [GetRelations](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.Reader.GetRelations) function, taking in a [GetRelationsRequest](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetRelationsRequest) as input, returning a [GetRelationsResponse](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetRelationsResponse).
+
+```js
+ds.relations({
+  "object_type": "<object type>",
+  "object_id": "<object identifier>",
+  "relation": "<relation name>",
+  "subject_type": "<subject type>",
+  "subject_id": "<subject identifier>",
+  "subject_relation": "subject relation name>",
+  "with_objects": <boolean>,
+  "with_empty_subject_relation": <boolean>
+})
+```
+
 ### `ds.check`
+
+> `ds.check` is an OPA built-in function, wrapping the gRPC directory reader [Check](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.Reader.Check) function, taking in a [CheckRequest](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.CheckRequest) as input, returning a [CheckResponse](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.CheckResponse).
 
 ```js
 ds.check({
@@ -68,39 +85,14 @@ A relation type is uniquely identified by the object type name and the relation 
 `ds.check` returns `true` if the object instance has a relation or permission of the type specified to the subject instance.
 
 
-### `ds.check_relation`
+### `ds.checks`
 
-```js
-ds.check_relation({
-  "object_type": "<object type>",
-  "object_id": "<object identifier>",
-  "relation": "<relation name>",
-  "subject_type": "<subject type>",
-  "subject_id": "<subject identifier>"
-})
-```
-An object is identified by the combination of its `<object type>` and `<object identifier>`. The same is true for a subject.
+> `ds.checks` is an OPA built-in function, wrapping the gRPC directory reader [Checks](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.Reader.Checks) function, taking in a [ChecksRequest](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.ChecksRequest) as input, returning a [ChecksResponse](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.ChecksResponse).
 
-A relation type is uniquely identified by the object type name and the relation name. A relation instance of that type will relate an object instance to a subject instance.
-
-`ds.check_relation` returns `true` if the object instance has a relation of the type specified to the subject instance.
-
-### `ds.check_permission`
-
-```js
-ds.check_permission({
-  "object_type": "<object type>",
-  "object_id": "<object identifier>",
-  "permission": "<permission name>",
-  "subject_type": "<subject type>",
-  "subject_id": "<subject identifier>"
-})
-```
-An object is identified by the combination of its `<object type>` and `<object identifier>`. The same is true for a subject.
-
-`ds.check_permission` returns`true` if the subject has the permission `<permission name>` referenced through one or more relations to the object.
 
 ### `ds.graph`
+
+> `ds.graph` is an OPA built-in function, wrapping the gRPC directory reader [GetGraph](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.Reader.GetGraph) function, taking in a [GetGraphRequest](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetGraphRequest) as input, returning a [GetGraphResponse](https://buf.build/aserto-dev/directory/docs/v0.33.5:aserto.directory.reader.v3#aserto.directory.reader.v3.GetGraphResponse).
 
 ```js
 ds.graph({
@@ -122,3 +114,230 @@ If `object_id` is provided, the results include all subjects of the specified `s
 If `subject_id` is provided, the results include all objects of the specified type with which the subject has the given relation.
 
 If `explain` is set to `true` the output also includes all the graph paths that connect the given object or subject with the returned results.
+
+
+### `ds.identity` (OBSOLETE)
+
+```js
+ds.identity({
+  "id": "<value>"
+})
+```
+
+`ds.identity` can be used to look up `object_id` of the `user` `object_type` associated to the `user` object via the 'identifier' relationship between the 'identity' and `user` object instance.
+
+The canonical usage pattern using the Citadel data set:
+
+```js
+i = ds.identity({"id":"CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs"})
+```
+
+returns:
+
+```js
+"i": "rick@the-citadel.com"
+```
+
+> 'ds.identity' is obsoleted as it has hardcoded dependencies on the existence of the `identity` and `user` object types as well as the `identifier` relationship to associate them. This implementation is a leftover from the early days before the directory exposed a manifest.
+
+### `ds.user` (OBSOLETE)
+
+```js
+ds.user({
+  "id": "<value>"
+})
+```
+
+`ds.user` can be used to retrieve the `user` object type instance, associated with a given `identity` value. 
+
+> `ds.identity` is obsoleted as it has hardcoded dependencies on the existence of the 'user' object type. This implementation is a leftover from the early days before the directory exposed a manifest.
+
+The canonical usage pattern using the Citadel data set:
+
+```js
+u = ds.user({"id": "rick@the-citadel.com"})
+```
+
+returns:
+
+```js
+"u": {
+  "created_at": "2025-09-09T14:38:32.702237888Z",
+  "display_name": "Rick Sanchez",
+  "etag": "14425732754714629540",
+  "id": "rick@the-citadel.com",
+  "properties": {
+    "email": "rick@the-citadel.com",
+    "picture": "https://www.topaz.sh/assets/templates/v33/citadel/img/Rick%20Sanchez.jpg",
+    "roles": [
+      "admin",
+      "evil_genius"
+    ],
+    "status": "USER_STATUS_ACTIVE"
+  },
+  "type": "user",
+  "updated_at": "2025-09-09T14:38:32.702237888Z"
+}
+```
+
+The canonical usage pattern of `ds.identity` and `ds.user`
+
+```js
+i1 = ds.identity({"id":"CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs"})
+u1 = ds.user({"id": i1})
+```
+
+can be replaced using:
+```js
+i2 = ds.object({"object_type":"identity", "object_id": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs", "with_relations": true})
+u2 = ds.object({"object_type":"user", "object_id": i2.relations[0].object_id})
+```
+
+assuming the existence of existing constraints imposed by `ds.identity` and `ds.user`
+
+More likely one wants to simplify this using just relationships:
+```js
+i3 = ds.relation({
+  "subject_type": "identity",
+  "subject_id": "CiRmZDA2MTRkMy1jMzlhLTQ3ODEtYjdiZC04Yjk2ZjVhNTEwMGQSBWxvY2Fs",
+  "relation": "identifier",
+  "object_type": "user",
+  "with_objects": false
+})
+
+u3 = ds.object({
+  "object_type": i3.result.object_type,
+  "object_id": i3.result.object_id
+})
+```
+
+This approach does not assume types or directionality of the relationship.
+
+### `ds.check_relation` (OBSOLETE)
+
+> `ds.check_relation` is **OBSOLETE** use `ds.check` instead
+
+Convert:
+
+```js
+x = ds.check_relation({
+  "object_id": "",
+  "object_type": "",
+  "relation": "",
+  "subject_id": "",
+  "subject_type": "",
+  "trace": false
+})
+```
+
+into:
+
+```js
+x = ds.check({
+  "object_id": "",
+  "object_type": "",
+  "relation": "",
+  "subject_id": "",
+  "subject_type": "",
+  "trace": false
+})
+```
+
+Summary: rename `ds.check_relation` into `ds.check`.
+
+### `ds.check_permission` (OBSOLETE)
+
+> `ds.check_permission` is **OBSOLETE** use `ds.check` instead
+
+Convert:
+
+```js
+x = ds.check_permission({
+  "object_id": "",
+  "object_type": "",
+  "permission": "",
+  "subject_id": "",
+  "subject_type": "",
+  "trace": false
+})
+```
+
+into:
+
+```js
+x = ds.check({
+  "object_id": "",
+  "object_type": "",
+  "relation": "",
+  "subject_id": "",
+  "subject_type": "",
+  "trace": false
+})
+```
+
+Summary: rename `ds.check_permission` into `ds.check` and rename the `permission` field into `relation`.
+
+## Built-in Request Shape Discovery
+
+One can discover the built-in argument (request) shape, by passing in an `empty` JSON object `{}` as the argument.
+
+For example, to discover the input arguments of the `ds.checks` built-in:
+
+```js
+r = ds.checks({})
+```
+
+returns
+
+```js
+"r": {
+  "ds.checks": {
+    "checks": [
+      {
+        "object_id": "",
+        "object_type": "",
+        "relation": "",
+        "subject_id": "",
+        "subject_type": "",
+        "trace": false
+      }
+    ],
+    "default": {
+      "object_id": "",
+      "object_type": "",
+      "relation": "",
+      "subject_id": "",
+      "subject_type": "",
+      "trace": false
+    }
+  }
+}
+```
+
+> NOTE: the request fields are returned in alphabetical order, not in ordinal order!
+
+This allows one to copy-paste the input shape as a template:
+
+```js
+x = ds.checks({
+    "default": {
+      "object_id": "",
+      "object_type": "",
+      "relation": "",
+      "subject_id": "",
+      "subject_type": "",
+      "trace": false
+    },
+    "checks": [
+      {
+        "object_id": "",
+        "object_type": "",
+        "relation": "",
+        "subject_id": "",
+        "subject_type": "",
+        "trace": false
+      }
+    ],
+  }
+)
+```
