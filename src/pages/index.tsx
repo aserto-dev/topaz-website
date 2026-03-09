@@ -67,7 +67,7 @@ function HomepageHeader() {
         </div>
         <div className={styles.codeSnippet}>
           <Highlight language="bash">
-            brew install --cask topaz
+            brew install --cask aserto-dev/tap/topaz
           </Highlight>
         </div>
       </header>
